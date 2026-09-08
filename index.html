@@ -1,473 +1,258 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Clément Lequeurre - Site en reconstruction</title>
+<meta name="robots" content="noindex, nofollow">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap" rel="stylesheet">
+<style>
+  :root {
+    color-scheme: dark;
+    --bg: #0d0b08;
+    --bg-glow: #2a1f10;
+    --text: #f6f1e7;
+    --muted: #a89f8f;
+    --accent: #ffcb05;
+    --accent-2: #ff7a1a;
+    --card: #17130d;
+    --border: #332a1a;
+  }
 
-    <!-- ============ SEO : Balises principales ============ -->
-    <title>Clément Lequeurre, développeur web full-stack à Blois</title>
-    <meta name="description" content="Clément Lequeurre, développeur web full-stack à Blois. Je conçois des applications web rapides et élégantes avec React, Next.js, PHP, Symfony et Laravel.">
-    <meta name="keywords" content="Clément Lequeurre, développeur web, développeur full-stack, développeur Blois, React, Next.js, PHP, Symfony, Laravel, MySQL, portfolio, freelance, stage développeur">
-    <meta name="author" content="Clément Lequeurre">
-    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
-    <link rel="canonical" href="https://clementlequeurre.com/">
+  * { box-sizing: border-box; }
 
-    <!-- Langue & localisation -->
-    <meta http-equiv="content-language" content="fr">
-    <link rel="alternate" hreflang="fr" href="https://clementlequeurre.com/">
-    <meta name="geo.region" content="FR-CVL">
-    <meta name="geo.placename" content="Blois">
+  html, body {
+    margin: 0;
+    height: 100%;
+  }
 
-    <!-- Apparence navigateur -->
-    <meta name="theme-color" content="#F8FBFB" media="(prefers-color-scheme: light)">
-    <meta name="theme-color" content="#05161A" media="(prefers-color-scheme: dark)">
-    <meta name="color-scheme" content="light dark">
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 34px 24px;
+  }
 
-    <!-- ============ Open Graph (Facebook, LinkedIn, Discord…) ============ -->
-    <meta property="og:type" content="website">
-    <meta property="og:site_name" content="Portfolio de Clément Lequeurre">
-    <meta property="og:title" content="Clément Lequeurre, développeur web full-stack">
-    <meta property="og:description" content="Développeur web full-stack à Blois. Applications web rapides et élégantes avec React, Next.js, PHP, Symfony et Laravel.">
-    <meta property="og:url" content="https://clementlequeurre.com/">
-    <meta property="og:locale" content="fr_FR">
-    <meta property="og:image" content="https://clementlequeurre.com/assets/image/og-image.png">
-    <meta property="og:image:secure_url" content="https://clementlequeurre.com/assets/image/og-image.png">
-    <meta property="og:image:type" content="image/png">
-    <meta property="og:image:width" content="1200">
-    <meta property="og:image:height" content="630">
-    <meta property="og:image:alt" content="Clément Lequeurre, développeur full-stack à Blois : React, Next.js, PHP, Symfony, Laravel">
+  .hazard-bar {
+    position: fixed;
+    left: 0;
+    right: 0;
+    height: 14px;
+    background: repeating-linear-gradient(45deg, #0d0b08 0 14px, var(--accent) 14px 28px);
+    z-index: 10;
+  }
 
-    <!-- ============ Twitter / X Card ============ -->
-    <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="Clément Lequeurre, développeur web full-stack">
-    <meta name="twitter:description" content="Développeur web full-stack à Blois. Applications web rapides et élégantes avec React, Next.js, PHP, Symfony et Laravel.">
-    <meta name="twitter:image" content="https://clementlequeurre.com/assets/image/og-image.png">
-    <meta name="twitter:image:alt" content="Clément Lequeurre, développeur full-stack à Blois">
+  .hazard-bar.top { top: 0; }
+  .hazard-bar.bottom { bottom: 0; }
 
-    <!-- ============ Favicons & PWA ============ -->
-    <link rel="icon" href="/favicon.svg" type="image/svg+xml">
-    <link rel="icon" href="/assets/image/icon-192.png" type="image/png" sizes="192x192">
-    <link rel="apple-touch-icon" href="/assets/image/apple-touch-icon.png">
-    <link rel="manifest" href="/site.webmanifest">
+  .card {
+    max-width: 520px;
+    width: 100%;
+    text-align: center;
+  }
 
-    <!-- ============ Styles & polices ============ -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
-    <link rel="stylesheet" href="style/styleGlobal.css">
+  .worker-scene {
+    width: 180px;
+    margin: 0 auto 16px;
+  }
 
-    <!-- ============ Données structurées (Schema.org / JSON-LD) ============ -->
-    <script type="application/ld+json">
-    {
-      "@context": "https://schema.org",
-      "@graph": [
-        {
-          "@type": "WebSite",
-          "@id": "https://clementlequeurre.com/#website",
-          "url": "https://clementlequeurre.com/",
-          "name": "Portfolio de Clément Lequeurre",
-          "description": "Portfolio de Clément Lequeurre, développeur web full-stack à Blois.",
-          "inLanguage": "fr-FR",
-          "publisher": { "@id": "https://clementlequeurre.com/#person" }
-        },
-        {
-          "@type": "ProfilePage",
-          "@id": "https://clementlequeurre.com/#profilepage",
-          "url": "https://clementlequeurre.com/",
-          "name": "Clément Lequeurre, développeur full-stack",
-          "isPartOf": { "@id": "https://clementlequeurre.com/#website" },
-          "inLanguage": "fr-FR",
-          "mainEntity": { "@id": "https://clementlequeurre.com/#person" }
-        },
-        {
-          "@type": "Person",
-          "@id": "https://clementlequeurre.com/#person",
-          "name": "Clément Lequeurre",
-          "givenName": "Clément",
-          "familyName": "Lequeurre",
-          "jobTitle": "Développeur Web Full-Stack",
-          "description": "Développeur web full-stack spécialisé en React, Next.js, PHP, Symfony et Laravel.",
-          "url": "https://clementlequeurre.com/",
-          "image": "https://clementlequeurre.com/assets/image/profile.webp",
-          "email": "mailto:clement.lequeurre@gmail.com",
-          "address": {
-            "@type": "PostalAddress",
-            "addressLocality": "Blois",
-            "addressRegion": "Centre-Val de Loire",
-            "addressCountry": "FR"
-          },
-          "alumniOf": {
-            "@type": "CollegeOrUniversity",
-            "name": "IUT de Blois"
-          },
-          "knowsAbout": [
-            "Développement web",
-            "React",
-            "Next.js",
-            "JavaScript",
-            "PHP",
-            "Symfony",
-            "Laravel",
-            "MySQL",
-            "Tailwind CSS",
-            "Git",
-            "Docker"
-          ],
-          "sameAs": [
-            "https://github.com/clementLQR",
-            "https://www.linkedin.com/in/clément-lequeurre/"
-          ]
-        }
-      ]
-    }
-    </script>
+  .worker-scene svg {
+    width: 100%;
+    height: auto;
+    display: block;
+    overflow: visible;
+  }
+
+  .worker {
+    animation: bob 1.1s ease-in-out infinite;
+  }
+
+  .hammer-arm {
+    animation: swing 1.1s ease-in-out infinite;
+    transform-origin: 93px 70px;
+  }
+
+  @keyframes bob {
+    0%, 45%  { transform: translateY(0); }
+    55%      { transform: translateY(2px); }
+    100%     { transform: translateY(0); }
+  }
+
+  @keyframes swing {
+    0%   { transform: rotate(-150deg); }
+    40%  { transform: rotate(-170deg); }
+    55%  { transform: rotate(5deg); }
+    100% { transform: rotate(-150deg); }
+  }
+
+  .dust circle {
+    fill: var(--accent);
+    opacity: 0;
+    transform-box: fill-box;
+    transform-origin: center;
+    animation: puff 1.1s ease-out infinite;
+  }
+
+  .dust circle:nth-child(2) { animation-delay: 0.03s; }
+  .dust circle:nth-child(3) { animation-delay: 0.06s; }
+
+  @keyframes puff {
+    0%, 50% { opacity: 0; transform: scale(0.3); }
+    58%     { opacity: 0.7; transform: scale(1); }
+    75%     { opacity: 0; transform: scale(1.7); }
+    100%    { opacity: 0; }
+  }
+
+  .status-label {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 16px;
+    border: 2px dashed var(--accent);
+    border-radius: 4px;
+    background: rgba(255, 203, 5, 0.08);
+    color: var(--accent);
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 16px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    margin: 0 0 28px;
+  }
+
+  h1 {
+    font-family: 'Bebas Neue', sans-serif;
+    text-transform: uppercase;
+    font-size: clamp(34px, 6vw, 48px);
+    line-height: 1.1;
+    margin: 0 0 16px;
+    letter-spacing: 0.01em;
+  }
+
+  h1 span {
+    background: linear-gradient(90deg, var(--accent), var(--accent-2));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+
+  p.lead {
+    color: var(--muted);
+    font-size: 16px;
+    line-height: 1.6;
+    margin: 0 0 40px;
+  }
+
+  .links {
+    display: flex;
+    justify-content: center;
+    gap: 14px;
+    flex-wrap: wrap;
+  }
+
+  .links a {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px 20px;
+    border-radius: 12px;
+    border: 1px solid var(--border);
+    background: var(--card);
+    color: var(--text);
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 500;
+    transition: border-color 0.2s ease, transform 0.2s ease, background 0.2s ease;
+  }
+
+  .links a:hover {
+    border-color: var(--accent);
+    background: #241c10;
+    transform: translateY(-2px);
+  }
+
+  .links svg {
+    width: 18px;
+    height: 18px;
+    flex-shrink: 0;
+  }
+
+  footer {
+    margin-top: 48px;
+    color: #6b6152;
+    font-size: 12px;
+  }
+</style>
 </head>
 <body>
-    <div class="background">
-        <div style="position: fixed; inset: 0; pointer-events: none; z-index: 0; overflow: hidden;">
-        <!-- halo teal en haut à gauche -->
-            <div class="hallo1">
-            </div>
-            <!-- halo secondaire en bas à droite -->
-            <div class="hallo2">
-            </div>
-        </div>
+  <div class="hazard-bar top"></div>
+  <div class="hazard-bar bottom"></div>
+
+  <main class="card">
+
+    <div class="worker-scene">
+      <svg viewBox="0 0 200 150" aria-hidden="true">
+        <ellipse cx="110" cy="138" rx="55" ry="6" fill="#000" opacity="0.3"/>
+
+        <rect x="85" y="108" width="65" height="30" rx="3" fill="var(--card)" stroke="var(--border)" stroke-width="2"/>
+        <line x1="85" y1="123" x2="150" y2="123" stroke="var(--border)" stroke-width="2"/>
+
+        <g class="dust">
+          <circle cx="90" cy="112" r="4"/>
+          <circle cx="98" cy="108" r="3"/>
+          <circle cx="83" cy="106" r="3"/>
+        </g>
+
+        <g class="worker">
+          <rect x="71" y="105" width="10" height="30" rx="4" fill="#3a4055"/>
+          <rect x="50" y="105" width="10" height="30" rx="4" fill="#3a4055"/>
+
+          <rect x="45" y="65" width="40" height="45" rx="10" fill="var(--accent)"/>
+
+          <line x1="47" y1="75" x2="45" y2="95" stroke="#3a4055" stroke-width="8" stroke-linecap="round"/>
+
+          <circle cx="65" cy="50" r="16" fill="#e8bfa0"/>
+          <path d="M48 46 a17 17 0 0 1 34 0 z" fill="#ffd166"/>
+          <rect x="56" y="44" width="38" height="5" rx="2" fill="#ffd166"/>
+
+          <g class="hammer-arm">
+            <line x1="93" y1="70" x2="93" y2="100" stroke="#3a4055" stroke-width="8" stroke-linecap="round"/>
+            <g transform="translate(93,104)">
+              <rect x="-4" y="-18" width="8" height="18" fill="#8a5a34"/>
+              <rect x="-16" y="-7" width="32" height="14" rx="3" fill="#9aa3b3"/>
+            </g>
+          </g>
+        </g>
+      </svg>
+    </div>
+    <p class="status-label">⚠ En reconstruction</p>
+
+    <h1>Ce site fait peau neuve.</h1>
+    <p class="lead">
+      Mon portfolio est actuellement en cours de refonte.<br>
+      En attendant, retrouvez-moi ici :
+    </p>
+
+    <div class="links">
+      <a href="mailto:clement.lequeurre@gmail.com">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
+        Email
+      </a>
+      <a href="https://github.com/clementLQR" target="_blank" rel="noopener noreferrer">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.58 2 12.26c0 4.55 2.87 8.41 6.84 9.77.5.1.68-.22.68-.5 0-.24-.01-.87-.01-1.71-2.78.62-3.37-1.36-3.37-1.36-.45-1.18-1.11-1.49-1.11-1.49-.91-.64.07-.63.07-.63 1 .07 1.53 1.05 1.53 1.05.89 1.56 2.34 1.11 2.91.85.09-.66.35-1.11.63-1.37-2.22-.26-4.56-1.14-4.56-5.06 0-1.12.39-2.03 1.03-2.75-.1-.26-.45-1.31.1-2.72 0 0 .84-.28 2.75 1.05a9.34 9.34 0 0 1 5 0c1.91-1.33 2.75-1.05 2.75-1.05.55 1.41.2 2.46.1 2.72.64.72 1.03 1.63 1.03 2.75 0 3.93-2.34 4.79-4.57 5.05.36.32.68.94.68 1.9 0 1.37-.01 2.47-.01 2.81 0 .27.18.6.69.5A10.03 10.03 0 0 0 22 12.26C22 6.58 17.52 2 12 2Z"/></svg>
+        GitHub
+      </a>
+      <a href="https://www.linkedin.com/in/cl%C3%A9ment-lequeurre/" target="_blank" rel="noopener noreferrer">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M20.45 20.45h-3.55v-5.57c0-1.33-.02-3.04-1.85-3.04-1.85 0-2.14 1.45-2.14 2.94v5.67H9.36V9h3.41v1.56h.05c.47-.9 1.63-1.85 3.36-1.85 3.6 0 4.27 2.37 4.27 5.45v6.29ZM5.34 7.43a2.06 2.06 0 1 1 0-4.12 2.06 2.06 0 0 1 0 4.12ZM7.12 20.45H3.56V9h3.56v11.45Z"/></svg>
+        LinkedIn
+      </a>
     </div>
 
-    <nav class="navbar glass">
-        <span class="logo">
-            <a href="#" class="logo">CL<span class="dot">.</span></a>
-        </span>
-        <span>
-            <a href="#about" class="nav-link">À propos</a>
-        </span>
-        <span>
-            <a href="#skills" class="nav-link">Compétences</a>
-        </span>
-        <span>
-            <a href="#projects" class="nav-link">Projets</a>
-        </span>
-        <span>
-            <a href="#experiences" class="nav-link">Expérience</a>
-        </span>
-        <span>
-            <a href="#contact" class="nav-link nav-highlight">Contact</a>
-        </span>
-
-        <div>
-            <span class="darkmode">
-                <img src="assets/icons/sun.svg" alt="Changer de thème (clair / sombre)">
-            </span>
-
-            <span class="menu-toggle">
-                <img src="assets/icons/menu.svg" alt="Ouvrir le menu de navigation">
-                <div id="menu" class="menu">
-                    <div>
-                        <a href="#about"      class="nav-link-sm">à propos</a>
-                        <a href="#skills"     class="nav-link-sm">Compétences</a>
-                        <a href="#projects"   class="nav-link-sm">Projets</a>
-                        <a href="#experiences" class="nav-link-sm">Expérience</a>
-                        <a href="#contact"    class="nav-link-sm nav-highlight">Contact</a>
-                    </div>
-                </div>
-            </span>           
-        </div>
-    </nav>
-
-    <span class="scroll-indicator">
-        <img src="assets/icons/arrow-down.svg" alt="" aria-hidden="true">
-    </span>
-
-    <header class="header">
-           <div class="header-div1 glass">
-            <div>
-                <h1>Clément <br> <span>Lequeurre</span></h1>
-                <h2>Développeur Full-Stack</h2>
-                <p>Je conçois et construis des applications web rapides et élégantes, depuis une architecture back-end propre jusqu'à des interfaces soignées et réfléchies.</p>
-            </div>
-            <div class="header-div1-btn">
-                <a href="#projects" class="btn btn-primary">Voir mes projets <img src="assets/icons/arrow-right.svg" alt="" aria-hidden="true"></a>
-                <a href="assets/pdf/CV_Clément_Lequeurre.pdf" download class="btn">Télécharger mon CV <img src="assets/icons/arrow-down.svg" alt="" aria-hidden="true"></a>
-            </div>
-        </div>
-        <div class="header-div2 glass">
-            <img src="assets/image/profile.webp" alt="Portrait de Clément Lequeurre, développeur full-stack à Blois" width="960" height="1280">
-            <div>
-                Clément Lequeurre <br>
-                Blois, France
-            </div>
-        </div>
-        <div class="header-div3 glass">
-            <h3>TECH STACK</h3>
-            <div class="header-div3-tech-container">
-                <div class="header-div3-tech">
-                    <div class="div-icon"><img src="assets/icons/nextjs.svg" alt="Next.js"></div>
-                    <div class="div-icon"><img src="assets/icons/mysql.svg" alt="MySQL"></div>
-                    <div class="div-icon"><img src="assets/icons/javascript.svg" alt="JavaScript"></div>
-                    <div class="div-icon"><img src="assets/icons/react.svg" alt="React"></div>
-                    <div class="div-icon"><img src="assets/icons/tailwindcss.svg" alt="Tailwind CSS"></div>
-                    <div class="div-icon"><img src="assets/icons/git.svg" alt="Git"></div>
-                    <div class="div-icon"><img src="assets/icons/php.svg" alt="PHP"></div>
-                    <div class="div-icon"><img src="assets/icons/symfony.svg" alt="Symfony"></div>
-                    <div class="div-icon"><img src="assets/icons/laravel.svg" alt="Laravel"></div>
-                </div>
-            </div>
-        </div>
-        <div class="header-div4 glass">
-            <div class="header-div4-img">
-                <img src="assets/image/iut-quest-logo.webp" alt="Logo d'IUT Quest, challenge inter-filières de l'IUT de Blois" width="1920" height="1080">
-            </div>
-            <div class="header-div4-description">
-                <span class="highlight">PROJET MIS EN VALEUR</span>
-                <h2>IUT Quest</h2>
-                <p>Challenge inter-filières de l'IUT de Blois</p>
-                <a href="/projets/iut-quest" class="btn">Voir le projet<img src="assets/icons/arrow-right.svg" alt="" aria-hidden="true"></a>
-            </div>
-        </div>
-        <div class="header-div5 glass">
-            <div class="header-div5-title">
-                <h2>Contactez-moi</h2>
-            </div>
-
-            <div class="header-div5-icons">
-                <a href="https://github.com/clementLQR" target="_blank" class="div-icon"><img src="assets/icons/github.svg" alt="GitHub"></a>
-                <a href="https://www.linkedin.com/in/clément-lequeurre/" target="_blank" class="div-icon"><img src="assets/icons/linkedin.svg" alt="LinkedIn"></a>
-                <a href="mailto:clement.lequeurre@gmail.com" class="div-icon"><img src="assets/icons/mail.svg" alt="Mail"></a>
-            </div>
-        </div>
-        <div class="header-div6 glass">
-            <span>“</span>
-            <h2>Le succès n’est pas la clé du bonheur. Le bonheur est la clé du succès. Si vous aimez ce que vous faites, vous réussirez.</h2>
-        </div>
-        <div class="header-div7 glass">
-            <div>
-                <h3>EN COURS D'APPRENTISSAGE</h3>
-            </div>
-
-            <div class="header-div7-tech">
-                <ul>
-                    <li><span>Node.js</span></li>
-                    <li><span>React</span></li>
-                    <li><span>Next.js</span></li>
-                    <li><span>UI / UX Design</span></li>
-                </ul>
-            </div>
-
-            <div class="header-div7-goal">
-                <span>NEXT GOAL</span>
-                <p>Licence 3 après le BUT, puis un Master.</p>
-            </div>
-        </div>
-        <div class="header-div8 glass">
-            <div>
-                <span class="header-div8-highlight">10+</span> <br>
-                <span class="header-div8-text">Projets complétés</span><br>
-            </div>
-            <div>
-                <span class="header-div8-highlight">6</span><br>
-                <span class="header-div8-text">Technologies maîtrisées</span><br>
-            </div>
-            <div>
-                <span class="header-div8-highlight">5</span><br>
-                <span class="header-div8-text">Années de codage</span><br>
-            </div>
-        </div>
-    </header>
-
-    <main>
-
-        <section id="about" class="section about">
-            <h4 class="section-title">01 - A PROPOS</h4>
-            <h2>Je m'intéresse aux détails qui rendent le logiciel facile à utiliser.</h2>
-            <p>Je suis un développeur web passionné par la création d'expériences numériques exceptionnelles. Avec une solide formation en développement web et une expérience pratique dans divers projets, je m'efforce de concevoir des applications web qui allient performance, esthétique et convivialité.</p>
-            <p>Mon approche du développement web repose sur une compréhension approfondie des besoins des utilisateurs et sur l'utilisation des technologies les plus récentes pour créer des solutions innovantes. Je suis constamment à la recherche de nouvelles opportunités pour apprendre et améliorer mes compétences, tout en contribuant à des projets qui ont un impact positif.</p>
-        </section>
-
-        <section id="skills" class="section skills">
-            <h4 class="section-title">02 - COMPÉTENCES</h4>
-            <h2>Outils avec lesquels je travaille au quotidien</h2>
-
-            <div class="skills-grid">
-                <div class="skills-container glass">
-                    <h3>Front-End</h3>
-                    <div class="skill">
-                        <img src="assets/icons/tailwindcss.svg" alt="Tailwind CSS">
-                        <span>Tailwind CSS</span>
-                    </div>
-                    <div class="skill">
-                        <img src="assets/icons/javascript.svg" alt="JavaScript">
-                        <span>JavaScript</span>
-                    </div>
-                    <div class="skill">
-                        <img src="assets/icons/react.svg" alt="React">
-                        <span>React</span>
-                    </div>
-                    <div class="skill">
-                        <img src="assets/icons/nextjs.svg" alt="Next.js">
-                        <span>Next.js</span>
-                    </div>
-                </div>
-
-                <div class="skills-container glass">
-                    <h3>Back-End</h3>
-                    <div class="skill">
-                        <img src="assets/icons/php.svg" alt="PHP">
-                        <span>PHP</span>
-                    </div>
-                    <div class="skill">
-                        <img src="assets/icons/symfony.svg" alt="Symfony">
-                        <span>Symfony</span>
-                    </div>
-                    <div class="skill">
-                        <img src="assets/icons/laravel.svg" alt="Laravel">
-                        <span>Laravel</span>
-                    </div>
-                    <div class="skill">
-                        <img src="assets/icons/mysql.svg" alt="MySQL">
-                        <span>MySQL</span>
-                    </div>
-                </div>
-
-                <div class="skills-container glass">
-                    <h3>Outils & Méthodologies</h3>
-                    <div class="skill">
-                        <img src="assets/icons/git.svg" alt="Git">
-                        <span>Git</span>
-                    </div>
-                    <div class="skill">
-                        <img src="assets/icons/docker.svg" alt="Docker">
-                        <span>Docker</span>
-                    </div>
-                    <div class="skill">
-                        <img src="assets/icons/figma.svg" alt="Figma">
-                        <span>Figma</span>
-                    </div>
-                    <div class="skill">
-                        <img src="assets/icons/vscode.svg" alt="VS Code">
-                        <span>VS Code</span>
-                    </div>
-                </div>
-            </div>
-
-        </section>
-
-        <section id="projects" class="section projects">
-            <h4 class="section-title">03 - PROJETS</h4>
-            <h2>Quelques uns de mes projets</h2>
-
-            <div class="filtres">
-                <button class="btn-filtre btn-filtre-select">Tous</button>
-                <button class="btn-filtre">Full-Stack</button>
-                <button class="btn-filtre">Front-End</button>
-                <button class="btn-filtre">Back-End</button>
-            </div>
-
-            <div class="projects-grid glass">
-                <div class="projects-img-select">
-                    <img src="assets/image/iut-quest-logo.webp" alt="Logo d'IUT Quest, challenge inter-filières de l'IUT de Blois" width="1920" height="1080">
-                    <div class="projects-img-select-overlay">
-                        <div class="projects-img-select-tags">
-                            <span class="project-type highlight2">Full-Stack</span>
-                            <span class="project-year">2026</span>
-                        </div>
-                        <h3>IUT Quest</h3>
-                        <p>Jeu de piste géolocalisé pour le challenge inter-filières de l'IUT de Blois.</p>
-                        <a href="/projets/iut-quest" class="btn btn-primary">Voir le projet <img src="assets/icons/arrow-right.svg" alt="" aria-hidden="true"></a>
-                    </div>
-                </div>
-
-                <div class="filtres filtres-sm">
-                    <button class="btn-filtre btn-filtre-select">Tous</button>
-                    <button class="btn-filtre">Full-Stack</button>
-                    <button class="btn-filtre">Front-End</button>
-                    <button class="btn-filtre">Back-End</button>
-                </div>
-
-                <div class="projects-array">
-                    <div class="projects-element projects-element-select" data-url="/projets/iut-quest">
-                        <img src="assets/image/iut-quest-logo.webp" alt="Logo d'IUT Quest, challenge inter-filières de l'IUT de Blois" class="projects-element-img" width="120" height="80" loading="lazy">
-                        <div class="projects-element-description">
-                            <h3>IUT Quest 2026</h3>
-                            <p>Jeu de piste géolocalisé pour le challenge inter-filières de l'IUT de Blois.</p>
-                        </div>
-                        <span class="project-type highlight">Full-Stack</span>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <section id="experiences" class="experiences">
-            <div>
-                <h4 class="section-title">04 - EXPERIENCE</h4>
-                <h2>Une petite timeline</h2>
-                <p>De ma première ligne de code à la livraison de produits complets - un aperçu rapide de la manière dont je suis arrivé ici.</p>
-            </div>
-
-            <div class="experiences-container">
-             
-                <div class="experiences-timeline">
-                    <div class="point-timeline"></div>
-                    <h4>2024 - 2027</h4>
-                    <span class="experience-title">BUT Métiers du Multimédia et de l'Internet</span>
-                    <span class="experience-company">IUT de Blois</span>
-                    <p>Spécialisation en développement web. Élaborations de mes premiers projets.</p>
-                </div>
-
-                <div class="experiences-timeline">
-                    <div class="point-timeline"></div>
-                    <h4>2026</h4>
-                    <span class="experience-title">Stage de 2ème année</span>
-                    <span class="experience-company">VOLUME SOFTWARE</span>
-                    <p>Migration d'un ERP Genero vers Universal Rendering et développement de l'interface d'un chatbot connecté à une API.</p>
-                </div>
-
-                <div class="experiences-timeline">
-                    <div class="point-timeline"></div>
-                    <h4>2022 - 2024</h4>
-                    <span class="experience-title">Bac général, Spécialité NSI</span>
-                    <span class="experience-company">Lycée</span>
-                    <p>Découverte de la programmation et des langages tels que Python et JavaScript.</p>
-                </div>
-
-                <div class="experiences-timeline">
-                    <div class="point-timeline"></div>
-                    <h4>2021</h4>
-                    <span class="experience-title">Commencement de la programmation</span>
-                    <span class="experience-company">Authodidacte</span>
-                    <p>Découverte des bases de l'algorithmique et de la programmation.</p>
-                </div>
-            </div>
-        </section>
-
-        <section id="contact" class="contact glass">
-            <h4 class="section-title">05 - CONTACT</h4>
-            <h2>Construisons quelque chose de grand ensemble.</h2>
-            <span>Ouvert aux opportunités de stage ou de projet.</span>
-            <a href="mailto:clement.lequeurre@gmail.com" class="contact-mail">clement.lequeurre@gmail.com</a>
-            <div class="contact-btn">
-                <a href="assets/pdf/CV_Clément_Lequeurre.pdf" download class="btn">Télécharger mon CV <img src="assets/icons/arrow-down.svg" alt="" aria-hidden="true"></a>
-                <a href="mailto:clement.lequeurre@gmail.com" class="btn btn-primary">Me contacter <img src="assets/icons/arrow-right.svg" alt="" aria-hidden="true"></a>
-            </div>
-            <div class="contact-social">
-                <a href="https://github.com/clementLQR" target="_blank" class="div-icon"><img src="assets/icons/github.svg" alt="GitHub"></a>
-                <a href="https://www.linkedin.com/in/clément-lequeurre/" target="_blank" class="div-icon"><img src="assets/icons/linkedin.svg" alt="LinkedIn"></a>
-                <a href="mailto:clement.lequeurre@gmail.com" target="_blank" class="div-icon"><img src="assets/icons/mail.svg" alt="Mail"></a>
-            </div>
-        </section>
-    </main>
-
-    <footer>
-        <span>© 2026 Clément Lequeurre</span>
-        <span>Designed & built with care</span>
-    </footer>
-
-
-
-
-    <script src="javascript/darkMode.js"></script>
-    <script src="javascript/menuBurger.js"></script>
-    <script src="javascript/filtres.js"></script>
-    <script src="javascript/projetPreview.js"></script>
-    <script src="javascript/curseur.js"></script>
+    <footer>&copy; 2026 Clément Lequeurre</footer>
+  </main>
 </body>
 </html>
