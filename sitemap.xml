@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Plan du site pour les moteurs de recherche : à mettre à jour (lastmod) quand une page change -->
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
+    <url>
+        <loc>https://clementlequeurre.com/</loc>
+        <lastmod>2026-10-07</lastmod>
+        <priority>1.0</priority>
+        <image:image><image:loc>https://clementlequeurre.com/assets/og-image.jpg</image:loc></image:image>
+    </url>
+    <url>
+        <loc>https://clementlequeurre.com/projets/iut-quest</loc>
+        <lastmod>2026-10-07</lastmod>
+        <priority>0.8</priority>
+        <image:image><image:loc>https://clementlequeurre.com/assets/project-iut-quest.webp</image:loc></image:image>
+    </url>
+    <url>
+        <loc>https://clementlequeurre.com/projets/freemessage</loc>
+        <lastmod>2026-10-07</lastmod>
+        <priority>0.8</priority>
+        <image:image><image:loc>https://clementlequeurre.com/assets/project-free-message.png</image:loc></image:image>
+    </url>
+    <url>
+        <loc>https://clementlequeurre.com/mentions-legales</loc>
+        <lastmod>2026-10-07</lastmod>
+        <priority>0.2</priority>
+    </url>
+    <url>
+        <loc>https://clementlequeurre.com/confidentialite</loc>
+        <lastmod>2026-10-07</lastmod>
+        <priority>0.2</priority>
+    </url>
+</urlset>

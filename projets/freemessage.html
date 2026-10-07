@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FreeMessage · réseau social en PHP natif (MVC, Twig) · Clément Lequeurre</title>
+    <meta name="description" content="FreeMessage : un réseau social thématique en PHP 8 natif, avec architecture MVC faite main, Twig, MySQL, likes asynchrones, commentaires, administration et sécurité (CSRF, XSS, injection SQL). Projet de Clément Lequeurre.">
+    <meta name="author" content="Clément Lequeurre">
+    <meta name="robots" content="index, follow, max-image-preview:large">
+    <link rel="canonical" href="https://clementlequeurre.com/projets/freemessage">
+    <meta name="theme-color" content="#140c1e">
+
+    <meta property="og:type" content="article">
+    <meta property="og:site_name" content="Clément Lequeurre">
+    <meta property="og:locale" content="fr_FR">
+    <meta property="og:url" content="https://clementlequeurre.com/projets/freemessage">
+    <meta property="og:title" content="FreeMessage · réseau social thématique en PHP natif">
+    <meta property="og:description" content="Publications par catégories, likes asynchrones, commentaires et panneau d'administration, sur une architecture MVC construite à la main.">
+    <meta property="og:image" content="https://clementlequeurre.com/assets/project-free-message.png">
+    <meta property="og:image:alt" content="Logo de FreeMessage : une bulle de discussion avec un cœur, sur fond bleu">
+    <meta name="twitter:card" content="summary_large_image">
+
+    <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
+    <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png">
+    <link rel="manifest" href="/site.webmanifest">
+
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@graph": [
+            {
+                "@type": "CreativeWork",
+                "@id": "https://clementlequeurre.com/projets/freemessage#projet",
+                "name": "FreeMessage",
+                "headline": "FreeMessage, un réseau social thématique en PHP natif",
+                "description": "Application web sociale : messages texte et image dans 8 catégories, réactions asynchrones, commentaires et administration, sur une architecture MVC sans framework.",
+                "url": "https://clementlequeurre.com/projets/freemessage",
+                "image": "https://clementlequeurre.com/assets/project-free-message.png",
+                "inLanguage": "fr-FR",
+                "keywords": "PHP 8, Twig, MySQL, MariaDB, MVC, JavaScript, fetch, sécurité web, CSRF, Composer",
+                "author": { "@type": "Person", "@id": "https://clementlequeurre.com/#me", "name": "Clément Lequeurre", "url": "https://clementlequeurre.com/" },
+                "sameAs": ["https://github.com/clementLQR/FreeMessage"]
+            },
+            {
+                "@type": "BreadcrumbList",
+                "itemListElement": [
+                    { "@type": "ListItem", "position": 1, "name": "Portfolio", "item": "https://clementlequeurre.com/" },
+                    { "@type": "ListItem", "position": 2, "name": "FreeMessage", "item": "https://clementlequeurre.com/projets/freemessage" }
+                ]
+            }
+        ]
+    }
+    </script>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400&family=Marck+Script&family=Patrick+Hand&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/css/legal.css">
+</head>
+
+<body>
+
+    <header class="legal-top">
+        <a class="legal-brand" href="/" aria-label="Retour au portfolio">
+            <span>Portfolio</span>
+            <span>Clément Lequeurre</span>
+        </a>
+        <a class="legal-back" href="/#bureau"><span aria-hidden="true">←</span> Retour à l'appartement</a>
+    </header>
+
+    <main class="legal">
+        <nav aria-label="Fil d'Ariane" class="legal__kicker"><a href="/">Portfolio</a> · Projet</nav>
+        <h1>FreeMessage</h1>
+        <p class="legal__intro">
+            Une application web sociale où l'on publie des messages (texte et image) dans des catégories
+            thématiques, où l'on réagit aux publications et où on les commente.
+        </p>
+
+        <img class="project__cover" src="/assets/project-free-message.png" width="1920" height="1080" alt="Logo de FreeMessage : une bulle de discussion avec un cœur, à côté du nom, en blanc sur fond bleu">
+
+        <div class="project__actions">
+            <a href="https://github.com/clementLQR/FreeMessage" target="_blank" rel="noopener">Code sur GitHub <span aria-hidden="true">↗</span></a>
+        </div>
+
+        <section id="fiche">
+            <h2>Fiche projet</h2>
+            <dl>
+                <dt>Stack</dt>
+                <dd>PHP 8 · Twig 3 · MySQL / MariaDB · HTML / CSS / JavaScript vanilla · Composer</dd>
+                <dt>Architecture</dt>
+                <dd>MVC construit à la main, sans framework</dd>
+                <dt>Base de données</dt>
+                <dd>6 tables relationnelles avec clés étrangères</dd>
+                <dt>Interface</dt>
+                <dd>Responsive, en CSS pur, sans framework ni étape de build</dd>
+            </dl>
+            <ul class="project__stats">
+                <li><strong>8</strong><span>catégories thématiques</span></li>
+                <li><strong>6</strong><span>tables SQL</span></li>
+                <li><strong>0</strong><span>framework</span></li>
+            </ul>
+        </section>
+
+        <section id="presentation">
+            <h2>Le projet en bref</h2>
+            <p>
+                FreeMessage est un réseau social organisé en 8 catégories : jeux vidéo, musique, films, livres,
+                sport, peinture et dessin, photographie et séries. Je l'ai développé en PHP natif, sans framework,
+                avec une architecture MVC construite à la main : un routeur, des contrôleurs, des modèles et des
+                vues Twig.
+            </p>
+            <p>
+                L'objectif était de comprendre et de maîtriser tout ce qu'un framework fait habituellement à notre
+                place : le routage, les sessions, la sécurité des formulaires, l'envoi de fichiers et l'accès à la
+                base de données.
+            </p>
+        </section>
+
+        <section id="fonctionnalites">
+            <h2>Fonctionnalités</h2>
+            <h3>Comptes utilisateurs</h3>
+            <ul>
+                <li><strong>Inscription et connexion</strong> avec des mots de passe hachés (<code>password_hash</code> / <code>password_verify</code>).</li>
+                <li><strong>Pages protégées</strong> : un visiteur non connecté est redirigé vers la page de connexion.</li>
+                <li><strong>Profil personnel</strong> : biographie modifiable, changement d'identifiant et liste de ses propres publications.</li>
+            </ul>
+            <h3>Publications</h3>
+            <ul>
+                <li><strong>Publier un message</strong> dans une catégorie, avec ou sans image.</li>
+                <li><strong>Envoi d'images sécurisé</strong> : extensions autorisées (jpg, png, gif, webp), taille limitée à 5 Mo, vérification que le fichier est bien une image (<code>getimagesize</code>) et renommage pour éviter les collisions.</li>
+                <li><strong>Deux tris</strong> des publications d'une catégorie : les plus récentes ou les plus likées.</li>
+                <li><strong>Dates en français</strong> (« 28 juillet ») grâce à un filtre Twig personnalisé.</li>
+                <li><strong>Suppression</strong> de ses propres publications.</li>
+            </ul>
+            <h3>Interactions</h3>
+            <ul>
+                <li><strong>Likes et dislikes asynchrones</strong> : la réaction est envoyée avec <code>fetch()</code>, sans recharger la page.</li>
+                <li><strong>Une seule réaction par message</strong> : like et dislike s'excluent. Un second clic annule la réaction, et passer de l'un à l'autre met à jour les deux compteurs.</li>
+                <li><strong>Commentaires</strong> sur chaque publication, avec le motif Post/Redirect/Get pour qu'un rechargement de la page ne renvoie pas le commentaire.</li>
+            </ul>
+            <h3>Panneau d'administration</h3>
+            <ul>
+                <li><strong>Gestion des publications</strong>, avec leurs commentaires, et <strong>gestion des comptes</strong> utilisateurs.</li>
+                <li><strong>Recherche et tri</strong> des tableaux côté client (par date, par exemple).</li>
+                <li>Accès réservé au compte administrateur.</li>
+            </ul>
+            <h3>Interface</h3>
+            <ul>
+                <li><strong>Responsive</strong> : barre de navigation en bas de l'écran sur mobile et tablette, barre latérale sur ordinateur.</li>
+                <li><strong>Design modernisé</strong> en CSS pur, sans framework CSS ni étape de build.</li>
+            </ul>
+        </section>
+
+        <section id="securite">
+            <h2>Sécurité</h2>
+            <div class="legal__table">
+                <table>
+                    <thead>
+                        <tr><th scope="col">Menace</th><th scope="col">Protection mise en place</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>Injection SQL</td><td>Toutes les requêtes passent par des requêtes préparées <code>mysqli</code></td></tr>
+                        <tr><td>CSRF</td><td>Jeton unique par session (<code>random_bytes</code>), vérifié sur chaque requête POST avec <code>hash_equals</code></td></tr>
+                        <tr><td>XSS</td><td>Échappement automatique des sorties par Twig</td></tr>
+                        <tr><td>Mots de passe</td><td>Hachage avec <code>password_hash</code> (bcrypt)</td></tr>
+                        <tr><td>Fichiers malveillants</td><td>Liste blanche d'extensions, limite de taille, contrôle du contenu réel du fichier</td></tr>
+                        <tr><td>Double soumission</td><td>Motif PRG (Post/Redirect/Get)</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <section id="architecture">
+            <h2>Architecture</h2>
+            <p>
+                Chaque requête HTTP passe par <code>.htaccess</code> vers un point d'entrée unique,
+                <code>routeur.php</code>, qui vérifie le jeton CSRF et distribue les routes. Le contrôleur porte la
+                logique métier et le rendu des vues ; le modèle regroupe les requêtes SQL vers MySQL / MariaDB
+                (tables utilisateur, message, commentaire, réaction, catégorie et type).
+            </p>
+            <ul>
+                <li><strong>URL propres</strong> (<code>/categorie/3</code>, <code>/commentaires/12</code>…) grâce à la réécriture d'URL Apache.</li>
+                <li><strong>Héritage de templates Twig</strong> : un gabarit parent (navigation, pied de page) et une vue enfant par page.</li>
+                <li><strong>Compteurs dénormalisés</strong> (<code>nbrLike</code>, <code>nbrDislike</code>, <code>nbrCom</code>) dans la table des messages, pour trier par popularité sans jointure coûteuse.</li>
+            </ul>
+        </section>
+
+        <section id="competences">
+            <h2>Compétences mobilisées</h2>
+            <ul>
+                <li>Conception d'une architecture MVC sans framework</li>
+                <li>Modélisation d'une base de données relationnelle (6 tables, clés étrangères)</li>
+                <li>Sécurité web : CSRF, injection SQL, XSS, envoi de fichiers, hachage des mots de passe</li>
+                <li>JavaScript asynchrone (<code>fetch</code>) pour une interface plus fluide</li>
+                <li>Moteur de templates Twig, dont la création d'un filtre personnalisé</li>
+                <li>Responsive design en CSS natif</li>
+                <li>Gestion des dépendances avec Composer et suivi de version avec Git</li>
+            </ul>
+            <ul class="project__tags" aria-label="Technologies">
+                <li>PHP 8</li><li>Twig 3</li><li>MySQL</li><li>MariaDB</li><li>JavaScript</li><li>HTML / CSS</li><li>Composer</li><li>Git</li>
+            </ul>
+        </section>
+
+        <nav class="project__next" aria-label="Autres pages">
+            <a href="/projets/iut-quest"><small>← Projet précédent</small><strong>IUT Quest</strong></a>
+            <a href="/"><small>Retour →</small><strong>L'appartement 3D</strong></a>
+        </nav>
+    </main>
+
+    <footer class="legal-foot">
+        <span>© 2026 Clément Lequeurre</span>
+        <nav aria-label="Pages du site">
+            <a href="/">Portfolio</a>
+            <a href="/mentions-legales">Mentions légales</a>
+            <a href="/confidentialite">Confidentialité</a>
+        </nav>
+    </footer>
+
+</body>
+
+</html>

@@ -1,0 +1,6 @@
+# Fichiers de travail à ne pas mettre en ligne (sinon accessibles à /CLAUDE.md, /README.md…)
+CLAUDE.md
+.claude/
+README.md
+server.mjs
+.htaccess

@@ -1,0 +1,10 @@
+{
+  "name": "appartement-3d",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Appartement lo-fi cosy en 3D (three.js) au-dessus d'une ville futuriste, parcouru au scroll.",
+  "type": "module",
+  "scripts": {
+    "start": "node server.mjs"
+  }
+}

@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IUT Quest · jeu de piste géolocalisé (Laravel, Leaflet) · Clément Lequeurre</title>
+    <meta name="description" content="IUT Quest : un jeu de piste géolocalisé pour 12 équipes dans tout Blois, avec carte en temps réel, défis photo et back-office Laravel. Projet full-stack (SAÉ 4012) de Clément Lequeurre.">
+    <meta name="author" content="Clément Lequeurre">
+    <meta name="robots" content="index, follow, max-image-preview:large">
+    <link rel="canonical" href="https://clementlequeurre.com/projets/iut-quest">
+    <meta name="theme-color" content="#140c1e">
+
+    <meta property="og:type" content="article">
+    <meta property="og:site_name" content="Clément Lequeurre">
+    <meta property="og:locale" content="fr_FR">
+    <meta property="og:url" content="https://clementlequeurre.com/projets/iut-quest">
+    <meta property="og:title" content="IUT Quest · jeu de piste géolocalisé">
+    <meta property="og:description" content="12 équipes, 6 épreuves, plus de 100 défis : un jeu de piste dans tout Blois, avec carte en temps réel et validation des preuves par un administrateur.">
+    <meta property="og:image" content="https://clementlequeurre.com/assets/project-iut-quest.webp">
+    <meta property="og:image:alt" content="Logo d'IUT Quest : un coureur stylisé sur fond orange">
+    <meta name="twitter:card" content="summary_large_image">
+
+    <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
+    <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png">
+    <link rel="manifest" href="/site.webmanifest">
+
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@graph": [
+            {
+                "@type": "CreativeWork",
+                "@id": "https://clementlequeurre.com/projets/iut-quest#projet",
+                "name": "IUT Quest",
+                "headline": "IUT Quest, un jeu de piste géolocalisé dans tout Blois",
+                "description": "Jeu de piste grandeur nature pour 12 équipes : carte en temps réel, épreuves et défis photo, validation par un administrateur, back-office complet.",
+                "url": "https://clementlequeurre.com/projets/iut-quest",
+                "image": "https://clementlequeurre.com/assets/project-iut-quest.webp",
+                "dateCreated": "2026",
+                "inLanguage": "fr-FR",
+                "keywords": "Laravel, PHP, MySQL, JavaScript, Leaflet, Docker, FFmpeg, PWA, géolocalisation",
+                "author": { "@type": "Person", "@id": "https://clementlequeurre.com/#me", "name": "Clément Lequeurre", "url": "https://clementlequeurre.com/" },
+                "sameAs": ["https://iut-quest.fr/", "https://github.com/Louischoubard/PEKIN-EXPRESS"]
+            },
+            {
+                "@type": "BreadcrumbList",
+                "itemListElement": [
+                    { "@type": "ListItem", "position": 1, "name": "Portfolio", "item": "https://clementlequeurre.com/" },
+                    { "@type": "ListItem", "position": 2, "name": "IUT Quest", "item": "https://clementlequeurre.com/projets/iut-quest" }
+                ]
+            }
+        ]
+    }
+    </script>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400&family=Marck+Script&family=Patrick+Hand&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/css/legal.css">
+</head>
+
+<body>
+
+    <header class="legal-top">
+        <a class="legal-brand" href="/" aria-label="Retour au portfolio">
+            <span>Portfolio</span>
+            <span>Clément Lequeurre</span>
+        </a>
+        <a class="legal-back" href="/#bureau"><span aria-hidden="true">←</span> Retour à l'appartement</a>
+    </header>
+
+    <main class="legal">
+        <nav aria-label="Fil d'Ariane" class="legal__kicker"><a href="/">Portfolio</a> · Projet · 2026</nav>
+        <h1>IUT Quest</h1>
+        <p class="legal__intro">
+            Un jeu de piste géolocalisé qui fait courir 12 équipes dans tout Blois, entre épreuves chronométrées
+            et défis à prouver en photo.
+        </p>
+
+        <img class="project__cover" src="/assets/project-iut-quest.webp" width="1920" height="1080" alt="Logo d'IUT Quest : un coureur stylisé à côté du nom du jeu, en blanc sur fond orange">
+
+        <div class="project__actions">
+            <a href="https://iut-quest.fr/" target="_blank" rel="noopener">Voir la démo <span aria-hidden="true">↗</span></a>
+            <a href="https://github.com/Louischoubard/PEKIN-EXPRESS" target="_blank" rel="noopener">Code sur GitHub <span aria-hidden="true">↗</span></a>
+        </div>
+
+        <section id="fiche">
+            <h2>Fiche projet</h2>
+            <dl>
+                <dt>Catégorie</dt>
+                <dd>Full-stack</dd>
+                <dt>Année</dt>
+                <dd>2026</dd>
+                <dt>Rôle</dt>
+                <dd>Développeur full-stack (front · tests · back)</dd>
+                <dt>Durée</dt>
+                <dd>1 mois</dd>
+                <dt>Type</dt>
+                <dd>SAÉ 4012, projet de groupe</dd>
+                <dt>Statut</dt>
+                <dd>Démo en ligne</dd>
+            </dl>
+            <ul class="project__stats">
+                <li><strong>12</strong><span>équipes engagées</span></li>
+                <li><strong>6</strong><span>épreuves collectives</span></li>
+                <li><strong>100+</strong><span>défis au catalogue</span></li>
+                <li><strong>100+</strong><span>utilisateurs de l'appli</span></li>
+            </ul>
+        </section>
+
+        <section id="presentation">
+            <h2>Présentation</h2>
+            <p>
+                IUT Quest est un jeu de piste grandeur nature inspiré de Pékin Express, conçu pour le challenge
+                inter-filières de l'IUT de Blois. Le temps d'une journée, jusqu'à 12 équipes de 6 à 10 personnes
+                (étudiants, enseignants et personnel administratif) s'affrontent à travers toute la ville.
+            </p>
+            <p>
+                Le parcours s'étend sur les deux sites de l'IUT, la bibliothèque universitaire, le centre-ville et le
+                château. Chaque équipe enchaîne six grandes épreuves collectives planifiées à l'avance, et pioche en
+                parallèle dans un catalogue d'une centaine de défis libres en photo, vidéo ou texte, valant de 5 à
+                30 points selon leur difficulté. L'équipe qui totalise le plus de points repart avec le trophée.
+            </p>
+            <h3>Équipe (4 personnes)</h3>
+            <ul>
+                <li><strong>Djibril</strong> : maquette</li>
+                <li><strong>Louis</strong> et <strong>Paul</strong> : back-end</li>
+                <li><strong>Clément</strong> : front-end et une partie des traitements PHP</li>
+            </ul>
+            <p>Organisation : Kanban sur Trello, une branche Git par tâche, relecture systématique avant chaque merge.</p>
+        </section>
+
+        <section id="role">
+            <h2>Mon rôle</h2>
+            <ul>
+                <li>Front-end de l'application publique utilisée par les équipes sur le terrain.</li>
+                <li>Interface <strong>mobile-first</strong>, installable en <strong>PWA</strong> : les joueurs sont dehors toute la journée, sur téléphone, en 4G.</li>
+                <li><strong>Carte en temps réel</strong> : intégration de Leaflet et de la géolocalisation du navigateur. Une fois le suivi autorisé, <code>watchPosition</code> alimente la session et pousse régulièrement la position vers l'API. Chaque équipe voit les autres se déplacer, chacune avec sa couleur, à côté des lieux clés de l'événement.</li>
+                <li><strong>Côté serveur</strong> : plusieurs traitements PHP avec leurs contrôleurs Laravel et vues Blade.</li>
+                <li><strong>Côté interface</strong> : profil et progression de l'équipe, barre d'avancement, minuteur de fin d'événement, vérification du format des médias avant envoi, et verrouillage du classement une heure avant la fin, pour éviter les contestations de dernière minute.</li>
+            </ul>
+        </section>
+
+        <section id="stack">
+            <h2>Stack technique</h2>
+            <div class="legal__table">
+                <table>
+                    <thead>
+                        <tr><th scope="col">Techno</th><th scope="col">Usage</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>Laravel</td><td>Framework PHP MVC, vues Blade et jobs asynchrones</td></tr>
+                        <tr><td>Docker</td><td>Conteneurs déployés sur un VPS OVH</td></tr>
+                        <tr><td>MySQL</td><td>Groupes, épreuves, positions et validations</td></tr>
+                        <tr><td>JavaScript</td><td>Géolocalisation et carte en temps réel avec Leaflet</td></tr>
+                    </tbody>
+                </table>
+            </div>
+            <ul class="project__tags" aria-label="Outils">
+                <li>PHP</li><li>Laravel</li><li>MySQL</li><li>JavaScript</li><li>Leaflet</li><li>Docker</li><li>FFmpeg</li><li>WebP</li><li>PWA</li><li>Trello</li><li>Git</li>
+            </ul>
+        </section>
+
+        <section id="fonctionnalites">
+            <h2>Fonctionnalités principales</h2>
+            <ul>
+                <li><strong>Carte en temps réel</strong> : chaque équipe apparaît avec sa couleur, à côté des lieux de l'événement. La légende et l'heure de dernière actualisation indiquent la fraîcheur de la position affichée.</li>
+                <li><strong>Épreuves et défis</strong> : six grandes épreuves planifiées par créneau horaire, plus un catalogue de défis libres ouverts jusqu'à 17 h, chacun avec sa preuve à fournir (photo, vidéo ou texte).</li>
+                <li><strong>Validation par un administrateur</strong> : aucun point n'est attribué automatiquement. Un admin ouvre la preuve, l'accepte ou la refuse, et le système signale les équipes adverses présentes sur le même créneau.</li>
+                <li><strong>Traitement des médias en arrière-plan</strong> : photos converties en WebP, vidéos confiées à un job asynchrone, pour qu'un envoi depuis le terrain ne bloque jamais l'interface.</li>
+                <li><strong>Back-office complet</strong> : gestion des lieux, épreuves, groupes et planning, avec détection des conflits de créneaux et export PDF de la feuille de départ avec son QR code.</li>
+            </ul>
+        </section>
+
+        <section id="defis">
+            <h2>Défis rencontrés</h2>
+            <div class="project__challenge">
+                <h3>Points comptés en double</h3>
+                <p><strong>Problème :</strong> les points étaient crédités dès la soumission d'une preuve. Un simple retour arrière du navigateur suffisait à les compter deux fois, et un refus de l'admin ne les retirait pas.</p>
+                <p><strong>Solution :</strong> un état explicite sur chaque défi (non validé, en cours de validation, validé), et l'attribution des points déplacée au seul moment où un admin tranche. Le score dépend de ce qui a été validé, plus de ce que fait le joueur.</p>
+            </div>
+            <div class="project__challenge">
+                <h3>Envoi de vidéos lourdes en 4G</h3>
+                <p><strong>Problème :</strong> l'envoi d'une vidéo de plusieurs dizaines de Mo bloquait l'interface, et la preuve pouvait être ouverte à la validation avant la fin du transfert.</p>
+                <p><strong>Solution :</strong> photos compressées en WebP côté serveur, vidéos traitées par un job asynchrone avec FFmpeg. Le fichier est stocké temporairement et n'apparaît à la validation qu'une fois le traitement terminé.</p>
+            </div>
+            <div class="project__challenge">
+                <h3>Géolocalisation instable</h3>
+                <p><strong>Problème :</strong> le navigateur redemandait l'autorisation de géolocalisation à chaque changement de page, et les positions sur la carte devenaient incohérentes.</p>
+                <p><strong>Solution :</strong> autorisation demandée une seule fois puis conservée en session. <code>watchPosition</code> prend le relais en continu et n'envoie la position à l'API qu'à intervalle régulier : assez souvent pour suivre la course, assez peu pour épargner la batterie.</p>
+            </div>
+        </section>
+
+        <nav class="project__next" aria-label="Autres pages">
+            <a href="/"><small>← Retour</small><strong>L'appartement 3D</strong></a>
+            <a href="/projets/freemessage"><small>Projet suivant →</small><strong>FreeMessage</strong></a>
+        </nav>
+    </main>
+
+    <footer class="legal-foot">
+        <span>© 2026 Clément Lequeurre</span>
+        <nav aria-label="Pages du site">
+            <a href="/">Portfolio</a>
+            <a href="/mentions-legales">Mentions légales</a>
+            <a href="/confidentialite">Confidentialité</a>
+        </nav>
+    </footer>
+
+</body>
+
+</html>
