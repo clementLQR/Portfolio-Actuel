@@ -114,7 +114,11 @@ export function createNavigation(camera, { onChange } = {}) {
     else if (hashT) goTo(parseFloat(hashT[1]), true);
     else setGoal(0);
 
+    // point de vue « contemplatif » (fenêtre) : sur écran tactile, glisser le doigt oriente le regard
+    const panning = () => seatGoal === 1 && SPOTS[spotId]?.pan;
+
     window.addEventListener("pointermove", (e) => {
+        if (e.pointerType === "touch" && panning()) return;   // géré par touchmove (glissement relatif)
         mouse.set(e.clientX / window.innerWidth * 2 - 1, e.clientY / window.innerHeight * 2 - 1);
     });
     window.addEventListener("wheel", (e) => {
@@ -122,10 +126,19 @@ export function createNavigation(camera, { onChange } = {}) {
         setGoal(goal + e.deltaY * 0.0012);
     }, { passive: true });
 
-    let touchY = null;
-    window.addEventListener("touchstart", (e) => { touchY = e.touches[0].clientY; }, { passive: true });
+    let touchY = null, touchX = null;
+    window.addEventListener("touchstart", (e) => { touchY = e.touches[0].clientY; touchX = e.touches[0].clientX; }, { passive: true });
     window.addEventListener("touchmove", (e) => {
         if (touchY === null) return;
+        if (panning()) {   // on « attrape » la vue : glisser vers la gauche fait regarder à droite
+            const { clientX: x, clientY: y } = e.touches[0];
+            mouse.set(
+                THREE.MathUtils.clamp(mouse.x - (x - touchX) / window.innerWidth * 2.5, -1, 1),
+                THREE.MathUtils.clamp(mouse.y - (y - touchY) / window.innerHeight * 2.5, -1, 1)
+            );
+            touchX = x; touchY = y;
+            return;
+        }
         if (busySeated()) { if (seatGoal && !spotId?.startsWith("arcade")) standUp(); touchY = e.touches[0].clientY; return; }
         setGoal(goal + (touchY - e.touches[0].clientY) * 0.003);
         touchY = e.touches[0].clientY;

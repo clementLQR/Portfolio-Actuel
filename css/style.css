@@ -923,6 +923,7 @@ canvas {
         flex-direction: column;
         justify-content: flex-start;
         overflow-y: auto;
+        overscroll-behavior: contain;
         padding-top: calc(var(--gutter) + 8px);
         padding-bottom: calc(var(--gutter) + 8px);
     }

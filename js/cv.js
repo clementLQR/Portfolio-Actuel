@@ -88,7 +88,10 @@ export function createCv({ nav, printer, goToSpot }) {
         if (act === "print") printPdf();
         else if (act === "close" || e.target === root) close();
     });
-    root.addEventListener("wheel", (e) => e.stopPropagation(), { passive: true });
+    // défiler dans l'aperçu (molette ou doigt) ne doit pas faire quitter l'imprimante
+    for (const ev of ["wheel", "touchstart", "touchmove"]) {
+        root.addEventListener(ev, (e) => e.stopPropagation(), { passive: true });
+    }
     window.addEventListener("keydown", (e) => {
         if (isOpen && e.key === "Escape") { e.stopImmediatePropagation(); close(); }
     }, true);
