@@ -4,6 +4,7 @@ import { scene } from "../core/scene.js";
 import { std, glow } from "../core/materials.js";
 import { canvasTexture } from "../core/helpers.js";
 import { onFrame } from "../core/animated.js";
+import { QUALITY } from "../core/quality.js";
 
 // Imprimante jet d'encre posée sur une console : bac à papier à l'arrière, panneau de commande
 // (petit écran, voyant), fente et bac de sortie à l'avant (vers +z local).
@@ -141,7 +142,7 @@ export function createPrinter(pos, rotY = 0, { paperImage } = {}) {
     // feuille imprimée : sort de la fente, image vers le haut, haut de la page côté imprimante
     const paperTex = new THREE.TextureLoader().load(paperImage);
     paperTex.colorSpace = THREE.SRGBColorSpace;
-    paperTex.anisotropy = 8;
+    paperTex.anisotropy = QUALITY.anisotropy;
     const paper = new THREE.Mesh(
         new THREE.PlaneGeometry(A4[0], A4[1]),
         new THREE.MeshStandardMaterial({ map: paperTex, roughness: 0.9, side: THREE.DoubleSide })

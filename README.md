@@ -60,6 +60,8 @@ appartement 3d/
 ├── css/legal.css           styles des pages légales
 ├── assets/favicon.svg
 ├── assets/cv/              CV en PDF + son aperçu en image (texture de la feuille imprimée, aperçu à l'écran)
+├── assets/wallpaper-ville.webp  fond d'écran du PC et du téléphone (CONTENT.wallpaper)
+├── assets/project-*.webp/png  couvertures des projets (1920×1080 : logo blanc sur aplat de couleur)
 ├── server.mjs              serveur local (npm start)
 ├── js/
 │   ├── main.js             point d'entrée : renderer, ordre de construction, boucle
@@ -70,6 +72,8 @@ appartement 3d/
 │   ├── story.js            textes du portfolio à l'arrivée dans chaque pièce (contenu : STORY en tête de fichier)
 │   ├── desktop.js          bureau d'ordinateur sur l'écran du PC (contenu : CONTENT en tête de fichier ; appRenderers : applis partagées avec le téléphone)
 │   ├── phone.js            téléphone du bureau : interface de smartphone (pensée pour le mobile), mêmes contenus que l'ordinateur
+│   ├── icons.js            icônes des applis (pictogrammes SVG, une couleur unie par appli), communes au PC et au téléphone
+│   ├── vinyl.js            musique lofi synthétisée (Web Audio) : disques de la platine (DISCS) et morceaux de la radio du PC (RADIO_TRACKS)
 │   ├── cv.js               CV : impression à l'imprimante du bureau, aperçu, téléchargement et impression du PDF
 │   ├── cursor.js           curseur personnalisé (étiquette au survol de la télé)
 │   ├── lighting.js         lumière d'ambiance, soleil + ombres, lueurs
@@ -78,6 +82,7 @@ appartement 3d/
 │   ├── core/
 │   │   ├── scene.js        scène, brouillard, uniforms partagés
 │   │   ├── random.js       aléatoire déterministe (même scène à chaque chargement)
+│   │   ├── quality.js      qualité selon la machine (?qualite=basse|haute) + résolution dynamique
 │   │   ├── helpers.js      addBox, canvasTexture, makeDrape (tissus)
 │   │   ├── materials.js    matériaux communs (murs, bois, néons, verre de lampe)
 │   │   ├── textures.js     textures peintes : parquet, tapis, posters, écrans

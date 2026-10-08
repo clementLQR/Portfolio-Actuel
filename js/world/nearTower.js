@@ -7,6 +7,7 @@ import { makeBuildingMaterial, STYLE } from "./buildingMaterial.js";
 import { GEO, MergeKit, Batch, cityGlow, makeBlinkMaterial, metalMat, darkMetalMat } from "./kit.js";
 import { holoMaterial, holoHalo } from "./holograms.js";
 import { addTree, addBush } from "./vegetation.js";
+import { QUALITY } from "../core/quality.js";
 
 // Tour toute proche, à droite de la vue : façade gauche vue en enfilade avec balcons
 // filants et plantes, écran géant (portrait), terrasse arborée au pied de la vue,
@@ -19,7 +20,7 @@ const TOP = 135;
 function loadBillboard() {
     const tex = new THREE.TextureLoader().load("assets/billboard-portrait.png");
     tex.colorSpace = THREE.SRGBColorSpace;
-    tex.anisotropy = 8;
+    tex.anisotropy = QUALITY.anisotropy;
     return tex;
 }
 

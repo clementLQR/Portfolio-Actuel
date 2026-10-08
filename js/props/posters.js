@@ -2,6 +2,7 @@ import * as THREE from "three";
 import { scene } from "../core/scene.js";
 import { rr } from "../core/random.js";
 import { makeBigPosterTexture, makeSmallPosterTexture } from "../core/textures.js";
+import { QUALITY } from "../core/quality.js";
 
 export const bigPoster = makeBigPosterTexture();
 export const smallPoster = makeSmallPosterTexture;
@@ -10,7 +11,7 @@ export const smallPoster = makeSmallPosterTexture;
 export function imagePoster(path) {
     const tex = new THREE.TextureLoader().load(path);
     tex.colorSpace = THREE.SRGBColorSpace;
-    tex.anisotropy = 8;
+    tex.anisotropy = QUALITY.anisotropy;
     return tex;
 }
 

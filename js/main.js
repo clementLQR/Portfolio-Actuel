@@ -2,6 +2,7 @@ import * as THREE from "three";
 import { scene, shared } from "./core/scene.js";
 import { skipRand } from "./core/random.js";
 import { runFrame } from "./core/animated.js";
+import { QUALITY, createAdaptiveResolution } from "./core/quality.js";
 import { pickClickable, getClickable } from "./core/interactive.js";
 import "./world/atmosphere.js";
 import { createSky } from "./world/sky.js";
@@ -45,17 +46,19 @@ const ui = createUI({ onSelect: (stop) => nav.goTo(stop) });
 
 let renderer;
 try {
-    renderer = new THREE.WebGLRenderer({ canvas, antialias: true });
+    // pas d'antialiasing natif : le rendu passe par le post-traitement, qui ne l'utilise pas
+    renderer = new THREE.WebGLRenderer({ canvas, antialias: false, powerPreference: "high-performance" });
 } catch (err) {
     ui.error("WebGL n'est pas disponible sur ce navigateur.");
     throw err;
 }
+renderer.setPixelRatio(Math.min(window.devicePixelRatio, QUALITY.maxPixelRatio));
 renderer.setSize(window.innerWidth, window.innerHeight);
-renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
 renderer.toneMapping = THREE.ACESFilmicToneMapping;
 renderer.toneMappingExposure = 0.95;
 renderer.shadowMap.enabled = true;
-renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+renderer.shadowMap.type = QUALITY.low ? THREE.PCFShadowMap : THREE.PCFSoftShadowMap;
+renderer.shadowMap.autoUpdate = false;   // recalculées toutes les QUALITY.shadowEvery images (boucle de rendu)
 
 const camera = new THREE.PerspectiveCamera(48, window.innerWidth / window.innerHeight, 0.05, 4000);
 
@@ -84,6 +87,16 @@ const { woodTex, rugTex } = createBedroom();
 const { arcades, turntable, speakers, sleeves, tv: tvScreen } = createSalon({ woodTex, rugTex });
 buildLeaves();
 createLights();
+dimMinorLights();
+
+// basse qualité : les petites lumières d'appoint (portée courte) sont éteintes une fois pour toutes.
+// Chaque lumière ponctuelle coûte à chaque pixel de chaque matériau éclairé.
+function dimMinorLights() {
+    if (!QUALITY.minorLightDistance) return;
+    scene.traverse((o) => {
+        if (o.isPointLight && o.distance > 0 && o.distance <= QUALITY.minorLightDistance) o.visible = false;
+    });
+}
 
 // bouton jour / coucher de soleil
 const dayButton = document.querySelector("#daytoggle");
@@ -283,14 +296,17 @@ canvas.addEventListener("pointermove", (e) => {
 canvas.addEventListener("pointerleave", () => { pointer = null; cursor.setHover(null); sleeves.setHover(-1); });
 let hoverClock = 0;
 
-window.addEventListener("resize", () => {
+function resize(pixelRatio) {
     const w = window.innerWidth, h = window.innerHeight;
     camera.aspect = w / h;
     camera.updateProjectionMatrix();
+    renderer.setPixelRatio(pixelRatio);
     renderer.setSize(w, h);
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-    resizeComposer(w, h);
-});
+    resizeComposer(w, h, pixelRatio);
+}
+// résolution dynamique : la définition baisse si la machine n'arrive pas à suivre
+const adaptive = createAdaptiveResolution(resize);
+window.addEventListener("resize", () => resize(adaptive.reset()));
 
 // télé : ← / → changent de chaîne une fois installé devant
 window.addEventListener("keydown", (e) => {
@@ -335,6 +351,7 @@ const corners = [[-0.51, -0.287], [0.51, -0.287], [0.51, 0.287], [-0.51, 0.287]]
 const tmp = new THREE.Vector3();
 function updateDesktop() {
     const pc = getClickable("pc");
+    pc?.userData.setOn?.(nav.spot === "pc");   // écran noir sauf quand on va vers le PC ou qu'on l'utilise
     if (!pc || nav.spot !== "pc" || nav.focusProgress < 1) return desktop.update(null);
     camera.updateMatrixWorld();
     let x0 = Infinity, y0 = Infinity, x1 = -Infinity, y1 = -Infinity;
@@ -349,8 +366,12 @@ function updateDesktop() {
 const clock = new THREE.Clock();
 let firstFrame = true;
 
+let frame = 0;
+
 renderer.setAnimationLoop(() => {
-    const dt = Math.min(clock.getDelta(), 0.1);
+    const rawDt = clock.getDelta();
+    const dt = Math.min(rawDt, 0.1);
+    adaptive.tick(rawDt);
     const t = clock.elapsedTime;
     shared.uTime.value = t;
 
@@ -371,6 +392,7 @@ renderer.setAnimationLoop(() => {
     hotspots.update();
     updateDesktop();
     phone.update(nav.spot === "phone" && nav.focusProgress >= 1 && !cv.isOpen);
+    if (frame++ % QUALITY.shadowEvery === 0) renderer.shadowMap.needsUpdate = true;
     composer.render();
 
     if (firstFrame) {

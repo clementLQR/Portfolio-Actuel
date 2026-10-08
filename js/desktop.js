@@ -6,6 +6,8 @@
 // jingle, puis le bureau apparaît (un clic sur l'écran passe le démarrage).
 
 import { createSolitaire } from "./solitaire.js";
+import { appGlyph, appIconStyle } from "./icons.js";
+import { createVinylPlayer, RADIO_TRACKS } from "./vinyl.js";
 
 export const CONTENT = {
     os: "未来OS",
@@ -157,8 +159,8 @@ export const CONTENT = {
             title: "Appartement 3D",
             year: "2026",
             type: "Projet perso · Web 3D",
-            color: "#ff9a6a",
-            image: "assets/poster-ruines.jpg",
+            color: "#b48cff",
+            image: "assets/project-appartement-3d.webp",
             summary: "Ce portfolio : un appartement lofi en three.js au-dessus d'une ville futuriste, parcouru au scroll.",
             sections: [{
                 text: [
@@ -177,8 +179,7 @@ export const CONTENT = {
         tel: "+33644318286",
         links: [
             { label: "LinkedIn", value: "Clément Lequeurre", url: "https://www.linkedin.com/in/cl%C3%A9ment-lequeurre/" },
-            { label: "GitHub", value: "github.com/clementLQR", url: "https://github.com/clementLQR" },
-            { label: "Site", value: "clementlequeurre.com", url: "https://clementlequeurre.com" }
+            { label: "GitHub", value: "github.com/clementLQR", url: "https://github.com/clementLQR" }
         ],
         cvPdf: "assets/cv/Clement_Lequeurre_CV.pdf",
         cvName: "CV_Clement_Lequeurre.pdf"
@@ -189,7 +190,7 @@ export const CONTENT = {
         { src: "assets/poster-ruines.jpg", title: "Ruines" },
         { src: "assets/billboard-portrait.png", title: "Portrait néon" }
     ],
-    wallpaper: "assets/poster-ruines.jpg",
+    wallpaper: "assets/wallpaper-ville.webp",
     notesDefault: "À faire :\n- arroser les plantes\n- finir le projet 3D\n- acheter du café\n"
 };
 
@@ -205,21 +206,30 @@ const BIOS_LINES = [
 const DESIGN_W = 960, DESIGN_H = 540;
 const NOTES_KEY = "appartement3d.notes";
 const RESIZE_DIRS = ["n", "e", "s", "w", "ne", "nw", "se", "sw"];
+// icônes de la barre de titre, dessinées en SVG (les caractères – □ × de la police à points ne se
+// centrent pas dans leurs boutons) ; toutes en 10×10, trait de la couleur du texte
+const icon = (d) => `<svg viewBox="0 0 10 10" width="10" height="10" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.4">${d}</svg>`;
+const WIN_ICONS = {
+    min: icon(`<path d="M1.5 5h7"/>`),
+    max: icon(`<rect x="1.5" y="1.5" width="7" height="7"/>`),
+    restore: icon(`<rect x="1.5" y="3.5" width="5" height="5"/><path d="M3.5 3.5v-2h5v5h-2"/>`),
+    close: icon(`<path d="M2 2l6 6M8 2l-6 6"/>`)
+};
 const RESIZE_CURSOR = { n: "ns", s: "ns", e: "ew", w: "ew", ne: "nesw", sw: "nesw", nw: "nwse", se: "nwse" };
 const MIN_W = 260, MIN_H = 170;   // taille minimale d'une fenêtre (sauf indication dans APPS)
 const MAX_TOP = 26;   // haut d'une fenêtre agrandie : sous la barre du système
 const DOCK_TOP = DESIGN_H - 44;   // le bas d'une fenêtre redimensionnée s'arrête au-dessus du dock
 
 const APPS = {
-    about: { title: "À propos", icon: "◐", w: 440, h: 330 },
-    projects: { title: "Projets", icon: "◆", w: 680, h: 440 },
-    contact: { title: "Contact", icon: "✉", w: 430, h: 350 },
-    cv: { title: "CV.pdf", icon: "▤", action: true },   // pas de fenêtre : lance l'impression (onCv)
-    gallery: { title: "Galerie", icon: "▦", w: 520, h: 360 },
-    notes: { title: "Notes", icon: "✎", w: 340, h: 280 },
-    radio: { title: "Radio lofi", icon: "♪", w: 340, h: 250 },
-    terminal: { title: "Terminal", icon: "›_", w: 460, h: 280 },
-    solitaire: { title: "Solitaire", icon: "♠", w: 610, h: 470, minW: 610, minH: 470 }   // tapis à taille fixe
+    about: { title: "À propos", w: 440, h: 330 },
+    projects: { title: "Projets", w: 680, h: 440 },
+    contact: { title: "Contact", w: 430, h: 350 },
+    cv: { title: "CV.pdf", action: true },   // pas de fenêtre : lance l'impression (onCv)
+    gallery: { title: "Galerie", w: 520, h: 360 },
+    notes: { title: "Notes", w: 340, h: 280 },
+    radio: { title: "Radio lofi", w: 380, h: 410, minW: 320, minH: 300 },
+    terminal: { title: "Terminal", w: 460, h: 280 },
+    solitaire: { title: "Solitaire", w: 610, h: 470, minW: 610, minH: 470 }   // tapis à taille fixe
 };
 
 export const esc = (s) => String(s).replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
@@ -231,88 +241,6 @@ function storageSet(key, value) {
     try { localStorage.setItem(key, value); } catch { /* stockage indisponible : on garde en mémoire */ }
 }
 
-// --- radio : petite boucle lofi générée (accords doux filtrés, basse, craquements de vinyle) ---
-
-function createRadio() {
-    let ctx = null, master = null, timer = null, step = 0;
-    const CHORDS = [
-        [220.0, 261.63, 329.63, 392.0],   // Am7
-        [174.61, 220.0, 261.63, 329.63],  // Fmaj7
-        [196.0, 246.94, 293.66, 349.23],  // G7
-        [164.81, 207.65, 246.94, 293.66]  // E7
-    ];
-    const BEAT = 60 / 72;
-
-    function chord(freqs, t) {
-        for (const f of freqs) {
-            const o = ctx.createOscillator(), g = ctx.createGain();
-            o.type = "triangle";
-            o.frequency.value = f;
-            o.detune.value = (Math.random() - 0.5) * 12;
-            g.gain.setValueAtTime(0, t);
-            g.gain.linearRampToValueAtTime(0.05, t + 0.08);
-            g.gain.exponentialRampToValueAtTime(0.001, t + BEAT * 3.8);
-            o.connect(g).connect(master);
-            o.start(t);
-            o.stop(t + BEAT * 4);
-        }
-        const b = ctx.createOscillator(), bg = ctx.createGain();
-        b.type = "sine";
-        b.frequency.value = freqs[0] / 2;
-        bg.gain.setValueAtTime(0.12, t);
-        bg.gain.exponentialRampToValueAtTime(0.001, t + BEAT * 1.6);
-        b.connect(bg).connect(master);
-        b.start(t);
-        b.stop(t + BEAT * 2);
-    }
-
-    function crackle() {
-        const len = ctx.sampleRate * 2;
-        const buf = ctx.createBuffer(1, len, ctx.sampleRate);
-        const d = buf.getChannelData(0);
-        for (let i = 0; i < len; i++) d[i] = Math.random() < 0.0008 ? (Math.random() - 0.5) * 0.6 : (Math.random() - 0.5) * 0.015;
-        const src = ctx.createBufferSource();
-        src.buffer = buf;
-        src.loop = true;
-        src.connect(master);
-        src.start();
-    }
-
-    function schedule() {
-        const now = ctx.currentTime;
-        chord(CHORDS[step % CHORDS.length], now + 0.05);
-        step++;
-    }
-
-    return {
-        get playing() { return timer !== null; },
-        play() {
-            if (!ctx) {
-                const AC = window.AudioContext || window.webkitAudioContext;
-                if (!AC) return false;
-                ctx = new AC();
-                const lp = ctx.createBiquadFilter();
-                lp.type = "lowpass";
-                lp.frequency.value = 1400;
-                master = ctx.createGain();
-                master.gain.value = 0.5;
-                master.connect(lp).connect(ctx.destination);
-                crackle();
-            }
-            ctx.resume();
-            master.gain.setTargetAtTime(0.5, ctx.currentTime, 0.2);
-            schedule();
-            timer = setInterval(schedule, BEAT * 4 * 1000);
-            return true;
-        },
-        pause() {
-            clearInterval(timer);
-            timer = null;
-            if (ctx) master.gain.setTargetAtTime(0, ctx.currentTime, 0.15);
-        }
-    };
-}
-
 // Applications communes à l'ordinateur et au téléphone (js/phone.js) : chacune remplit body.
 // onCv : lance l'impression du CV (bouton de l'appli Contact)
 export function appRenderers({ onCv } = {}) {
@@ -321,7 +249,7 @@ export function appRenderers({ onCv } = {}) {
             const c = CONTENT.contact;
             body.innerHTML = `
                 <div class="app-contact">
-                    <p class="app-contact__status"><i aria-hidden="true"></i>${esc(c.status)}</p>
+                    <p class="app-contact__status">${esc(c.status)}</p>
                     <ul class="app-contact__list">
                         <li><span>E-mail</span><a href="mailto:${esc(c.email)}">${esc(c.email)}</a><button type="button" data-copy="${esc(c.email)}">copier</button></li>
                         <li><span>Téléphone</span><a href="tel:${esc(c.tel)}">${esc(c.phone)}</a><button type="button" data-copy="${esc(c.phone)}">copier</button></li>
@@ -440,8 +368,8 @@ export function createDesktop({ onCv } = {}) {
             </div>
             <div class="pc__icons">
                 ${Object.entries(APPS).map(([id, a]) => `
-                    <button class="pc__icon" data-app="${id}" type="button">
-                        <span class="pc__icon-glyph">${a.icon}</span><span class="pc__icon-label">${esc(a.title)}</span>
+                    <button class="pc__icon" data-app="${id}" type="button" style="${appIconStyle(id)}">
+                        <span class="pc__icon-glyph">${appGlyph(id)}</span><span class="pc__icon-label">${esc(a.title)}</span>
                     </button>`).join("")}
             </div>
             <div class="pc__windows"></div>
@@ -464,7 +392,7 @@ export function createDesktop({ onCv } = {}) {
     const boot = frame.querySelector(".pc__boot");
     const bios = frame.querySelector(".pc__boot-bios");
     const bar = frame.querySelector(".pc__boot-bar i");
-    const radio = createRadio();
+    const radio = createVinylPlayer(RADIO_TRACKS);   // morceaux lofi synthétisés (moteur de la platine, vinyl.js)
     const open = new Map();
     let zTop = 1, visible = false, scale = 1;
     let booted = false, booting = false, bootTimers = [], chimeCtx = null;
@@ -491,22 +419,46 @@ export function createDesktop({ onCv } = {}) {
             ta.addEventListener("input", () => storageSet(NOTES_KEY, ta.value));
         },
         radio(body) {
+            const tracks = radio.discs;
             body.innerHTML = `
                 <div class="app-radio">
-                    <div class="app-radio__disc"></div>
-                    <div class="app-radio__info"><strong>chill beats · 72 bpm</strong><span>radio 未来 FM</span></div>
-                    <div class="app-radio__eq">${"<i></i>".repeat(12)}</div>
-                    <button type="button" class="app-radio__play">▶ lecture</button>
+                    <div class="app-radio__now">
+                        <div class="app-radio__disc"></div>
+                        <div class="app-radio__info"><strong></strong><span></span></div>
+                    </div>
+                    <div class="app-radio__eq">${"<i></i>".repeat(16)}</div>
+                    <div class="app-radio__ctrl">
+                        <button type="button" data-radio="prev" aria-label="Morceau précédent">‹‹</button>
+                        <button type="button" data-radio="play" class="app-radio__play"></button>
+                        <button type="button" data-radio="next" aria-label="Morceau suivant">››</button>
+                    </div>
+                    <ol class="app-radio__list">
+                        ${tracks.map((t, i) => `<li><button type="button" data-track="${i}" style="--c:${t.color}"><span>${String(i + 1).padStart(2, "0")}</span>${esc(t.title)}<em>${t.bpm} bpm</em></button></li>`).join("")}
+                    </ol>
                 </div>`;
             const root = body.querySelector(".app-radio");
             const btn = body.querySelector(".app-radio__play");
+            // morceau affiché : celui en cours, sinon le premier
+            const shown = () => Math.max(0, radio.current);
             const sync = () => {
+                if (!root.isConnected) return off();   // fenêtre fermée : on se désabonne
+                const t = tracks[shown()];
                 root.classList.toggle("is-playing", radio.playing);
+                root.style.setProperty("--c", t.color);
+                root.querySelector(".app-radio__info strong").textContent = t.title;
+                root.querySelector(".app-radio__info span").textContent = `${t.artist} · ${t.bpm} bpm`;
                 btn.textContent = radio.playing ? "❚❚ pause" : "▶ lecture";
+                root.querySelectorAll("[data-track]").forEach((b) => b.classList.toggle("is-current", +b.dataset.track === radio.current));
             };
-            btn.addEventListener("click", () => {
-                if (radio.playing) radio.pause(); else radio.play();
-                sync();
+            const off = radio.subscribe(sync);
+            const go = (step) => radio.select((shown() + step + tracks.length) % tracks.length);
+            root.addEventListener("click", (e) => {
+                const b = e.target.closest("button");
+                if (!b) return;
+                if (b.dataset.track) radio.select(+b.dataset.track);   // le morceau en cours : pause
+                else if (b.dataset.radio === "play") radio.playing ? radio.pause() : radio.select(shown());
+                else if (b.dataset.radio === "prev") go(-1);
+                else if (b.dataset.radio === "next") go(1);
             });
             sync();
         },
@@ -607,8 +559,8 @@ export function createDesktop({ onCv } = {}) {
         el.style.height = a.h + "px";
         el.style.left = Math.min(150 + n * 28, DESIGN_W - a.w - 10) + "px";
         el.style.top = Math.max(30, Math.min(48 + n * 24, DESIGN_H - a.h - 46)) + "px";
-        el.innerHTML = `<header class="pc__win-bar"><span>${a.icon} ${esc(a.title)}</span>
-            <span class="pc__win-btns"><button type="button" class="pc__win-min" aria-label="Réduire">–</button><button type="button" class="pc__win-max" aria-label="Agrandir">□</button><button type="button" class="pc__win-close" aria-label="Fermer">×</button></span></header><div class="pc__win-body"></div>
+        el.innerHTML = `<header class="pc__win-bar"><span class="pc__win-title" style="${appIconStyle(id)}">${appGlyph(id)}${esc(a.title)}</span>
+            <span class="pc__win-btns"><button type="button" class="pc__win-min" aria-label="Réduire">${WIN_ICONS.min}</button><button type="button" class="pc__win-max" aria-label="Agrandir">${WIN_ICONS.max}</button><button type="button" class="pc__win-close" aria-label="Fermer">${WIN_ICONS.close}</button></span></header><div class="pc__win-body"></div>
             ${RESIZE_DIRS.map((d) => `<span class="pc__win-rs pc__win-rs--${d}" data-rs="${d}"></span>`).join("")}`;
         windowsEl.appendChild(el);
         open.set(id, { el });
@@ -635,13 +587,13 @@ export function createDesktop({ onCv } = {}) {
             delete el.dataset.max;
             Object.assign(el.style, r);
             el.classList.remove("is-max");
-            btn.textContent = "□";
+            btn.innerHTML = WIN_ICONS.max;
             btn.setAttribute("aria-label", "Agrandir");
         } else {
             el.dataset.max = JSON.stringify({ left: el.style.left, top: el.style.top, width: el.style.width, height: el.style.height });
             Object.assign(el.style, { left: "0px", top: MAX_TOP + "px", width: DESIGN_W + "px", height: DOCK_TOP - MAX_TOP + "px" });
             el.classList.add("is-max");
-            btn.textContent = "❐";
+            btn.innerHTML = WIN_ICONS.restore;
             btn.setAttribute("aria-label", "Restaurer");
         }
     }
@@ -714,7 +666,7 @@ export function createDesktop({ onCv } = {}) {
     }
 
     function renderDock() {
-        dock.innerHTML = [...open.keys()].map((id) => `<button type="button" data-app="${id}">${APPS[id].icon} ${esc(APPS[id].title)}</button>`).join("");
+        dock.innerHTML = [...open.keys()].map((id) => `<button type="button" data-app="${id}" style="${appIconStyle(id)}">${appGlyph(id)}${esc(APPS[id].title)}</button>`).join("");
         dock.querySelectorAll("button").forEach((b) => b.addEventListener("click", () => {
             const id = b.dataset.app, w = open.get(id);
             if (!w) return;
@@ -796,11 +748,7 @@ export function createDesktop({ onCv } = {}) {
                 visible = show;
                 frame.classList.toggle("is-on", show);
                 frame.setAttribute("aria-hidden", String(!show));
-                if (!show && radio.playing) {
-                    radio.pause();
-                    const r = windowsEl.querySelector(".app-radio");
-                    if (r) { r.classList.remove("is-playing"); r.querySelector("button").textContent = "▶ lecture"; }
-                }
+                if (!show && radio.playing) radio.pause();
                 if (!show) document.activeElement?.blur?.();
                 if (show) { if (!booted) startBoot(); else if (!open.size) openApp("about"); }
                 else if (booting) cancelBoot();

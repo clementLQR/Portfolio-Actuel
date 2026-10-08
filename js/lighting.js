@@ -3,6 +3,7 @@ import { scene, REFLECT_LAYER } from "./core/scene.js";
 import { onFrame } from "./core/animated.js";
 import { dimLight, setLampLevel } from "./core/materials.js";
 import { RX0, BZ, SF, SZ1 } from "./config/layout.js";
+import { QUALITY } from "./core/quality.js";
 
 // Éclairage global : ambiance prune douce, soleil couchant avec ombres, lueurs d'appoint,
 // reflets colorés de la ville qui passent par les fenêtres.
@@ -41,7 +42,7 @@ export function createLights() {
     sun.target = sunTarget;
     sun.position.copy(sunTarget.position).add(new THREE.Vector3(0.18, 0.2, -1).normalize().multiplyScalar(35));
     sun.castShadow = true;
-    sun.shadow.mapSize.set(2048, 2048);
+    sun.shadow.mapSize.set(QUALITY.shadowSize, QUALITY.shadowSize);
     Object.assign(sun.shadow.camera, { left: -12, right: 12, top: 9, bottom: -9, near: 1, far: 80 });
     sun.shadow.bias = -0.0004;
     sun.shadow.normalBias = 0.03;

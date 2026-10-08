@@ -4,7 +4,7 @@ import { rand, rr, pick } from "../core/random.js";
 import { addBox, canvasTexture } from "../core/helpers.js";
 import { std, glow, wallMat, frameMat, woodMat, darkWood, ceilingMat, dimLight, lampGlow } from "../core/materials.js";
 import { makePcScreenTexture } from "../core/textures.js";
-import { flicker } from "../core/animated.js";
+import { onFrame } from "../core/animated.js";
 import { vine, bush, pot } from "../props/foliage.js";
 import { bigPoster, smallPoster, straightPoster } from "../props/posters.js";
 import { createOfficeChair } from "../props/officeChair.js";
@@ -63,22 +63,25 @@ export function createOffice({ salonWood, rugTex }) {
     addBox(DKX0, DKX1, SF, DKY - 0.05, DKZ0, DKZ0 + 0.04, woodMat);
 
     // écran du PC
-    const pcTex = makePcScreenTexture();
+    makePcScreenTexture();   // texture plus affichée (l'écran reste noir), mais l'appel garde le flux rand() du décor
     const monZ = (DKZ0 + DKZ1) / 2 + 0.05;
     addBox(DKX0 + 0.03, DKX0 + 0.3, DKY, DKY + 0.02, monZ - 0.15, monZ + 0.15, std(0x18161c, { metalness: 0.5 }));
     addBox(DKX0 + 0.07, DKX0 + 0.11, DKY, DKY + 0.3, monZ - 0.03, monZ + 0.03, std(0x18161c, { metalness: 0.5 }));
     addBox(DKX0 + 0.12, DKX0 + 0.16, DKY + 0.12, DKY + 0.72, monZ - 0.54, monZ + 0.54, std(0x0e0c12));
-    const screen = new THREE.Mesh(
-        new THREE.PlaneGeometry(1.02, 0.574),
-        new THREE.MeshBasicMaterial({ map: pcTex, color: new THREE.Color(0.62, 0.6, 0.62), fog: false })
-    );
+    // écran toujours noir : une fois la caméra arrivée devant, le bureau HTML (desktop.js, qui démarre
+    // sur l'écran noir du BIOS) le recouvre. Seule sa lueur s'allume quand on va vers le PC.
+    const screen = new THREE.Mesh(new THREE.PlaneGeometry(1.02, 0.574), new THREE.MeshBasicMaterial({ color: 0x050408, fog: false }));
+    let screenOn = false;
+    screen.userData.setOn = (on) => { screenOn = on; };
     screen.position.set(DKX0 + 0.165, DKY + 0.42, monZ);
     screen.rotation.y = Math.PI / 2;
     scene.add(screen);
     const screenLight = new THREE.PointLight(0x9a88d0, 0.45, 3, 2);
     screenLight.position.set(DKX0 + 0.6, DKY + 0.4, monZ);
     scene.add(screenLight);
-    flicker(screenLight, 0.45, 0.03);
+    onFrame((dt, t) => {   // lueur de l'écran : seulement allumé (léger scintillement)
+        screenLight.intensity = screenOn ? 0.45 + Math.sin(t * 3.1) * Math.sin(t * 7.3) * 0.03 : 0;
+    });
     PC_SCREEN.copy(screen.position);
     // clic : on se penche vers l'écran, qui devient un petit bureau d'ordinateur (desktop.js)
     registerClickable(screen, "pc");

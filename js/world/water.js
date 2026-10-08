@@ -7,13 +7,13 @@ import { ATMOS_GLSL } from "./atmosphere.js";
 import { MergeKit, concreteMat } from "./kit.js";
 import { LAGOON } from "./zones.js";
 import { addTree } from "./vegetation.js";
+import { QUALITY } from "../core/quality.js";
 
 // Fleuve et lagune : reflet planaire réel (ciel, tours, enseignes, véhicules), rendu en basse
 // résolution et seulement pour le calque REFLECT_LAYER (la ville, pas l'appartement).
 // Le shader ajoute des rides animées, un effet de Fresnel, le scintillement du soleil et la brume.
 // Méthode de projection reprise de three/addons/objects/Reflector.js (plan de coupe oblique).
 
-const REFLECT_SCALE = 0.35;
 
 function createReflection(mesh) {
     const target = new THREE.WebGLRenderTarget(256, 256, { type: THREE.HalfFloatType });
@@ -34,12 +34,17 @@ function createReflection(mesh) {
     const size = new THREE.Vector2();
     let rendering = false;
 
+    let frame = 0;
+
     mesh.onBeforeRender = (renderer, sc, camera) => {
         if (rendering) return;
 
         renderer.getDrawingBufferSize(size);
-        const w = Math.max(64, Math.round(size.x * REFLECT_SCALE)), h = Math.max(64, Math.round(size.y * REFLECT_SCALE));
-        if (target.width !== w || target.height !== h) target.setSize(w, h);
+        const w = Math.max(64, Math.round(size.x * QUALITY.reflectScale)), h = Math.max(64, Math.round(size.y * QUALITY.reflectScale));
+        const resized = target.width !== w || target.height !== h;
+        if (resized) target.setSize(w, h);
+        // basse qualité : reflet recalculé une image sur deux (les rides masquent le léger décalage)
+        if (frame++ % QUALITY.reflectEvery !== 0 && !resized) return;
 
         mirrorPos.set(0, WATER_Y, 0);
         camPos.setFromMatrixPosition(camera.matrixWorld);

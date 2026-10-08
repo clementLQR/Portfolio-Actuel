@@ -5,13 +5,15 @@
 // Galerie ; « CV » lance l'impression (onCv). Le contenu se modifie dans CONTENT (desktop.js).
 
 import { CONTENT, esc, appRenderers } from "./desktop.js";
+import { appGlyph, appIconStyle } from "./icons.js";
 
 const APPS = {
-    about: { title: "À propos", icon: "◐", color: "#ff9a6a" },
-    projects: { title: "Projets", icon: "◆", color: "#c58cff" },
-    contact: { title: "Contact", icon: "✉", color: "#6ae0a8" },
-    gallery: { title: "Galerie", icon: "▦", color: "#4fb3d1" },
-    cv: { title: "Mon CV", icon: "▤", color: "#ffc070", action: true }   // pas d'écran : lance l'impression
+    // icônes et couleurs : js/icons.js (mêmes que sur le PC)
+    about: { title: "À propos" },
+    projects: { title: "Projets" },
+    contact: { title: "Contact" },
+    gallery: { title: "Galerie" },
+    cv: { title: "Mon CV", action: true }   // pas d'écran : lance l'impression
 };
 
 // onCv : imprime le CV ; onClose : repose le téléphone (la caméra se relève)
@@ -35,8 +37,8 @@ export function createPhone({ onCv, onClose }) {
                     </div>
                     <div class="phone__apps">
                         ${Object.entries(APPS).map(([id, app]) => `
-                            <button type="button" class="phone__icon" data-app="${id}" style="--c:${app.color}">
-                                <span class="phone__icon-glyph" aria-hidden="true">${app.icon}</span>${esc(app.title)}
+                            <button type="button" class="phone__icon" data-app="${id}" style="${appIconStyle(id)}">
+                                <span class="phone__icon-glyph" aria-hidden="true">${appGlyph(id)}</span>${esc(app.title)}
                             </button>`).join("")}
                     </div>
                     <button type="button" class="phone__close" data-close>Reposer le téléphone <kbd>Échap</kbd></button>

@@ -32,9 +32,50 @@ export const DISCS = [
     }
 ];
 
+// Radio de l'ordinateur (appli « Radio lofi » de desktop.js) : même moteur, autres morceaux.
+export const RADIO_TRACKS = [
+    {
+        id: "devoirs", title: "Devoirs du soir", artist: "Mirai FM", color: "#ff9a6a",
+        bpm: 70, swing: 0.22, keys: "rhodes", drums: "boombap", melody: 0.2,
+        chords: [[50, 53, 57, 60, 64], [53, 59, 64, 67], [52, 55, 59, 62], [57, 60, 64, 67]],
+        roots: [38, 43, 36, 45], scale: [74, 76, 77, 79, 81]
+    },
+    {
+        id: "ligne7", title: "Ligne 7 de nuit", artist: "Mirai FM", color: "#b48cff",
+        bpm: 84, swing: 0.12, keys: "pluck", drums: "soft", melody: 0.25,
+        chords: [[53, 57, 60, 64], [52, 55, 59, 62], [50, 53, 57, 60], [48, 52, 55, 59]],
+        roots: [41, 40, 38, 36], scale: [72, 74, 76, 77, 79]
+    },
+    {
+        id: "radiateur", title: "Chat sur le radiateur", artist: "Mirai FM", color: "#ffd166",
+        bpm: 64, swing: 0.3, keys: "rhodes", drums: "jazz", melody: 0.15,
+        chords: [[51, 55, 58, 62], [51, 55, 58, 60], [51, 56, 60, 63], [50, 53, 56, 58]],
+        roots: [39, 36, 41, 46], scale: [75, 77, 79, 82, 84]
+    },
+    {
+        id: "the", title: "Pixels & thé vert", artist: "Mirai FM", color: "#7bd389",
+        bpm: 78, swing: 0.18, keys: "pluck", drums: "boombap", melody: 0.3,
+        chords: [[57, 60, 64, 67], [54, 57, 60, 64], [55, 59, 62, 66], [52, 55, 59, 62]],
+        roots: [45, 38, 43, 40], scale: [69, 71, 74, 76, 79]
+    },
+    {
+        id: "toit", title: "Toit-terrasse, 2 h", artist: "Mirai FM", color: "#4fb3d1",
+        bpm: 58, swing: 0, keys: "pad", drums: "none", melody: 0.14,
+        chords: [[48, 55, 59, 62], [53, 57, 59, 64], [45, 52, 55, 59], [43, 50, 55, 60]],
+        roots: null, scale: [72, 74, 76, 79, 81]
+    },
+    {
+        id: "velo", title: "Retour à vélo", artist: "Mirai FM", color: "#ff6f91",
+        bpm: 88, swing: 0.08, keys: "rhodes", drums: "soft", melody: 0.28,
+        chords: [[50, 53, 57, 58], [52, 55, 57, 60], [50, 53, 55, 58], [48, 52, 55, 58]],
+        roots: [46, 45, 43, 48], scale: [72, 74, 77, 79, 81]
+    }
+];
+
 const CUTOFF_NEAR = 9000, CUTOFF_FAR = 420;   // voix « dans la pièce » / « de l'autre bout de l'appartement »
 
-export function createVinylPlayer() {
+// tracks : liste de morceaux (par défaut les disques de la platine)
+export function createVinylPlayer(tracks = DISCS) {
     let ctx = null, bus = null, room = null, master = null, noiseBuf = null;
     let track = null, current = -1, playing = false, dist = 0;
     const listeners = new Set();
@@ -205,13 +246,13 @@ export function createVinylPlayer() {
         g.gain.setValueAtTime(0, ctx.currentTime);
         g.gain.linearRampToValueAtTime(1, ctx.currentTime + 0.6);
         g.connect(bus);
-        track = { disc: DISCS[i], gain: g, step: 0, next: ctx.currentTime + 0.15, timer: null };
+        track = { disc: tracks[i], gain: g, step: 0, next: ctx.currentTime + 0.15, timer: null };
         track.timer = setInterval(() => schedule(track), 40);
         schedule(track);
     }
 
     return {
-        discs: DISCS,
+        discs: tracks,
         get current() { return current; },
         get playing() { return playing; },
         subscribe(fn) { listeners.add(fn); return () => listeners.delete(fn); },

@@ -1,5 +1,6 @@
 import * as THREE from "three";
 import { scene } from "./scene.js";
+import { QUALITY } from "./quality.js";
 
 // Objet réutilisé pour composer les matrices des instances
 export const dummy = new THREE.Object3D();
@@ -27,7 +28,7 @@ export function canvasTexture(w, h, draw) {
     draw(c.getContext("2d"), w, h);
     const t = new THREE.CanvasTexture(c);
     t.colorSpace = THREE.SRGBColorSpace;
-    t.anisotropy = 8;
+    t.anisotropy = QUALITY.anisotropy;
     return t;
 }
 
