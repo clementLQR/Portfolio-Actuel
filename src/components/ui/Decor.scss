@@ -91,14 +91,6 @@
     opacity: 0.9;
   }
 
-  // Houle lente : c'est le SVG entier qui glisse, sur son propre calque. Animer les rubans
-  // un par un obligeait le navigateur à recalculer le filtre de grain à chaque image
-  // (le plus gros coût du défilement sur mobile). Propriété « translate », indépendante
-  // du « transform » qui retourne la vague selon son coin.
-  @include motion {
-    will-change: translate;
-    animation: wave-swell 12s ease-in-out infinite alternate;
-  }
 }
 
 :root[data-theme="light"] .wave {
@@ -113,15 +105,6 @@
 
   .wave__shade {
     stop-color: var(--bg);
-  }
-}
-
-@keyframes wave-swell {
-  from {
-    translate: 0 0;
-  }
-  to {
-    translate: -28px 8px;
   }
 }
 
