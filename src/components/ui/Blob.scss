@@ -48,6 +48,12 @@
   &--glow-blue {
     filter: blur(60px);
     opacity: 0.45;
+
+    // Sur mobile, le dégradé radial suffit : le flou en plus coûte cher à chaque image
+    @media (pointer: coarse), (max-width: 767.98px) {
+      filter: none;
+      opacity: 0.35;
+    }
   }
 
   &--glow-warm {

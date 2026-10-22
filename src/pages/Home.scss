@@ -10,7 +10,9 @@
   display: grid;
   grid-template-rows: auto 1fr auto;
   gap: var(--space-4);
-  min-height: calc(100dvh - var(--header-h));
+  // svh (petit viewport) : stable quand la barre d'adresse de Safari se replie, alors que
+  // dvh change en plein défilement et fait bouger tout le contenu (et les ancres de la mascotte)
+  min-height: calc(100svh - var(--header-h));
   padding-block: var(--space-4) var(--space-5);
 
   &__head {

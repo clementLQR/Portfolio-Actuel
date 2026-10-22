@@ -43,7 +43,7 @@ export function Footer() {
 
       <div className="footer__main container">
         <div className="footer__brand">
-          <Link to="/" className="footer__logo" aria-label="Clément, retour à l'accueil">
+          <Link to="/" className="footer__logo" aria-label="Clément creative dev, retour à l'accueil">
             <Logo size={40} />
             <span aria-hidden="true">
               Clément

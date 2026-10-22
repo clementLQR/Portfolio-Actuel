@@ -13,7 +13,6 @@ import {
   MathUtils,
   Matrix4,
   Mesh,
-  Plane,
   Quaternion,
   Vector3,
   type AnimationAction,
@@ -24,6 +23,7 @@ import {
   type Object3D,
   type SkinnedMesh,
 } from "three";
+import { anchorRect, viewportSize } from "./anchorRect";
 import type { Theme } from "../store/useThemeStore";
 import {
   HEAD_CENTER_Y,
@@ -239,7 +239,8 @@ function damp(current: number, target: number, lambda: number, dt: number): numb
 }
 
 function placementFor(el: HTMLElement): Placement {
-  const rect = el.getBoundingClientRect();
+  // Ancre prioritaire (poignée du tiroir, animée) : mesurée à chaque image ; sinon position en cache
+  const rect = anchorRect(el, el.hasAttribute("data-mascot-priority"));
   const h = Math.min(rect.height, (rect.width * MODEL_HEIGHT) / MODEL_WIDTH);
   const peek = el.hasAttribute("data-mascot-peek");
   return {
@@ -272,12 +273,15 @@ export function Mascotte({ reducedMotion, followPointer, theme }: MascotteProps)
 
   const size = useThree((s) => s.size);
   const gl = useThree((s) => s.gl);
+  const scene = useThree((s) => s.scene);
+  const camera = useThree((s) => s.camera);
+  /** Shaders compilés : la mascotte reste masquée jusque-là */
+  const compiled = useRef(false);
 
   const groupRef = useRef<Group>(null);
   const bodyRef = useRef<Group>(null);
   const socleOpacity = useRef(0);
   const blink = useBlink();
-  const clipPlane = useMemo(() => new Plane(new Vector3(0, 1, 0), 1e6), []);
   const activeClip = useRef<AnimationAction | null>(null);
 
   const travel = useRef({
@@ -310,14 +314,23 @@ export function Mascotte({ reducedMotion, followPointer, theme }: MascotteProps)
     run: 0,
   });
 
-  // Plan de coupe pour la page À propos (la mascotte « passe la tête »)
+  // Pas de plan de coupe pour le mode « coucou » (page À propos) : l'ancre est collée au bas
+  // de l'écran, ou à la barre de navigation mobile qui passe au-dessus de la mascotte. Un plan
+  // de coupe créait des variantes de shaders compilées en plein premier rendu (~500 ms bloqués).
+
+  // Compilation des shaders en parallèle (KHR_parallel_shader_compile) avant le premier rendu
+  // visible : compilés d'un bloc pendant la première image, ils bloquaient la page ~400 ms
   useEffect(() => {
-    gl.localClippingEnabled = true;
-    rig.materials.forEach((material) => {
-      material.clippingPlanes = [clipPlane];
-      material.needsUpdate = true;
-    });
-  }, [gl, rig, clipPlane]);
+    let alive = true;
+    gl.compileAsync(gltf.scene, camera, scene)
+      .catch(() => undefined)
+      .then(() => {
+        if (alive) compiled.current = true;
+      });
+    return () => {
+      alive = false;
+    };
+  }, [gl, gltf, camera, scene]);
 
   // Clips du modèle (absents pour l'instant : tout reste procédural)
   const playClip = (name: ClipName) => {
@@ -361,11 +374,26 @@ export function Mascotte({ reducedMotion, followPointer, theme }: MascotteProps)
       pose.current.bounceAt = performance.now() / 1000;
       return;
     }
+    const target = placementFor(anchor);
+
+    // Point de départ hors de l'écran (l'ancre précédente est sortie en défilant) : plutôt que
+    // de traverser l'écran depuis le haut ou le bas, elle réapparaît directement à sa place
+    const viewportH = viewportSize().height;
+    const fromOffscreen = tr.current.foot < tr.current.h * 0.35 || tr.current.foot - tr.current.h > viewportH;
+    if (fromOffscreen) {
+      tr.current = target;
+      tr.from = { ...target };
+      tr.progress = 1;
+      tr.mode = "jump";
+      pose.current.visible = 0;
+      pose.current.bounceAt = performance.now() / 1000;
+      return;
+    }
+
     tr.from = { ...tr.current };
     tr.progress = 0;
 
     // Trajet surtout horizontal : elle court ; sinon elle saute
-    const target = placementFor(anchor);
     const dx = target.cx - tr.from.cx;
     const dy = target.foot - tr.from.foot;
     const run = Math.abs(dx) > 40 && Math.abs(dy) < 0.6 * Math.max(target.h, tr.from.h);
@@ -389,6 +417,9 @@ export function Mascotte({ reducedMotion, followPointer, theme }: MascotteProps)
     const group = groupRef.current;
     const body = bodyRef.current;
     if (!group || !body) return;
+
+    group.visible = compiled.current;
+    if (!compiled.current) return;
 
     const dt = Math.min(delta, 1 / 20);
     const now = performance.now();
@@ -454,14 +485,8 @@ export function Mascotte({ reducedMotion, followPointer, theme }: MascotteProps)
     mascotScreen.x = cx - mascotScreen.width / 2;
     mascotScreen.y = foot - lift - h;
     mascotScreen.visible = p.visible > 0.6;
-
-    // Coupe sous le bord de l'ancre en mode « coucou »
-    if (peek && anchor) {
-      const edge = size.height / 2 - anchor.getBoundingClientRect().bottom;
-      clipPlane.constant = -edge;
-    } else {
-      clipPlane.constant = 1e6;
-    }
+    // En mouvement (trajet, apparition) : le rendu doit continuer même hors de l'écran
+    mascotScreen.busy = tr.progress < 1 || Math.abs(p.visible - (anchor ? 1 : 0)) > 0.01;
 
     /* ---------- 2. Pose neutre en mouvement réduit ---------- */
     if (!animate) {

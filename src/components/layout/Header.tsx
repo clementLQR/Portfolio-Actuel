@@ -36,7 +36,7 @@ export function Header() {
 
   return (
     <header className={`header${scrolled ? " header--scrolled" : ""}`}>
-      <Link to="/" className="header__brand" aria-label="Clément, retour à l'accueil">
+      <Link to="/" className="header__brand" aria-label="Clément creative dev, retour à l'accueil">
         <Logo size={42} />
         <span className="header__name" aria-hidden="true">
           Clément

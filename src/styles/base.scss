@@ -184,7 +184,7 @@ ol {
   position: relative;
   display: flex;
   flex-direction: column;
-  min-height: 100dvh;
+  min-height: 100svh;
   padding-bottom: var(--bottombar-h);
 }
 
@@ -205,9 +205,11 @@ ol {
   }
 }
 
+// Opacité de départ à peine au-dessus de 0 : Chrome ignore les éléments d'opacité nulle
+// pour mesurer le LCP (plus grand affichage), ce qui faisait échouer la mesure sur mobile
 @keyframes page-in {
   from {
-    opacity: 0;
+    opacity: 0.01;
     transform: translateY(16px);
   }
   to {

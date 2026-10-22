@@ -10,9 +10,11 @@ export function IconRail() {
       <ul className="rail__list">
         {NAV_ITEMS.map((item) => (
           <li key={item.to}>
-            <NavLink to={item.to} end={item.end} className="rail__link">
+            <NavLink to={item.to} end={item.end} className="rail__link" aria-label={item.label}>
               <Icon name={item.icon} size={22} />
-              <span className="rail__tip">{item.label}</span>
+              <span className="rail__tip" aria-hidden="true">
+                {item.label}
+              </span>
             </NavLink>
           </li>
         ))}

@@ -1,16 +1,44 @@
 import { Suspense, useEffect, useMemo, useRef, useState, type RefObject } from "react";
-import { Canvas } from "@react-three/fiber";
+import { Canvas, useThree } from "@react-three/fiber";
 import { ACESFilmicToneMapping, SRGBColorSpace } from "three";
 import { COARSE_POINTER_QUERY, MOBILE_QUERY, useMediaQuery, usePrefersReducedMotion } from "../hooks/useMediaQuery";
 import { useThemeStore, type Theme } from "../store/useThemeStore";
 import { EASTER_EGG_CLICKS, EASTER_EGG_GAP_MS, FAST_SCROLL_PX_PER_S, SLEEP_AFTER_MS } from "./constants";
 import { cssColor } from "./cssColor";
+import { anchorRect, viewportSize } from "./anchorRect";
 import { Mascotte } from "./Mascotte";
 import { MascotteSymbols } from "./MascotteSymbols";
 import { useAnchors } from "./useAnchors";
 import { useLookAt } from "./useLookAt";
 import { mascotScreen, useMascotteStore } from "./useMascotteStore";
 import "./MascotteCanvas.scss";
+
+/**
+ * Rendu à la demande : une image n'est dessinée que si la mascotte est à l'écran (ou en
+ * mouvement). Quand son ancre est loin hors de l'écran, le canvas plein écran ne coûte plus rien.
+ */
+function RenderDriver() {
+  const invalidate = useThree((s) => s.invalidate);
+  useEffect(() => {
+    let frame = 0;
+    const tick = () => {
+      frame = requestAnimationFrame(tick);
+      const anchor = useMascotteStore.getState().anchor;
+      let onScreen = false;
+      if (anchor?.isConnected) {
+        const r = anchorRect(anchor);
+        const { height } = viewportSize();
+        // Marge : la mascotte dépasse de son ancre (saut, flottement)
+        const margin = height * 0.3;
+        onScreen = r.bottom > -margin && r.top < height + margin;
+      }
+      if (onScreen || mascotScreen.busy) invalidate();
+    };
+    frame = requestAnimationFrame(tick);
+    return () => cancelAnimationFrame(frame);
+  }, [invalidate]);
+  return null;
+}
 
 /** Lumière douce de face, contre-jours orange et cyan (plus doux en thème clair) */
 function Lights({ theme }: { theme: Theme }) {
@@ -211,10 +239,12 @@ export default function MascotteCanvas() {
         <Canvas
           style={{ pointerEvents: "none" }}
           orthographic
-          dpr={[1, 1.75]}
-          frameloop={tabVisible ? "always" : "never"}
+          // Écran tactile : résolution plafonnée et sans anticrénelage (un écran Retina est
+          // déjà très dense) ; c'est un canvas plein écran, chaque pixel compte
+          dpr={coarse ? [1, 1.5] : [1, 1.75]}
+          frameloop={tabVisible ? "demand" : "never"}
           camera={{ zoom: 1, position: [0, 0, 1000], near: 1, far: 4000 }}
-          gl={{ alpha: true, antialias: true, powerPreference: "high-performance" }}
+          gl={{ alpha: true, antialias: !coarse, powerPreference: "high-performance" }}
           onCreated={({ gl }) => {
             gl.toneMapping = ACESFilmicToneMapping;
             gl.toneMappingExposure = 1.15;
@@ -222,6 +252,7 @@ export default function MascotteCanvas() {
             gl.setClearColor(0x000000, 0);
           }}
         >
+          <RenderDriver />
           <Lights theme={theme} />
           <Suspense fallback={null}>
             <Mascotte reducedMotion={reducedMotion} followPointer={followPointer} theme={theme} />

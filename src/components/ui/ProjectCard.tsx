@@ -17,13 +17,28 @@ interface ProjectCardProps {
   headingLevel?: "h2" | "h3";
 }
 
+/** Vignette de 800 px (public/images/projets/thumbs) d'un visuel de projet */
+const thumbOf = (src: string) => src.replace("/images/projets/", "/images/projets/thumbs/").replace(/\.\w+$/, ".webp");
+
 export function ProjectCard({ project, headingLevel: Heading = "h3" }: ProjectCardProps) {
   const cover = project.visuals[0];
   return (
     <ChamferCard tone={CATEGORY_TONE[project.category]} interactive className="project-card">
       <article className="project-card__body">
         <div className="project-card__media">
-          {cover && <img src={cover.src} alt="" loading="lazy" width={1200} height={800} />}
+          {cover && (
+            // Vignette de 800 px : la carte fait au plus ~420 px de large (1920 px auparavant)
+            <img
+              src={thumbOf(cover.src)}
+              srcSet={`${thumbOf(cover.src)} 800w, ${cover.src} 1920w`}
+              sizes="(max-width: 767px) 100vw, 420px"
+              alt=""
+              loading="lazy"
+              decoding="async"
+              width={1200}
+              height={800}
+            />
+          )}
           <span className="project-card__category label">{CATEGORY_LABELS[project.category]}</span>
         </div>
         <div className="project-card__content">

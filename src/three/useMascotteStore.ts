@@ -114,4 +114,6 @@ export const mascotScreen = {
   width: 0,
   height: 0,
   visible: false,
+  /** Trajet ou apparition en cours (le rendu ne doit pas s'arrêter) */
+  busy: false,
 };

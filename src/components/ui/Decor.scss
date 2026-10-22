@@ -91,31 +91,13 @@
     opacity: 0.9;
   }
 
-  // Ondulation lente : chaque ruban glisse à son rythme, comme une houle
+  // Houle lente : c'est le SVG entier qui glisse, sur son propre calque. Animer les rubans
+  // un par un obligeait le navigateur à recalculer le filtre de grain à chaque image
+  // (le plus gros coût du défilement sur mobile). Propriété « translate », indépendante
+  // du « transform » qui retourne la vague selon son coin.
   @include motion {
-    &__band {
-      animation: wave-swell 13s ease-in-out infinite alternate;
-    }
-
-    &__band--2 {
-      animation-duration: 11s;
-      animation-delay: -4s;
-    }
-
-    &__band--3 {
-      animation-duration: 15s;
-      animation-delay: -7s;
-    }
-
-    &__band--4 {
-      animation-duration: 10s;
-      animation-delay: -2s;
-    }
-
-    &__band--5 {
-      animation-duration: 12s;
-      animation-delay: -9s;
-    }
+    will-change: translate;
+    animation: wave-swell 12s ease-in-out infinite alternate;
   }
 }
 
@@ -136,10 +118,10 @@
 
 @keyframes wave-swell {
   from {
-    transform: translate(0, 0);
+    translate: 0 0;
   }
   to {
-    transform: translate(-40px, 6px);
+    translate: -28px 8px;
   }
 }
 

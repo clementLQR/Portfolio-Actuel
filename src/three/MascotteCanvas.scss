@@ -1,7 +1,13 @@
 // Calque fixe de la mascotte : au-dessus du contenu, sous la navigation
 .mascot-layer {
   position: fixed;
-  inset: 0;
+  top: 0;
+  left: 0;
+  width: 100%;
+  // Hauteur du grand viewport : le canvas garde la même taille quand la barre d'adresse
+  // de Safari se replie ou réapparaît (sinon il est redimensionné en plein défilement)
+  height: 100vh;
+  height: 100lvh;
   z-index: var(--z-mascot);
   pointer-events: none;
 

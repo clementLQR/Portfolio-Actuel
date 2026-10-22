@@ -1,5 +1,6 @@
 import { useEffect } from "react";
 import { useLocation } from "react-router-dom";
+import { anchorRect, viewportSize } from "./anchorRect";
 import { useMascotteStore, type Mood } from "./useMascotteStore";
 
 const MOODS: readonly Mood[] = ["neutre", "curieuse", "heureuse", "surprise", "reflechie"];
@@ -22,14 +23,14 @@ export function useAnchors(): void {
     const pick = () => {
       frame = 0;
       const { anchor: current, setAnchor, setBaseMood } = useMascotteStore.getState();
-      const viewportH = window.innerHeight;
-      const viewportW = window.innerWidth;
+      const { width: viewportW, height: viewportH } = viewportSize();
       const anchors = Array.from(document.querySelectorAll<HTMLElement>("[data-mascot-anchor]"));
 
       let best: HTMLElement | null = null;
       let bestScore = 0;
       for (const el of anchors) {
-        const rect = el.getBoundingClientRect();
+        // Position en cache (au plus 200 ms d'âge) : pas de mise en page forcée à chaque défilement
+        const rect = anchorRect(el, el.hasAttribute("data-mascot-priority"));
         if (rect.height === 0 || rect.width === 0) continue;
         // Part visible sur les deux axes : une ancre cachée hors écran à droite ne compte pas
         const visibleY = Math.max(0, Math.min(rect.bottom, viewportH) - Math.max(rect.top, 0)) / rect.height;
@@ -44,8 +45,10 @@ export function useAnchors(): void {
         }
       }
 
-      // Aucune ancre vraiment visible : on garde la courante si elle existe encore
-      if (bestScore < 0.25) best = current?.isConnected ? current : (best ?? anchors[0] ?? null);
+      // Aucune ancre vraiment visible : on garde la courante si elle existe encore.
+      // Seuil bas : dès qu'une autre ancre apparaît un peu, la mascotte la rejoint au lieu de
+      // suivre l'ancre précédente hors de l'écran
+      if (bestScore < 0.1) best = current?.isConnected ? current : (best ?? anchors[0] ?? null);
 
       if (best !== current) {
         setAnchor(best);

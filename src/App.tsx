@@ -75,7 +75,28 @@ export default function App() {
 
   // La 3D (three.js + modèle, environ 1,3 Mo) attend que la page soit affichée
   const [show3d, setShow3d] = useState(false);
-  useEffect(() => whenIdle(() => setShow3d(true)), []);
+  useEffect(() => {
+    // Écran tactile : three.js et le premier rendu occupent plusieurs secondes le processeur
+    // d'un téléphone moyen. On attend le premier geste (ou au plus 4 s) : la page reste
+    // réactive pendant ce temps, et la mascotte arrive quand le visiteur commence à explorer.
+    if (!window.matchMedia("(pointer: coarse)").matches) return whenIdle(() => setShow3d(true));
+    let cancelIdle: (() => void) | undefined;
+    const events = ["pointerdown", "touchstart", "scroll", "wheel", "keydown"] as const;
+    const start = () => {
+      stop();
+      cancelIdle = whenIdle(() => setShow3d(true));
+    };
+    const timer = window.setTimeout(start, 4000);
+    function stop() {
+      window.clearTimeout(timer);
+      events.forEach((type) => window.removeEventListener(type, start));
+    }
+    events.forEach((type) => window.addEventListener(type, start, { once: true, passive: true }));
+    return () => {
+      stop();
+      cancelIdle?.();
+    };
+  }, []);
 
   useEffect(
     () =>
