@@ -1,0 +1,165 @@
+@use "../styles/mixins" as *;
+
+.skills {
+  position: relative;
+  isolation: isolate;
+  padding-bottom: var(--section-gap);
+
+  &__categories {
+    display: grid;
+    gap: var(--space-8);
+  }
+
+  &__category-head {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--space-4);
+    margin-bottom: var(--space-5);
+  }
+
+  &__slot {
+    display: grid;
+    place-items: center;
+    width: 40px;
+    height: 40px;
+    flex-shrink: 0;
+    background: var(--accent-warm);
+    color: var(--text-on-accent);
+    clip-path: var(--chamfer-shape);
+  }
+
+  &__category-title {
+    font-size: var(--fs-xl);
+  }
+
+  &__category-intro {
+    color: var(--text-muted);
+  }
+
+  // Grille « inventaire de jeu »
+  &__grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: var(--space-4);
+
+    @include down($bp-sm) {
+      grid-template-columns: repeat(2, 1fr);
+      gap: var(--space-3);
+    }
+  }
+}
+
+.skill {
+  --skill-color: var(--accent);
+
+  position: relative;
+  isolation: isolate;
+  display: grid;
+  place-items: center;
+  align-content: center;
+  gap: var(--space-3);
+  aspect-ratio: 1;
+  padding: var(--space-4);
+  text-align: center;
+  outline: none;
+  transition:
+    transform var(--duration) var(--ease-out),
+    filter var(--duration) var(--ease-out);
+
+  // Cadre chanfreiné de la case d'inventaire
+  &::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    background:
+      chamfer-corners(10px, 1px, color-mix(in srgb, var(--skill-color) 70%, transparent), var(--border), var(--border), var(--border)),
+      radial-gradient(70% 70% at 50% 35%, color-mix(in srgb, var(--skill-color) 14%, transparent), transparent 70%),
+      linear-gradient(var(--surface-strong), var(--surface-strong)) padding-box,
+      linear-gradient(145deg, color-mix(in srgb, var(--skill-color) 70%, transparent), var(--border)) border-box;
+    border: 1px solid transparent;
+    clip-path: var(--chamfer-shape);
+  }
+
+  &--warm {
+    --skill-color: var(--accent-warm);
+  }
+
+  &--violet {
+    --skill-color: var(--accent-2);
+  }
+
+  &--highlight {
+    --skill-color: var(--highlight);
+  }
+
+  &--detail {
+    --skill-color: var(--detail);
+  }
+
+  &__icon {
+    display: grid;
+    place-items: center;
+    width: 56px;
+    height: 56px;
+    color: var(--skill-color);
+    background: color-mix(in srgb, var(--skill-color) 12%, transparent);
+    clip-path: var(--chamfer-shape);
+    transition: transform var(--duration) var(--ease-bounce);
+  }
+
+  &__name {
+    font-family: var(--font-title);
+    font-size: var(--fs-sm);
+    font-weight: var(--fw-semibold);
+    letter-spacing: 0.06em;
+    line-height: 1.25;
+    text-transform: uppercase;
+  }
+
+  // Info-bulle descriptive
+  &__tip {
+    position: absolute;
+    left: 50%;
+    bottom: calc(100% + var(--space-2));
+    z-index: var(--z-overlay);
+    width: max-content;
+    max-width: 220px;
+    padding: var(--space-2) var(--space-3);
+    background: chamfer-corners(6px, 1px, var(--skill-color)), var(--bg-elevated);
+    border: 1px solid var(--skill-color);
+    color: var(--text);
+    font-size: var(--fs-sm);
+    line-height: 1.45;
+    opacity: 0;
+    pointer-events: none;
+    transform: translate(-50%, 6px);
+    transition:
+      opacity var(--duration-fast) var(--ease-out),
+      transform var(--duration-fast) var(--ease-out);
+    @include chamfer(6px);
+  }
+
+  &:hover,
+  &:focus-visible {
+    transform: translateY(-4px);
+    filter: drop-shadow(0 0 14px color-mix(in srgb, var(--skill-color) 45%, transparent));
+    z-index: 2;
+
+    .skill__icon {
+      transform: scale(1.1);
+    }
+
+    .skill__tip {
+      opacity: 1;
+      transform: translate(-50%, 0);
+    }
+  }
+
+  &:focus-visible::after {
+    content: "";
+    position: absolute;
+    inset: -4px;
+    border: 2px solid var(--accent);
+  }
+}

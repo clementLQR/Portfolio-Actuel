@@ -1,0 +1,86 @@
+@use "../../styles/mixins" as *;
+
+.sparkle {
+  --sparkle-color: var(--highlight);
+
+  position: absolute;
+  fill: var(--sparkle-color);
+  color: var(--sparkle-color);
+  filter: drop-shadow(0 0 6px color-mix(in srgb, var(--sparkle-color) 70%, transparent));
+  pointer-events: none;
+
+  @include motion {
+    animation: twinkle 3.2s var(--ease-out) infinite;
+  }
+
+  &--highlight {
+    --sparkle-color: var(--highlight);
+  }
+
+  &--detail {
+    --sparkle-color: var(--detail);
+  }
+
+  &--accent {
+    --sparkle-color: var(--accent);
+  }
+
+  &--warm {
+    --sparkle-color: var(--accent-warm);
+  }
+
+  &--violet {
+    --sparkle-color: var(--accent-2);
+  }
+}
+
+.floater {
+  position: absolute;
+  background: var(--sparkle-color);
+  opacity: 0.85;
+  pointer-events: none;
+
+  &--diamond {
+    transform: rotate(45deg);
+  }
+
+  @include motion {
+    animation: float 7s ease-in-out infinite;
+
+    &--diamond {
+      animation-name: float-diamond;
+    }
+  }
+}
+
+@keyframes twinkle {
+  0%,
+  100% {
+    opacity: 1;
+    transform: scale(1) rotate(0deg);
+  }
+  45% {
+    opacity: 0.35;
+    transform: scale(0.6) rotate(20deg);
+  }
+}
+
+@keyframes float {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-12px);
+  }
+}
+
+@keyframes float-diamond {
+  0%,
+  100% {
+    transform: translateY(0) rotate(45deg);
+  }
+  50% {
+    transform: translateY(-10px) rotate(135deg);
+  }
+}

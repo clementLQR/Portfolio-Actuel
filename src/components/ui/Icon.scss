@@ -1,0 +1,36 @@
+// Dégradés des icônes à contour coloré
+.icon--warm {
+  .icon__stop-a {
+    stop-color: var(--highlight);
+  }
+  .icon__stop-b {
+    stop-color: var(--accent-warm);
+  }
+}
+
+.icon--cool {
+  .icon__stop-a {
+    stop-color: var(--accent);
+  }
+  .icon__stop-b {
+    stop-color: var(--accent-2);
+  }
+}
+
+.icon--violet {
+  .icon__stop-a {
+    stop-color: var(--detail);
+  }
+  .icon__stop-b {
+    stop-color: var(--accent-2);
+  }
+}
+
+.icon--sunset {
+  .icon__stop-a {
+    stop-color: var(--accent-warm);
+  }
+  .icon__stop-b {
+    stop-color: var(--accent-2);
+  }
+}

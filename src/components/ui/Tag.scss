@@ -1,0 +1,64 @@
+@use "../../styles/mixins" as *;
+
+.tag {
+  --tag-color: var(--text-muted);
+
+  display: inline-flex;
+  align-items: center;
+  min-height: 28px;
+  padding: 0 var(--space-3);
+  background:
+    chamfer-corners(6px, 1px, var(--tag-color)),
+    linear-gradient(var(--surface-strong), var(--surface-strong)) padding-box,
+    linear-gradient(var(--tag-color), var(--tag-color)) border-box;
+  border: 1px solid transparent;
+  color: var(--tag-color);
+  font-family: var(--font-title);
+  font-size: var(--fs-xs);
+  font-weight: var(--fw-medium);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  @include chamfer(6px);
+
+  &--accent {
+    --tag-color: var(--accent);
+  }
+
+  &--warm {
+    --tag-color: var(--accent-warm);
+  }
+
+  &--violet {
+    --tag-color: var(--accent-2);
+  }
+
+  &--danger {
+    --tag-color: var(--danger);
+  }
+
+  // Version filtre (bouton)
+  @at-root button#{&} {
+    min-height: 40px;
+    padding: 0 var(--space-4);
+    --tag-color: var(--text-muted);
+    transition:
+      color var(--duration-fast) var(--ease-out),
+      background var(--duration-fast) var(--ease-out);
+
+    &:hover {
+      --tag-color: var(--text);
+    }
+
+    &:focus-visible {
+      outline-offset: 2px;
+    }
+  }
+
+  &--active,
+  &--active:hover {
+    --tag-color: var(--accent);
+    background: var(--accent);
+    color: var(--text-on-accent);
+  }
+}

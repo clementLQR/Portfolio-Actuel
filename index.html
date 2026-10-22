@@ -1,225 +1,60 @@
-<!DOCTYPE html>
-<html lang="fr">
+<!doctype html>
+<html lang="fr" data-theme="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Portfolio de Clément Lequeurre, développeur web et creative developer en BUT MMI. Projets, compétences et parcours. Recherche un stage de mars à juin 2027." />
+    <title>Clément Lequeurre | Portfolio développeur web</title>
+    <link rel="canonical" href="https://clementlequeurre.com/" />
+    <meta name="theme-color" content="#0b0f14" />
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Clément Lequeurre · Développeur full-stack, créatif côté front</title>
-    <meta name="description" content="Portfolio de Clément Lequeurre, développeur web full-stack (BUT MMI) créatif côté front : un appartement lo-fi en 3D (three.js) à explorer, des projets en PHP, Laravel et JavaScript, et le moyen de me contacter.">
-    <meta name="author" content="Clément Lequeurre">
-    <meta name="robots" content="index, follow, max-image-preview:large">
-    <link rel="canonical" href="https://clementlequeurre.com/">
-    <meta name="theme-color" content="#140c1e">
-
-    <!-- aperçus de partage (réseaux sociaux, messageries) -->
-    <meta property="og:type" content="profile">
-    <meta property="og:site_name" content="Clément Lequeurre">
-    <meta property="og:locale" content="fr_FR">
-    <meta property="og:url" content="https://clementlequeurre.com/">
-    <meta property="og:title" content="Clément Lequeurre · Développeur full-stack, créatif côté front">
-    <meta property="og:description" content="Développeur full-stack avec un faible pour le front : entre dans cet appartement lo-fi en 3D, scrolle, et allume l'ordinateur pour découvrir mes projets.">
-    <meta property="og:image" content="https://clementlequeurre.com/assets/og-image.jpg">
-    <meta property="og:image:width" content="1200">
-    <meta property="og:image:height" content="630">
-    <meta property="og:image:alt" content="Salon lo-fi en 3D ouvrant sur une ville futuriste au coucher du soleil">
-    <meta property="profile:first_name" content="Clément">
-    <meta property="profile:last_name" content="Lequeurre">
-    <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="Clément Lequeurre · Développeur full-stack, créatif côté front">
-    <meta name="twitter:description" content="Développeur full-stack créatif côté front : un appartement lo-fi en 3D à explorer, et mes projets web sur son ordinateur.">
-    <meta name="twitter:image" content="https://clementlequeurre.com/assets/og-image.jpg">
-
-    <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
-    <link rel="icon" href="/assets/icon-192.png" type="image/png" sizes="192x192">
-    <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png">
-    <link rel="manifest" href="/site.webmanifest">
-
-    <!-- données structurées : qui je suis, mes projets (schema.org) -->
+    <!-- Aperçu de partage (LinkedIn, Discord, messageries, réseaux) -->
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Clément Lequeurre" />
+    <meta property="og:locale" content="fr_FR" />
+    <meta property="og:url" content="https://clementlequeurre.com/" />
+    <meta property="og:title" content="Clément Lequeurre | Portfolio développeur web" />
+    <meta property="og:description" content="Développeur web et creative developer en BUT MMI. Projets, compétences et parcours, guidés par une mascotte 3D. Recherche un stage de mars à juin 2027." />
+    <meta property="og:image" content="https://clementlequeurre.com/og-image.jpg" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="Clément Lequeurre, développeur web et creative dev, à côté de la mascotte 3D de son portfolio" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Clément Lequeurre | Portfolio développeur web" />
+    <meta name="twitter:description" content="Développeur web et creative developer en BUT MMI. Recherche un stage de mars à juin 2027." />
+    <meta name="twitter:image" content="https://clementlequeurre.com/og-image.jpg" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <!-- Données structurées : qui est l'auteur du site (moteurs de recherche) -->
     <script type="application/ld+json">
-    {
+      {
         "@context": "https://schema.org",
-        "@graph": [
-            {
-                "@type": "WebSite",
-                "@id": "https://clementlequeurre.com/#site",
-                "url": "https://clementlequeurre.com/",
-                "name": "Clément Lequeurre",
-                "inLanguage": "fr-FR",
-                "publisher": { "@id": "https://clementlequeurre.com/#me" }
-            },
-            {
-                "@type": "ProfilePage",
-                "@id": "https://clementlequeurre.com/#page",
-                "url": "https://clementlequeurre.com/",
-                "name": "Clément Lequeurre · Développeur full-stack, créatif côté front",
-                "inLanguage": "fr-FR",
-                "isPartOf": { "@id": "https://clementlequeurre.com/#site" },
-                "mainEntity": { "@id": "https://clementlequeurre.com/#me" },
-                "primaryImageOfPage": "https://clementlequeurre.com/assets/og-image.jpg"
-            },
-            {
-                "@type": "Person",
-                "@id": "https://clementlequeurre.com/#me",
-                "name": "Clément Lequeurre",
-                "givenName": "Clément",
-                "familyName": "Lequeurre",
-                "url": "https://clementlequeurre.com/",
-                "image": "https://clementlequeurre.com/assets/poster-autoportrait.jpg",
-                "jobTitle": "Développeur web full-stack",
-                "description": "Développeur web full-stack en BUT MMI, créatif côté front : interfaces animées, 3D dans le navigateur (three.js), et back-end en PHP, Laravel et MySQL.",
-                "email": "mailto:clement.lequeurre@gmail.com",
-                "sameAs": ["https://www.linkedin.com/in/cl%C3%A9ment-lequeurre/", "https://github.com/clementLQR"],
-                "knowsAbout": ["Développement web full-stack", "Développement front-end", "Creative coding", "Animation web", "Three.js", "WebGL", "JavaScript", "PHP", "Laravel", "MySQL", "UI / UX", "Motion design", "Illustration"],
-                "affiliation": { "@type": "CollegeOrUniversity", "name": "IUT de Blois" }
-            },
-            {
-                "@type": "ItemList",
-                "name": "Projets",
-                "itemListElement": [
-                    { "@type": "ListItem", "position": 1, "url": "https://clementlequeurre.com/projets/iut-quest", "name": "IUT Quest" },
-                    { "@type": "ListItem", "position": 2, "url": "https://clementlequeurre.com/projets/freemessage", "name": "FreeMessage" }
-                ]
-            }
-        ]
-    }
+        "@type": "Person",
+        "name": "Clément Lequeurre",
+        "url": "https://clementlequeurre.com/",
+        "image": "https://clementlequeurre.com/og-image.jpg",
+        "jobTitle": "Développeur web",
+        "email": "mailto:clement.lequeurre@gmail.com",
+        "alumniOf": { "@type": "CollegeOrUniversity", "name": "IUT de Blois" },
+        "sameAs": ["https://www.linkedin.com/in/cl%C3%A9ment-lequeurre", "https://github.com/clementLQR"]
+      }
     </script>
-
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
-    <link rel="modulepreload" href="https://cdn.jsdelivr.net/npm/three@0.180.0/build/three.module.js" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=DotGothic16&family=Inter:wght@400;500;600&family=Marck+Script&family=Patrick+Hand&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="css/style.css">
-
-    <script type="importmap">
-        {
-            "imports": {
-                "three": "https://cdn.jsdelivr.net/npm/three@0.180.0/build/three.module.js",
-                "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.180.0/examples/jsm/"
-            }
-        }
-    </script>
-</head>
-
-<body class="hotspots-off">
-
-    <canvas id="webgl" aria-label="Appartement en 3D au-dessus d'une ville au coucher du soleil"></canvas>
-
-    <header class="brand">
-        <span class="brand__jp">Portfolio</span>
-        <h1 class="brand__name">Clément Lequeurre</h1>
-    </header>
-    <!-- Version texte du portfolio : la scène 3D n'est lisible ni par les lecteurs d'écran ni par les
-         moteurs de recherche. Même contenu que dans l'appartement (textes des pièces, ordinateur). -->
-    <main class="sr-only" id="contenu">
-        <p>Développeur full-stack en BUT MMI, avec un vrai faible pour le front : interfaces soignées, animations et 3D. Ce portfolio est un appartement lo-fi en 3D au-dessus d'une ville futuriste : chambre, salon, bornes d'arcade et bureau, à parcourir au scroll.</p>
-
-        <section aria-labelledby="txt-about">
-            <h2 id="txt-about">À propos</h2>
-            <p>Du serveur à l'écran, avec une touche créative. Je développe des applications web complètes, de la base de données à l'interface. Mais c'est côté front que je m'amuse le plus : animations, 3D dans le navigateur, petits détails qui font la différence. Cet appartement en est le terrain de jeu : tout y est codé, du décor aux applis de l'ordinateur.</p>
-            <p>Compétences : JavaScript, Three.js, PHP, Laravel, MySQL, UI / UX, motion design, illustration.</p>
-        </section>
-
-        <section aria-labelledby="txt-projets">
-            <h2 id="txt-projets">Projets</h2>
-            <article>
-                <h3><a href="/projets/iut-quest">IUT Quest</a></h3>
-                <p>Un jeu de piste géolocalisé qui fait courir 12 équipes dans tout Blois, entre épreuves chronométrées et défis à prouver en photo. Projet full-stack (SAÉ 4012) : application mobile-first installable, carte en temps réel avec Leaflet, back-office Laravel.</p>
-            </article>
-            <article>
-                <h3><a href="/projets/freemessage">FreeMessage</a></h3>
-                <p>Un réseau social thématique en PHP natif : publications par catégories, likes asynchrones, commentaires, panneau d'administration, architecture MVC construite à la main et sécurité des formulaires.</p>
-            </article>
-            <article>
-                <h3>Appartement 3D</h3>
-                <p>Ce portfolio : une scène three.js entièrement générée par le code (géométries, textures, shaders), avec télé, platine vinyle, bornes d'arcade jouables et un ordinateur à allumer.</p>
-            </article>
-        </section>
-
-        <section aria-labelledby="txt-contact">
-            <h2 id="txt-contact">Contact</h2>
-            <p>Développeur full-stack créatif côté front, en 3<sup>e</sup> année de BUT MMI à l'IUT de Blois, je recherche un stage en développement web de 11 semaines, de mars à juin 2027.</p>
-            <p><a href="/assets/cv/Clement_Lequeurre_CV.pdf">Télécharger mon CV (PDF)</a></p>
-            <ul>
-                <li>E-mail : <a href="mailto:clement.lequeurre@gmail.com">clement.lequeurre@gmail.com</a></li>
-                <li>LinkedIn : <a href="https://www.linkedin.com/in/cl%C3%A9ment-lequeurre/" rel="me">Clément Lequeurre</a></li>
-                <li>GitHub : <a href="https://github.com/clementLQR" rel="me">github.com/clementLQR</a></li>
-            </ul>
-        </section>
-    </main>
-
-    <nav class="rooms" aria-label="Pièces">
-        <a href="#chambre" data-room="chambre" class="rooms__link is-active"><span class="rooms__num">01</span>Chambre</a>
-        <a href="#salon" data-room="salon" class="rooms__link"><span class="rooms__num">02</span>Salon</a>
-        <a href="#bureau" data-room="bureau" class="rooms__link"><span class="rooms__num">03</span>Bureau</a>
-    </nav>
-
-    <button class="daytoggle fulltoggle" id="fulltoggle" type="button" aria-pressed="false" aria-label="Plein écran" title="Plein écran">
-        <svg class="fulltoggle__in" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9V4h5M15 4h5v5M20 15v5h-5M9 20H4v-5"/></svg>
-        <svg class="fulltoggle__out" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 4v5H4M20 9h-5V4M15 20v-5h5M4 15h5v5"/></svg>
-    </button>
-    <button class="daytoggle spottoggle" id="spottoggle" type="button" aria-pressed="true" aria-label="Afficher les repères cliquables" title="Afficher les repères cliquables">
-        <svg class="spottoggle__on" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8"/><circle class="spottoggle__core" cx="12" cy="12" r="3.2"/></svg>
-        <svg class="spottoggle__off" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8" stroke-dasharray="3 3.3"/><path d="M5 19 19 5"/></svg>
-    </button>
-
-    <button class="daytoggle hudtoggle" id="hudtoggle" type="button" aria-pressed="false" aria-label="Masquer l'interface (H)" title="Masquer l'interface (H)">
-        <svg class="hudtoggle__eye" viewBox="0 0 24 24" aria-hidden="true"><path d="M2.5 12S6 5.5 12 5.5 21.5 12 21.5 12 18 18.5 12 18.5 2.5 12 2.5 12z"/><circle cx="12" cy="12" r="3"/></svg>
-        <svg class="hudtoggle__off" viewBox="0 0 24 24" aria-hidden="true"><path d="M2.5 12S6 5.5 12 5.5c1.6 0 3 .45 4.2 1.1M21.5 12S18 18.5 12 18.5c-1.6 0-3-.45-4.2-1.1M9.9 14.1a3 3 0 0 1 4.2-4.2M4 20 20 4"/></svg>
-    </button>
-
-    <button class="daytoggle" id="daytoggle" type="button" aria-pressed="false" aria-label="Passer en plein jour" title="Passer en plein jour">
-        <svg class="daytoggle__sun" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4.2"/><path d="M12 2.5v2.6M12 18.9v2.6M2.5 12h2.6M18.9 12h2.6M5.3 5.3l1.8 1.8M16.9 16.9l1.8 1.8M5.3 18.7l1.8-1.8M16.9 7.1l1.8-1.8"/></svg>
-        <svg class="daytoggle__moon" viewBox="0 0 24 24" aria-hidden="true"><path d="M19.5 14.6A8 8 0 0 1 9.4 4.5a8 8 0 1 0 10.1 10.1z"/></svg>
-    </button>
-
-    <div class="arcadepad" id="arcadepad" aria-label="Commandes de la borne d'arcade">
-        <button type="button" class="arcadepad__quit" data-pad-quit aria-label="Quitter la borne">×</button>
-        <div class="arcadepad__row">
-            <div class="arcadepad__group">
-                <button type="button" class="arcadepad__btn" data-pad="left" aria-label="Gauche">◀</button>
-                <button type="button" class="arcadepad__btn" data-pad="right" aria-label="Droite">▶</button>
-            </div>
-            <div class="arcadepad__group">
-                <button type="button" class="arcadepad__btn arcadepad__btn--small" data-pad="start">Jouer</button>
-                <button type="button" class="arcadepad__btn arcadepad__btn--fire" data-pad="fire" aria-label="Tirer">Feu</button>
-            </div>
-        </div>
-    </div>
-
-    <nav class="legal-links" aria-label="Aide et informations légales">
-        <button type="button" class="legal-links__guide" id="guidelink">Guide</button>
-        <a href="/mentions-legales">Mentions légales</a>
-        <a href="/confidentialite">Confidentialité</a>
-    </nav>
-
-    <div class="story" id="story" aria-live="polite"></div>
-
-    <p class="hint" id="hint" aria-live="polite">Scroll pour descendre au salon</p>
-
-    <div class="loader" id="loader" role="status">
-        <div class="loader__lamp" aria-hidden="true">
-            <span></span><span></span><span></span>
-        </div>
-        <p class="loader__title">Chargement…</p>
-        <p class="loader__text">Veuillez patienter pendant le chargement de la scène 3D.</p>
-    </div>
-
-    <noscript>
-        <p class="noscript">Ce site a besoin de JavaScript pour afficher la scène 3D. Les projets restent consultables : <a href="/projets/iut-quest">IUT Quest</a>, <a href="/projets/freemessage">FreeMessage</a>.</p>
-    </noscript>
-
+    <!-- Polices hébergées sur le site : les deux les plus visibles sont préchargées -->
+    <link rel="preload" href="/fonts/montserrat-variable.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href="/fonts/chakra-petch-700.woff2" as="font" type="font/woff2" crossorigin />
+    <!-- Thème appliqué avant le premier rendu : pas de flash -->
     <script>
-        // Si les modules ne se chargent pas (ouverture en file://, hors ligne…), on l'explique
-        setTimeout(function () {
-            if (window.__appReady) return;
-            var loader = document.getElementById("loader");
-            loader.classList.add("is-error");
-            loader.querySelector(".loader__text").textContent =
-                "La scène ne se charge pas. Ouvre le site via un serveur local (voir README.md) et vérifie ta connexion.";
-        }, 15000);
+      (function () {
+        var theme = "dark";
+        try {
+          if (localStorage.getItem("hub-theme") === "light") theme = "light";
+        } catch (e) {}
+        document.documentElement.setAttribute("data-theme", theme);
+      })();
     </script>
-    <script type="module" src="js/main.js"></script>
-</body>
-
+  </head>
+  <body class="grain">
+    <div id="root"></div>
+    <noscript>Ce portfolio a besoin de JavaScript pour s'afficher.</noscript>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
 </html>

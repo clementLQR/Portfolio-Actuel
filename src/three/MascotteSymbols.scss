@@ -1,0 +1,208 @@
+@use "../styles/mixins" as *;
+
+// Point d'accroche juste au-dessus de la tête ; tout est décoratif
+.msym-anchor {
+  position: relative;
+  width: 0;
+  height: 0;
+  pointer-events: none;
+  user-select: none;
+}
+
+.msym-speech {
+  position: absolute;
+  bottom: 34px;
+  left: 0;
+  transform: translateX(-30%);
+}
+
+.msym-slot {
+  position: absolute;
+  bottom: 4px;
+  left: 0;
+  transform: translateX(10px);
+
+  @include motion {
+    animation: msym-pop var(--duration-slow) var(--ease-bounce) both;
+  }
+}
+
+.msym {
+  position: relative;
+  display: block;
+
+  // Gros caractère « ! » ou « ? » façon bulle de jeu
+  &--mark {
+    font-family: var(--font-title);
+    font-size: 40px;
+    font-weight: var(--fw-bold);
+    line-height: 1;
+    text-shadow: 0 0 12px currentColor;
+  }
+
+  &--alert {
+    color: var(--accent-warm);
+
+    @include motion {
+      animation: msym-shake 0.4s ease-in-out 2;
+    }
+  }
+
+  &--think {
+    color: var(--accent-2);
+
+    @include motion {
+      animation: msym-bob 1.6s ease-in-out infinite;
+    }
+  }
+
+  &--happy {
+    width: 64px;
+    height: 34px;
+  }
+
+  &__heart {
+    position: absolute;
+    left: 22px;
+    top: 4px;
+    fill: var(--detail);
+    filter: drop-shadow(0 0 6px var(--detail));
+
+    @include motion {
+      animation: msym-rise 1.8s var(--ease-out) infinite;
+    }
+  }
+
+  &--sleep {
+    display: flex;
+    align-items: flex-end;
+    gap: 2px;
+    color: var(--accent);
+    font-family: var(--font-title);
+    font-weight: var(--fw-bold);
+    text-shadow: 0 0 8px currentColor;
+
+    span:nth-child(1) {
+      font-size: 26px;
+    }
+
+    span:nth-child(2) {
+      font-size: 19px;
+      transform: translateY(-14px);
+    }
+
+    span:nth-child(3) {
+      font-size: 14px;
+      transform: translateY(-26px);
+    }
+
+    @include motion {
+      span {
+        animation: msym-zzz 2.4s ease-in-out infinite;
+      }
+
+      span:nth-child(2) {
+        animation-delay: 0.3s;
+      }
+
+      span:nth-child(3) {
+        animation-delay: 0.6s;
+      }
+    }
+  }
+
+  // Gouttes de sueur pendant l'effort
+  &--effort {
+    display: flex;
+    align-items: flex-start;
+    gap: 6px;
+    transform: translateX(-46px);
+
+    svg {
+      fill: var(--accent);
+      filter: drop-shadow(0 0 4px var(--accent));
+    }
+
+    @include motion {
+      svg {
+        animation: msym-drip 0.9s ease-in infinite;
+      }
+
+      svg:nth-child(2) {
+        animation-delay: 0.4s;
+      }
+    }
+  }
+
+  &--dizzy {
+    width: 60px;
+    height: 26px;
+    transform: translateX(-20px);
+
+    @include motion {
+      animation: msym-orbit 1.2s linear infinite;
+    }
+  }
+}
+
+@keyframes msym-pop {
+  from {
+    opacity: 0;
+    transform: translateX(10px) translateY(10px) scale(0.4);
+  }
+}
+
+@keyframes msym-shake {
+  25% {
+    transform: rotate(-12deg);
+  }
+  75% {
+    transform: rotate(12deg);
+  }
+}
+
+@keyframes msym-bob {
+  50% {
+    transform: translateY(-6px) rotate(8deg);
+  }
+}
+
+@keyframes msym-rise {
+  0% {
+    opacity: 0;
+    transform: translateY(8px) scale(0.6);
+  }
+  30% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-22px) scale(1.1);
+  }
+}
+
+@keyframes msym-zzz {
+  50% {
+    opacity: 0.45;
+  }
+}
+
+@keyframes msym-drip {
+  0% {
+    opacity: 0;
+    transform: translate(0, 0) scale(0.6);
+  }
+  30% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    transform: translate(-8px, 18px) scale(1);
+  }
+}
+
+@keyframes msym-orbit {
+  to {
+    transform: translateX(-20px) rotateY(360deg);
+  }
+}

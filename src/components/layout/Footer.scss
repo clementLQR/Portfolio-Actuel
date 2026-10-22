@@ -1,0 +1,240 @@
+@use "../../styles/mixins" as *;
+
+.footer {
+  position: relative;
+  z-index: var(--z-content);
+  isolation: isolate;
+  padding-top: var(--space-8);
+  background: linear-gradient(to bottom, transparent, color-mix(in srgb, var(--accent-deep) 14%, transparent));
+  color: var(--text-muted);
+  font-size: var(--fs-sm);
+
+  /* ---------- Ligne d'orbite ---------- */
+
+  &__orbit {
+    position: absolute;
+    inset: 0 0 auto;
+    height: 1px;
+    background: linear-gradient(
+      90deg,
+      transparent,
+      var(--accent) 20%,
+      var(--accent-2) 50%,
+      var(--accent-warm) 80%,
+      transparent
+    );
+    box-shadow: 0 0 12px color-mix(in srgb, var(--accent-2) 60%, transparent);
+  }
+
+  &__node {
+    --tone: var(--accent);
+
+    position: absolute;
+    top: 50%;
+    width: 9px;
+    height: 9px;
+    margin-top: -4.5px;
+    border-radius: 50%;
+    background: var(--tone);
+    box-shadow: 0 0 10px 1px color-mix(in srgb, var(--tone) 70%, transparent);
+
+    &--accent {
+      left: 22%;
+    }
+
+    &--violet {
+      --tone: var(--accent-2);
+      left: 50%;
+    }
+
+    &--warm {
+      --tone: var(--accent-warm);
+      left: 78%;
+    }
+  }
+
+  /* ---------- Colonnes ---------- */
+
+  &__main {
+    position: relative;
+    display: grid;
+    grid-template-columns: minmax(240px, 1.5fr) repeat(3, minmax(0, 1fr)) 130px;
+    gap: var(--space-6);
+    padding-bottom: var(--space-7);
+
+    @include down($bp-lg) {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    @include down($bp-sm) {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  &__brand {
+    display: grid;
+    align-content: start;
+    gap: var(--space-4);
+
+    @include down($bp-lg) {
+      grid-column: 1 / -1;
+      padding-right: 120px;
+    }
+  }
+
+  &__logo {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-3);
+    justify-self: start;
+    color: var(--text);
+    font-family: var(--font-title);
+    font-size: var(--fs-lg);
+    font-weight: var(--fw-bold);
+    line-height: 1;
+    text-transform: uppercase;
+
+    > span {
+      display: grid;
+    }
+
+    .logo {
+      transition: transform var(--duration) var(--ease-bounce);
+    }
+
+    &:hover .logo {
+      transform: rotate(-8deg) scale(1.06);
+    }
+  }
+
+  &__role {
+    margin-top: 4px;
+    color: var(--text-muted);
+    font-size: var(--fs-xs);
+    font-weight: var(--fw-medium);
+    letter-spacing: var(--ls-label);
+  }
+
+  &__pitch {
+    max-width: 36ch;
+  }
+
+  &__socials {
+    display: flex;
+    gap: var(--space-2);
+  }
+
+  &__col {
+    display: grid;
+    align-content: start;
+    gap: var(--space-4);
+  }
+
+  &__heading {
+    color: var(--text);
+  }
+
+  &__links {
+    display: grid;
+    gap: var(--space-3);
+
+    a {
+      color: var(--text-muted);
+      overflow-wrap: anywhere;
+      transition: color var(--duration-fast) var(--ease-out);
+
+      &:hover {
+        color: var(--accent);
+      }
+    }
+  }
+
+  &__note {
+    color: var(--text-subtle);
+    font-size: var(--fs-xs);
+  }
+
+  // Ancre de la mascotte : elle se tient sur la ligne de la barre du bas
+  &__mascot {
+    align-self: end;
+    width: 130px;
+    aspect-ratio: 1 / 1.05;
+    margin-bottom: calc(-1 * var(--space-7));
+
+    @include down($bp-lg) {
+      position: absolute;
+      top: 0;
+      right: 0;
+      width: 104px;
+      margin: 0;
+    }
+  }
+
+  /* ---------- Barre du bas ---------- */
+
+  &__bottom {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-3) var(--space-5);
+    padding-block: var(--space-5) var(--space-6);
+    border-top: 1px solid var(--border);
+    color: var(--text-subtle);
+    font-size: var(--fs-xs);
+  }
+
+  &__top {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2);
+    color: var(--text-muted);
+    font-family: var(--font-title);
+    font-weight: var(--fw-semibold);
+    letter-spacing: var(--ls-label);
+    text-transform: uppercase;
+
+    &:hover {
+      color: var(--accent);
+    }
+  }
+}
+
+/* ---------- Bande d'appel ---------- */
+
+.footer-cta {
+  margin-bottom: var(--space-8);
+
+  &__panel {
+    --frame-border: linear-gradient(120deg, var(--accent), var(--accent-2) 55%, var(--accent-warm));
+    --frame-fill: linear-gradient(
+      120deg,
+      color-mix(in srgb, var(--accent) 10%, var(--bg-elevated)),
+      color-mix(in srgb, var(--accent-2) 12%, var(--bg-elevated))
+    );
+
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-5);
+    padding: clamp(var(--space-5), 4vw, var(--space-7));
+    @include chamfer-frame(22px, 1.5px);
+  }
+
+  &__text {
+    display: grid;
+    gap: var(--space-3);
+    max-width: 52ch;
+  }
+
+  &__title {
+    color: var(--text);
+    font-size: var(--fs-2xl);
+  }
+}
+
+// Thème clair : le fond du footer se teinte à peine, sans s'assombrir
+:root[data-theme="light"] .footer {
+  background: linear-gradient(to bottom, transparent, color-mix(in srgb, var(--accent-2) 6%, transparent));
+}

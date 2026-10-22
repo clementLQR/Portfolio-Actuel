@@ -1,0 +1,168 @@
+@use "../../styles/mixins" as *;
+
+.rail {
+  position: fixed;
+  top: var(--header-h);
+  bottom: 0;
+  left: 0;
+  z-index: var(--z-nav);
+  display: grid;
+  align-items: center;
+  // Le panneau prend la largeur de ses icônes, au lieu de s'étirer sur tout le rail
+  justify-items: start;
+  width: var(--rail-w);
+  padding-inline: var(--space-4) 0;
+  pointer-events: none;
+
+  // Panneau flottant façon interface de jeu, posé sur le décor
+  &__list {
+    position: relative;
+    display: grid;
+    justify-items: center;
+    gap: var(--space-3);
+    padding: var(--space-3) var(--space-2);
+    background:
+      linear-gradient(
+          180deg,
+          color-mix(in srgb, var(--bg-elevated) 82%, transparent),
+          color-mix(in srgb, var(--bg-elevated) 68%, transparent)
+        )
+        padding-box,
+      linear-gradient(
+          180deg,
+          color-mix(in srgb, var(--accent) 70%, transparent),
+          color-mix(in srgb, var(--accent-2) 55%, transparent) 55%,
+          color-mix(in srgb, var(--accent-warm) 45%, transparent)
+        )
+        border-box;
+    border: 1px solid transparent;
+    border-radius: var(--radius-lg);
+    box-shadow:
+      0 0 24px -6px color-mix(in srgb, var(--accent) 35%, transparent),
+      var(--shadow-card);
+    pointer-events: auto;
+
+    // Petits nœuds lumineux en haut et en bas, comme sur les orbites
+    &::before,
+    &::after {
+      content: "";
+      position: absolute;
+      left: 50%;
+      width: 5px;
+      height: 5px;
+      border-radius: 50%;
+      transform: translateX(-50%);
+    }
+
+    &::before {
+      top: -3px;
+      background: var(--accent);
+      box-shadow: 0 0 8px var(--accent);
+    }
+
+    &::after {
+      bottom: -3px;
+      background: var(--accent-warm);
+      box-shadow: 0 0 8px var(--accent-warm);
+    }
+  }
+
+  &__link {
+    position: relative;
+    isolation: isolate;
+    display: grid;
+    place-items: center;
+    width: 44px;
+    height: 44px;
+    color: var(--text-muted);
+    transition: color var(--duration-fast) var(--ease-out);
+
+    // Fond chanfreiné de l'icône active
+    &::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      z-index: -1;
+      background: var(--accent-warm);
+      clip-path: var(--chamfer-shape);
+      opacity: 0;
+      transform: scale(0.6);
+      transition:
+        opacity var(--duration) var(--ease-out),
+        transform var(--duration) var(--ease-bounce);
+    }
+
+    &:hover,
+    &:focus-visible {
+      color: var(--text);
+
+      .rail__tip {
+        opacity: 1;
+        transform: translate(0, -50%);
+      }
+    }
+
+    &.active {
+      color: var(--text-on-accent);
+
+      &::before {
+        opacity: 1;
+        transform: none;
+      }
+    }
+  }
+
+  &__tip {
+    position: absolute;
+    left: calc(100% + var(--space-4));
+    top: 50%;
+    padding: var(--space-1) var(--space-3);
+    background: chamfer-corners(5px, 1px, var(--border-strong)), var(--surface-strong);
+    border: 1px solid var(--border-strong);
+    color: var(--text);
+    font-family: var(--font-title);
+    font-size: var(--fs-xs);
+    font-weight: var(--fw-semibold);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    white-space: nowrap;
+    opacity: 0;
+    pointer-events: none;
+    transform: translate(-6px, -50%);
+    transition:
+      opacity var(--duration-fast) var(--ease-out),
+      transform var(--duration-fast) var(--ease-out);
+    @include chamfer(5px);
+  }
+
+  // Mobile : barre d'icônes en bas de l'écran
+  @include down($bp-md) {
+    top: auto;
+    width: 100%;
+    height: var(--bottombar-h);
+    padding: 0;
+    // La barre du bas, elle, occupe toute la largeur
+    justify-items: stretch;
+
+    &__list {
+      display: flex;
+      justify-content: space-around;
+      height: 100%;
+      padding: var(--space-2) var(--space-3) max(var(--space-2), env(safe-area-inset-bottom));
+      border-radius: 0;
+      border-width: 1px 0 0;
+      background: var(--bg-elevated);
+      border-color: var(--border);
+      box-shadow: none;
+
+      &::before,
+      &::after {
+        display: none;
+      }
+    }
+
+    &__tip {
+      display: none;
+    }
+  }
+}

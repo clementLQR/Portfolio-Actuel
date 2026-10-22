@@ -1,0 +1,387 @@
+@use "../styles/mixins" as *;
+
+.detail {
+  position: relative;
+  isolation: isolate;
+  padding-top: var(--space-6);
+  padding-bottom: var(--section-gap);
+
+  &__back {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2);
+    color: var(--text-muted);
+    font-size: var(--fs-sm);
+
+    &:hover {
+      color: var(--accent);
+    }
+  }
+
+  &__head {
+    display: grid;
+    justify-items: start;
+    gap: var(--space-4);
+    padding-block: var(--space-6);
+    padding-right: clamp(0px, 18vw, 240px);
+  }
+
+  // Sur-titre : contexte et année
+  &__kicker {
+    color: var(--accent);
+  }
+
+  &__title {
+    font-size: var(--fs-3xl);
+  }
+
+  &__links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-3);
+    margin-top: var(--space-2);
+  }
+
+  /* ---------- Galerie ---------- */
+
+  &__gallery {
+    display: grid;
+    grid-template-columns: 120px 1fr;
+    gap: var(--space-4);
+    align-items: start;
+
+    @include down($bp-md) {
+      grid-template-columns: 1fr;
+    }
+
+    // Un seul visuel : pleine largeur, sans colonne de miniatures
+    &--single {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  &__thumbs {
+    display: grid;
+    gap: var(--space-3);
+
+    @include down($bp-md) {
+      order: 2;
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+
+  &__thumb {
+    position: relative;
+    display: block;
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    overflow: hidden;
+    --thumb-border: var(--border);
+
+    border: 2px solid var(--thumb-border);
+    opacity: 0.6;
+    clip-path: var(--chamfer-shape);
+    transition: opacity var(--duration) var(--ease-out);
+
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    // Coins de la bordure, redessinés AU-DESSUS de l'image (qui les masquerait sinon)
+    &::after {
+      content: "";
+      position: absolute;
+      inset: -2px;
+      background: chamfer-corners(10px, 2px, var(--thumb-border));
+      pointer-events: none;
+    }
+
+    &:hover {
+      opacity: 0.9;
+    }
+
+    &--active {
+      --thumb-border: var(--accent);
+      opacity: 1;
+    }
+
+    &:focus-visible {
+      clip-path: none;
+    }
+  }
+
+  // Cadre 16:9 ; l'image est montrée en entier (les captures très larges gardent
+  // leurs bords, avec une fine bande en haut et en bas)
+  &__main {
+    aspect-ratio: 16 / 9;
+
+    .ccard__inner {
+      background: var(--bg-elevated);
+    }
+  }
+
+  &__main-img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+
+    @include motion {
+      animation: visual-in var(--duration-slow) var(--ease-out);
+    }
+  }
+
+  /* ---------- Chiffres clés ---------- */
+
+  &__stats {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: var(--space-4);
+    margin-top: var(--space-7);
+  }
+
+  &__stat {
+    display: grid;
+    gap: var(--space-1);
+    padding-left: var(--space-4);
+    border-left: 2px solid var(--accent-2);
+  }
+
+  &__stat-value {
+    font-family: var(--font-title);
+    font-size: var(--fs-3xl);
+    font-weight: var(--fw-bold);
+    line-height: 1;
+  }
+
+  &__stat-label {
+    color: var(--text-muted);
+  }
+
+  /* ---------- Fiche + sections ---------- */
+
+  &__body {
+    display: grid;
+    grid-template-columns: minmax(260px, 340px) 1fr;
+    gap: var(--space-7);
+    align-items: start;
+    margin-top: var(--space-8);
+
+    @include down($bp-lg) {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  // La fiche suit la lecture sur grand écran
+  &__aside {
+    position: sticky;
+    top: calc(var(--header-h) + var(--space-4));
+
+    @include down($bp-lg) {
+      position: static;
+    }
+  }
+
+  &__sheet {
+    padding: var(--space-5);
+  }
+
+  &__facts {
+    display: grid;
+    gap: var(--space-4);
+    margin: 0;
+
+    dd {
+      margin: var(--space-1) 0 0;
+      font-weight: var(--fw-medium);
+    }
+  }
+
+  &__stack {
+    display: grid;
+    gap: var(--space-3);
+    margin-top: var(--space-5);
+    padding-top: var(--space-5);
+    border-top: 1px solid var(--border);
+
+    ul {
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--space-2);
+    }
+  }
+
+  &__sections {
+    display: grid;
+    gap: var(--space-7);
+    max-width: 72ch;
+  }
+
+  &__section {
+    display: grid;
+    gap: var(--space-4);
+  }
+
+  &__section-title {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+    font-size: var(--fs-xl);
+  }
+
+  // Numéro de section dans une case chanfreinée, comme sur la page Compétences
+  &__slot {
+    display: grid;
+    place-items: center;
+    width: 36px;
+    height: 36px;
+    flex-shrink: 0;
+    background: var(--accent-warm);
+    color: var(--text-on-accent);
+    clip-path: var(--chamfer-shape);
+  }
+
+  &__text {
+    color: var(--text-muted);
+  }
+
+  &__list {
+    display: grid;
+    gap: var(--space-3);
+    color: var(--text-muted);
+
+    li {
+      position: relative;
+      padding-left: var(--space-5);
+
+      // Petit losange en guise de puce
+      &::before {
+        content: "";
+        position: absolute;
+        left: 2px;
+        top: 0.62em;
+        width: 7px;
+        height: 7px;
+        background: var(--accent);
+        transform: rotate(45deg);
+      }
+    }
+
+    strong {
+      color: var(--text);
+      font-weight: var(--fw-semibold);
+    }
+  }
+
+  /* ---------- Défis ---------- */
+
+  &__challenges {
+    margin-top: var(--section-gap);
+  }
+
+  &__challenges-title {
+    margin-bottom: var(--space-6);
+  }
+
+  &__challenge-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--space-5);
+
+    @include down($bp-lg) {
+      grid-template-columns: 1fr;
+    }
+
+    > li {
+      display: grid;
+    }
+  }
+
+  &__challenge-inner {
+    display: grid;
+    align-content: start;
+    gap: var(--space-4);
+    height: 100%;
+    padding: var(--space-5);
+
+    p:not(.label) {
+      color: var(--text-muted);
+    }
+  }
+
+  &__challenge-name {
+    font-size: var(--fs-lg);
+  }
+
+  &__challenge-label {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    margin-bottom: var(--space-2);
+    color: var(--accent-warm);
+
+    &--ok {
+      color: var(--accent);
+    }
+  }
+
+  /* ---------- Précédent / suivant ---------- */
+
+  &__pager {
+    display: flex;
+    justify-content: space-between;
+    gap: var(--space-4);
+    margin-top: var(--space-8);
+    padding-top: var(--space-6);
+    border-top: 1px solid var(--border);
+  }
+
+  &__pager-link {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-4);
+    color: var(--text);
+
+    > span {
+      display: grid;
+    }
+
+    &--next {
+      margin-left: auto;
+      text-align: right;
+    }
+
+    &:hover {
+      color: var(--accent);
+    }
+  }
+
+  &__pager-title {
+    font-family: var(--font-title);
+    font-size: var(--fs-lg);
+    font-weight: var(--fw-bold);
+    text-transform: uppercase;
+  }
+
+  // La mascotte observe depuis le coin supérieur droit
+  &__mascot {
+    position: absolute;
+    top: var(--space-8);
+    right: 0;
+    width: clamp(120px, 15vw, 200px);
+    aspect-ratio: 1;
+
+    @include down($bp-md) {
+      width: 96px;
+      top: var(--space-7);
+    }
+  }
+}
+
+@keyframes visual-in {
+  from {
+    opacity: 0;
+    transform: scale(1.03);
+  }
+}

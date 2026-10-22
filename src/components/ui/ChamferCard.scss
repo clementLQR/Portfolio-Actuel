@@ -1,0 +1,55 @@
+@use "../../styles/mixins" as *;
+
+.ccard {
+  --card-edge: linear-gradient(135deg, var(--border-strong), var(--border));
+  --card-glow: var(--accent);
+
+  position: relative;
+  transition:
+    transform var(--duration) var(--ease-out),
+    filter var(--duration) var(--ease-out);
+
+  &__frame {
+    height: 100%;
+    padding: 1px;
+    background: var(--card-edge);
+    clip-path: var(--chamfer-shape);
+  }
+
+  &__inner {
+    position: relative;
+    height: 100%;
+    background:
+      radial-gradient(120% 90% at 0% 0%, color-mix(in srgb, var(--card-glow) 9%, transparent), transparent 60%),
+      var(--surface-strong);
+    @include chamfer(9.5px);
+  }
+
+  &--warm {
+    --card-edge: linear-gradient(135deg, var(--accent-warm), color-mix(in srgb, var(--highlight) 50%, transparent) 60%, var(--border));
+    --card-glow: var(--accent-warm);
+  }
+
+  &--cyan {
+    --card-edge: linear-gradient(135deg, var(--accent), color-mix(in srgb, var(--accent) 25%, transparent) 60%, var(--border));
+    --card-glow: var(--accent);
+  }
+
+  &--violet {
+    --card-edge: linear-gradient(135deg, var(--accent-2), color-mix(in srgb, var(--detail) 45%, transparent) 60%, var(--border));
+    --card-glow: var(--accent-2);
+  }
+
+  &--cyan-violet {
+    --card-edge: linear-gradient(135deg, var(--accent), var(--accent-2) 70%, var(--border));
+    --card-glow: var(--accent);
+  }
+
+  &--interactive {
+    &:hover,
+    &:focus-within {
+      transform: translateY(-4px);
+      filter: drop-shadow(0 0 14px color-mix(in srgb, var(--card-glow) 40%, transparent));
+    }
+  }
+}

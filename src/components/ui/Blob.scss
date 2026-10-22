@@ -1,0 +1,186 @@
+@use "../../styles/mixins" as *;
+
+.blob {
+  position: absolute;
+  z-index: -1;
+  border-radius: 50%;
+  pointer-events: none;
+
+  // Planètes illustrées (SVG dans Blob.tsx), teintées par les variables --p-*
+  &--planet-warm,
+  &--planet-blue,
+  &--planet-violet {
+    border-radius: 0;
+    // Le résultat des filtres SVG est mis en cache pendant la dérive
+    will-change: transform;
+  }
+
+  &--planet-warm {
+    --p-light: var(--highlight);
+    --p-main: var(--accent-warm);
+    --p-mid: color-mix(in srgb, var(--accent-warm) 45%, var(--accent-deep));
+    --p-dark: var(--accent-deep);
+    --p-atmo: var(--detail);
+    --p-band: var(--highlight);
+  }
+
+  &--planet-blue {
+    --p-light: color-mix(in srgb, var(--accent) 55%, var(--text));
+    --p-main: var(--accent);
+    --p-mid: color-mix(in srgb, var(--accent) 40%, var(--accent-2));
+    --p-dark: var(--accent-deep);
+    --p-atmo: var(--accent);
+    --p-band: color-mix(in srgb, var(--accent) 50%, var(--text));
+  }
+
+  &--planet-violet {
+    --p-light: var(--detail);
+    --p-main: var(--accent-2);
+    --p-mid: color-mix(in srgb, var(--accent-2) 55%, var(--accent-deep));
+    --p-dark: var(--accent-deep);
+    --p-atmo: var(--detail);
+    --p-band: var(--detail);
+  }
+
+  // Halos : grandes taches floues
+  &--glow-warm,
+  &--glow-violet,
+  &--glow-blue {
+    filter: blur(60px);
+    opacity: 0.45;
+  }
+
+  &--glow-warm {
+    background: radial-gradient(circle, var(--accent-warm), transparent 70%);
+  }
+
+  &--glow-violet {
+    background: radial-gradient(circle, var(--accent-2), transparent 70%);
+  }
+
+  &--glow-blue {
+    background: radial-gradient(circle, var(--accent), transparent 70%);
+  }
+
+  @include motion {
+    &--planet-warm,
+    &--planet-blue,
+    &--planet-violet {
+      animation: planet-drift 18s ease-in-out infinite alternate;
+    }
+  }
+}
+
+.planet {
+  display: block;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+
+  &__light {
+    stop-color: var(--p-light);
+  }
+  &__main {
+    stop-color: var(--p-main);
+  }
+  &__mid {
+    stop-color: var(--p-mid);
+  }
+  &__dark {
+    stop-color: var(--p-dark);
+  }
+  &__night {
+    stop-color: var(--p-dark);
+  }
+  &__atmo {
+    stop-color: var(--p-atmo);
+  }
+
+  // Halo d'atmosphère autour de la sphère
+  &__halo {
+    fill: var(--p-atmo);
+    opacity: 0.4;
+  }
+
+  &__bands {
+    fill: var(--p-band);
+    mix-blend-mode: soft-light;
+    opacity: 0.55;
+  }
+
+  &__shine {
+    fill: var(--p-light);
+    opacity: 0.45;
+  }
+
+  &__grain {
+    mix-blend-mode: overlay;
+    opacity: 0.3;
+  }
+
+  // Enveloppe en orbite : rappel du contact
+  &__mail {
+    fill: var(--highlight);
+    stroke: var(--accent-deep);
+    stroke-width: 3.5;
+    stroke-linejoin: round;
+    stroke-linecap: round;
+    filter: drop-shadow(0 0 4px color-mix(in srgb, var(--highlight) 60%, transparent));
+
+    path {
+      fill: none;
+    }
+  }
+
+  &__ring {
+    fill: none;
+    stroke: var(--p-atmo);
+    stroke-width: 5;
+    opacity: 0.55;
+
+    &--front {
+      opacity: 0.8;
+    }
+  }
+}
+
+:root[data-theme="light"] .blob {
+  // En clair, pas de face sombre : la sphère reste dans des tons pastel
+  &--planet-warm,
+  &--planet-blue,
+  &--planet-violet {
+    --p-light: color-mix(in srgb, var(--p-main) 35%, var(--surface-strong));
+    --p-mid: color-mix(in srgb, var(--p-main) 60%, var(--bg));
+    --p-dark: color-mix(in srgb, var(--p-main) 45%, var(--accent-2) 20%, var(--bg));
+    opacity: 0.85;
+  }
+
+  .planet__night {
+    stop-color: var(--p-main);
+  }
+
+  .planet__shadow {
+    opacity: 0.28;
+  }
+
+  .planet__halo {
+    opacity: 0.25;
+  }
+
+  .planet__bands {
+    mix-blend-mode: overlay;
+    opacity: 0.45;
+  }
+
+  &--glow-warm,
+  &--glow-violet,
+  &--glow-blue {
+    opacity: 0.3;
+  }
+}
+
+@keyframes planet-drift {
+  to {
+    translate: 0 -18px;
+  }
+}

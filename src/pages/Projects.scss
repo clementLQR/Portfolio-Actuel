@@ -1,0 +1,32 @@
+@use "../styles/mixins" as *;
+
+.projects {
+  position: relative;
+  isolation: isolate;
+  padding-bottom: var(--section-gap);
+
+  &__filters {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+    margin-bottom: var(--space-6);
+  }
+
+  &__grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--space-5);
+
+    @include down($bp-lg) {
+      grid-template-columns: repeat(2, 1fr);
+    }
+
+    @include down($bp-md) {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  &__item[hidden] {
+    display: none;
+  }
+}

@@ -1,0 +1,229 @@
+@use "../styles/mixins" as *;
+
+.contact {
+  position: relative;
+  isolation: isolate;
+  padding-bottom: var(--section-gap);
+
+  &__layout {
+    display: grid;
+    grid-template-columns: 1.6fr 1fr;
+    align-items: start;
+    gap: var(--space-6);
+
+    @include down($bp-lg) {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  &__form,
+  &__success {
+    display: grid;
+    gap: var(--space-5);
+    padding: clamp(var(--space-5), 4vw, var(--space-7));
+  }
+
+  &__row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--space-5);
+
+    @include down($bp-md) {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  &__summary {
+    display: flex;
+    gap: var(--space-3);
+    padding: var(--space-4);
+    border: 1px solid var(--danger);
+    background: color-mix(in srgb, var(--danger) 10%, transparent);
+    color: var(--text);
+
+    > svg {
+      flex-shrink: 0;
+      color: var(--danger);
+    }
+
+    ul {
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--space-1) var(--space-4);
+      margin-top: var(--space-1);
+    }
+
+    a {
+      color: var(--text);
+      text-decoration: underline;
+    }
+  }
+
+  &__submit {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--space-4);
+  }
+
+  &__success {
+    position: relative;
+    justify-items: start;
+  }
+
+  &__success-icon {
+    display: grid;
+    place-items: center;
+    width: 64px;
+    height: 64px;
+    background: var(--success);
+    color: var(--text-on-accent);
+    clip-path: var(--chamfer-shape);
+
+    @include motion {
+      animation: success-pop var(--duration-slow) var(--ease-bounce);
+    }
+  }
+
+  &__aside {
+    position: relative;
+    display: grid;
+    gap: var(--space-4);
+  }
+
+  &__links {
+    display: grid;
+    gap: var(--space-3);
+  }
+
+  &__link {
+    display: flex;
+    align-items: center;
+    gap: var(--space-4);
+    padding: var(--space-4);
+    color: var(--text);
+    background:
+      chamfer-corners(10px, 1px, var(--border-strong), var(--border-strong), var(--border), var(--border)),
+      linear-gradient(var(--surface-strong), var(--surface-strong)) padding-box,
+      linear-gradient(135deg, var(--border-strong), var(--border)) border-box;
+    border: 1px solid transparent;
+    clip-path: var(--chamfer-shape);
+    transition: background var(--duration) var(--ease-out);
+
+    > svg {
+      flex-shrink: 0;
+      color: var(--accent);
+    }
+
+    > span {
+      display: grid;
+      min-width: 0;
+    }
+
+    &:hover {
+      background:
+        chamfer-corners(10px, 1px, var(--accent), color-mix(in srgb, var(--accent) 50%, var(--accent-2)), var(--accent-2), color-mix(in srgb, var(--accent) 50%, var(--accent-2))),
+        linear-gradient(var(--surface-hover), var(--surface-hover)) padding-box,
+        linear-gradient(135deg, var(--accent), var(--accent-2)) border-box;
+    }
+
+    &:focus-visible {
+      clip-path: none;
+    }
+  }
+
+  &__link-title {
+    font-family: var(--font-title);
+    font-weight: var(--fw-semibold);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+
+  &__link-sub {
+    overflow: hidden;
+    color: var(--text-muted);
+    font-size: var(--fs-sm);
+    text-overflow: ellipsis;
+  }
+}
+
+/* ---------- Champs ---------- */
+
+.field {
+  display: grid;
+  gap: var(--space-2);
+
+  &__label {
+    font-family: var(--font-title);
+    font-size: var(--fs-sm);
+    font-weight: var(--fw-semibold);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+
+  &__control {
+    width: 100%;
+    min-height: 50px;
+    padding: var(--space-3) var(--space-4);
+    // Couleur et épaisseur de bordure passent par des variables : côtés, coins redessinés
+    // et renfort intérieur suivent toujours le même état (survol, focus, erreur)
+    --field-border: var(--border-strong);
+    --field-width: 1px;
+
+    background: chamfer-corners(10px, var(--field-width), var(--field-border)), var(--bg-elevated);
+    border: 1px solid var(--field-border);
+    box-shadow: inset 0 0 0 calc(var(--field-width) - 1px) var(--field-border);
+    border-radius: 0;
+    color: var(--text);
+    font-size: var(--fs-base);
+    line-height: var(--lh-text);
+    clip-path: var(--chamfer-shape);
+    transition:
+      border-color var(--duration-fast) var(--ease-out),
+      box-shadow var(--duration-fast) var(--ease-out);
+    resize: vertical;
+
+    &:hover {
+      --field-border: var(--text-muted);
+    }
+
+    // Focus : bordure épaissie, cyan, ou rouge si le champ est en erreur
+    &:focus-visible {
+      --field-border: var(--accent);
+      --field-width: 2px;
+      outline: none;
+    }
+  }
+
+  &__hint {
+    color: var(--text-muted);
+    font-size: var(--fs-sm);
+  }
+
+  &__error {
+    color: var(--danger);
+    font-size: var(--fs-sm);
+    font-weight: var(--fw-medium);
+  }
+
+  &--error &__control,
+  &--error &__control:hover,
+  &--error &__control:focus-visible {
+    --field-border: var(--danger);
+  }
+}
+
+@keyframes success-pop {
+  from {
+    transform: scale(0.4) rotate(-20deg);
+  }
+}
+
+// Champ piège anti-robots : hors de l'écran, jamais visible
+.contact__trap {
+  position: absolute;
+  left: -10000px;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+}

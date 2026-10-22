@@ -1,0 +1,223 @@
+@use "../../styles/mixins" as *;
+
+/* ---------- Formes organiques ---------- */
+
+.wave {
+  position: absolute;
+  z-index: -1;
+  height: auto;
+  max-width: none;
+  pointer-events: none;
+  // Les rubans se fondent vers l'intérieur : aucun bord coupé net
+  mask-image: radial-gradient(ellipse 100% 100% at 0% 100%, black 38%, transparent 80%);
+
+  &--bottom-left {
+    left: 0;
+    bottom: 0;
+  }
+
+  &--bottom-right {
+    right: 0;
+    bottom: 0;
+    transform: scaleX(-1);
+  }
+
+  // En haut, la vague remonte sous le header (transparent) jusqu'au bord de l'écran
+  &--top-left {
+    left: 0;
+    top: calc(-1 * var(--header-h));
+    transform: scaleY(-1);
+  }
+
+  &--top-right {
+    right: 0;
+    top: calc(-1 * var(--header-h));
+    transform: scale(-1, -1);
+  }
+
+  // Couleurs des rubans, de l'arrière vers l'avant (--w1 → --w6)
+  // Violet profond → violet → cyan, liseré orange et rose devant
+  &--cool {
+    --w1: var(--accent-deep);
+    --w2: var(--accent-2);
+    --w3: color-mix(in srgb, var(--accent) 60%, var(--accent-2));
+    --w4: var(--accent);
+    --w5: var(--accent-warm);
+    --w6: var(--detail);
+    --w-crest: color-mix(in srgb, var(--accent) 45%, var(--text));
+  }
+
+  // Violet → rose → orange → jaune
+  &--warm {
+    --w1: var(--accent-deep);
+    --w2: var(--accent-2);
+    --w3: var(--detail);
+    --w4: var(--accent-warm);
+    --w5: var(--highlight);
+    --w6: var(--accent-warm);
+    --w-crest: color-mix(in srgb, var(--highlight) 55%, var(--text));
+  }
+
+  &__shade {
+    stop-color: var(--accent-deep);
+  }
+
+  &__crest {
+    stop-color: var(--w-crest);
+  }
+
+  &__crest-line {
+    stroke-width: 2.5;
+    stroke-linecap: round;
+  }
+
+  &__band--1 {
+    opacity: 0.5;
+  }
+
+  &__band--2 {
+    opacity: 0.6;
+  }
+
+  &__band--3 {
+    opacity: 0.7;
+  }
+
+  &__band--4 {
+    opacity: 0.8;
+  }
+
+  &__band--5 {
+    opacity: 0.9;
+  }
+
+  // Ondulation lente : chaque ruban glisse à son rythme, comme une houle
+  @include motion {
+    &__band {
+      animation: wave-swell 13s ease-in-out infinite alternate;
+    }
+
+    &__band--2 {
+      animation-duration: 11s;
+      animation-delay: -4s;
+    }
+
+    &__band--3 {
+      animation-duration: 15s;
+      animation-delay: -7s;
+    }
+
+    &__band--4 {
+      animation-duration: 10s;
+      animation-delay: -2s;
+    }
+
+    &__band--5 {
+      animation-duration: 12s;
+      animation-delay: -9s;
+    }
+  }
+}
+
+:root[data-theme="light"] .wave {
+  // En clair, le fond des rubans s'éclaircit vers le crème au lieu de s'assombrir
+  --w1: color-mix(in srgb, var(--accent-2) 35%, var(--bg));
+  --w-crest: var(--surface-strong);
+  opacity: 0.8;
+
+  &--cool {
+    --w2: color-mix(in srgb, var(--accent-2) 65%, var(--bg));
+  }
+
+  .wave__shade {
+    stop-color: var(--bg);
+  }
+}
+
+@keyframes wave-swell {
+  from {
+    transform: translate(0, 0);
+  }
+  to {
+    transform: translate(-40px, 6px);
+  }
+}
+
+/* ---------- Éléments rétro ---------- */
+
+.pixel-tone {
+  &--highlight {
+    --px: var(--highlight);
+  }
+  &--detail {
+    --px: var(--detail);
+  }
+  &--accent {
+    --px: var(--accent);
+  }
+  &--warm {
+    --px: var(--accent-warm);
+  }
+  &--violet {
+    --px: var(--accent-2);
+  }
+}
+
+.pixel-sparkle {
+  position: absolute;
+  fill: var(--px);
+  filter: drop-shadow(0 0 6px color-mix(in srgb, var(--px) 60%, transparent));
+  pointer-events: none;
+
+  &__satellite {
+    fill: var(--detail);
+  }
+
+  // Scintillement par paliers, façon sprite
+  @include motion {
+    animation: pixel-twinkle 2.6s steps(1) infinite;
+  }
+}
+
+@keyframes pixel-twinkle {
+  0%,
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  40% {
+    transform: scale(0.78);
+    opacity: 0.85;
+  }
+  55% {
+    transform: scale(0.55);
+    opacity: 0.6;
+  }
+  70% {
+    transform: scale(0.78);
+    opacity: 0.85;
+  }
+}
+
+.dotted-ring {
+  position: absolute;
+  pointer-events: none;
+
+  &__stop-a {
+    stop-color: var(--accent);
+  }
+
+  &__stop-b {
+    stop-color: var(--accent-2);
+  }
+
+  @include motion {
+    animation: dotted-spin 40s linear infinite;
+  }
+}
+
+@keyframes dotted-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}

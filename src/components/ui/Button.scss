@@ -1,0 +1,136 @@
+@use "../../styles/mixins" as *;
+
+.btn {
+  --btn-edge: var(--gradient-title);
+  --btn-face: var(--bg-elevated);
+  --btn-text: var(--text);
+  --btn-glow: var(--accent);
+
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 52px;
+  padding: 0 var(--space-6);
+  color: var(--btn-text);
+  font-family: var(--font-title);
+  font-size: var(--fs-sm);
+  font-weight: var(--fw-semibold);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  text-decoration: none;
+  isolation: isolate;
+  transition:
+    transform var(--duration-fast) var(--ease-out),
+    filter var(--duration) var(--ease-out);
+
+  // Bordure extérieure en dégradé
+  &__frame {
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    background: var(--btn-edge);
+    @include chamfer(12px);
+
+    // Fond du bouton, avec une seconde bordure fine à l'intérieur
+    &::before,
+    &::after {
+      content: "";
+      position: absolute;
+    }
+
+    &::before {
+      inset: 2px;
+      background: var(--btn-face);
+      @include chamfer(11px);
+    }
+
+    &::after {
+      inset: 5px;
+      background:
+        chamfer-corners(9px, 1px, var(--btn-glow)),
+        linear-gradient(var(--btn-face), var(--btn-face)) padding-box,
+        var(--btn-edge) border-box;
+      border: 1px solid transparent;
+      opacity: 0.55;
+      @include chamfer(9px);
+    }
+  }
+
+  &__label {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-3);
+  }
+
+  &__icon {
+    transition: transform var(--duration) var(--ease-bounce);
+  }
+
+  &:hover,
+  &:focus-visible {
+    filter: drop-shadow(0 0 12px color-mix(in srgb, var(--btn-glow) 55%, transparent));
+
+    .btn__icon {
+      transform: translateX(4px);
+    }
+  }
+
+  &:active {
+    transform: translateY(2px) scale(0.98);
+    filter: none;
+  }
+
+  &:focus-visible {
+    outline-offset: 5px;
+  }
+
+  &[disabled] {
+    cursor: progress;
+    opacity: 0.7;
+  }
+
+  // Variante pleine : CTA principal
+  &--primary {
+    --btn-face: color-mix(in srgb, var(--accent) 14%, var(--bg));
+  }
+
+  &--secondary {
+    --btn-edge: linear-gradient(90deg, var(--border-strong), var(--border-strong));
+    --btn-face: var(--surface-strong);
+    --btn-glow: var(--accent-2);
+  }
+
+  &--warm {
+    --btn-edge: linear-gradient(90deg, var(--accent-warm), var(--detail));
+    --btn-face: color-mix(in srgb, var(--accent-warm) 12%, var(--bg));
+    --btn-glow: var(--accent-warm);
+  }
+}
+
+// Thème clair : face presque blanche et bordure éclaircie, sans effet terne
+:root[data-theme="light"] .btn {
+  --btn-edge: linear-gradient(
+    90deg,
+    color-mix(in srgb, var(--accent) 75%, var(--surface-strong)),
+    color-mix(in srgb, var(--accent-2) 75%, var(--surface-strong))
+  );
+  --btn-face: var(--surface-strong);
+
+  &--primary {
+    --btn-face: color-mix(in srgb, var(--accent) 8%, var(--surface-strong));
+  }
+
+  &--secondary {
+    --btn-edge: linear-gradient(90deg, var(--border-strong), var(--border-strong));
+  }
+
+  &--warm {
+    --btn-edge: linear-gradient(
+      90deg,
+      color-mix(in srgb, var(--accent-warm) 75%, var(--surface-strong)),
+      color-mix(in srgb, var(--detail) 75%, var(--surface-strong))
+    );
+    --btn-face: color-mix(in srgb, var(--accent-warm) 8%, var(--surface-strong));
+  }
+}

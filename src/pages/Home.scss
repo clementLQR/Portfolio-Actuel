@@ -1,0 +1,837 @@
+@use "../styles/mixins" as *;
+
+/* ==========================================================================
+   Hero : le hub
+   ========================================================================== */
+
+.hub {
+  position: relative;
+  isolation: isolate;
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  gap: var(--space-4);
+  min-height: calc(100dvh - var(--header-h));
+  padding-block: var(--space-4) var(--space-5);
+
+  &__head {
+    padding-top: var(--space-3);
+  }
+
+  &__stage {
+    display: grid;
+    grid-template-columns: minmax(200px, 1fr) minmax(280px, 1.25fr) minmax(200px, 1fr);
+    grid-template-rows: 1fr 1fr;
+    align-items: center;
+    column-gap: var(--space-4);
+    row-gap: var(--space-6);
+    // Perspective commune : les quatre cartes fuient vers le même point, la mascotte
+    perspective: 800px;
+    perspective-origin: 50% 50%;
+  }
+
+  &__core {
+    position: relative;
+    grid-column: 2;
+    grid-row: 1 / 3;
+    width: 100%;
+    max-width: 520px;
+    aspect-ratio: 1;
+    justify-self: center;
+  }
+
+  // Boîte où se pose la mascotte (pieds en bas de la boîte, sur le socle)
+  &__anchor {
+    position: absolute;
+    left: 50%;
+    top: 8%;
+    width: 74%;
+    height: 70%;
+    transform: translateX(-50%);
+  }
+
+  &__cards {
+    display: contents;
+  }
+
+  // Indicateur de scroll, centré en bas du hub
+  &__bottom {
+    display: flex;
+    justify-content: center;
+  }
+
+  // Petite planète au trait, masquée sur petit écran
+  &__doodle {
+    @include down($bp-md) {
+      display: none;
+    }
+  }
+
+  @include down($bp-md) {
+    min-height: auto;
+
+    // La planète ne doit pas masquer les orbites sur petit écran
+    > .blob--planet-warm {
+      margin-left: -22%;
+      opacity: 0.6;
+    }
+
+    &__stage {
+      grid-template-columns: 1fr 1fr;
+      grid-template-rows: auto;
+      row-gap: var(--space-4);
+    }
+
+    &__core {
+      grid-column: 1 / -1;
+      grid-row: 1;
+      max-width: 340px;
+    }
+
+    &__bottom {
+      padding-top: var(--space-4);
+    }
+  }
+}
+
+/* ---------- Cartes du hub (verre sombre, bordure lumineuse, coins arrondis) ---------- */
+
+.hub-card {
+  --tilt-y: 0deg;
+  --tilt-x: 0deg;
+  --edge: linear-gradient(135deg, var(--border-strong), var(--border));
+  --glow: var(--accent);
+  --glyph-a: var(--accent);
+  --glyph-b: var(--accent-2);
+
+  position: relative;
+  display: block;
+  width: min(100%, 300px);
+  color: var(--text);
+  // Pas de perspective() ici : elle vient du hub, pour un point de fuite partagé
+  transform: rotateY(var(--tilt-y)) rotateX(var(--tilt-x)) translateZ(var(--lift, 0px));
+  transition: transform var(--duration-slow) var(--ease-out);
+
+  &__panel {
+    position: relative;
+    display: grid;
+    gap: var(--space-1);
+    padding: var(--space-5) var(--space-5) var(--space-6);
+    border: 2px solid transparent;
+    border-radius: var(--radius-lg);
+    background:
+      radial-gradient(120% 100% at 0% 0%, color-mix(in srgb, var(--glow) 16%, transparent), transparent 65%) padding-box,
+      linear-gradient(
+          color-mix(in srgb, var(--surface-strong) 70%, transparent),
+          color-mix(in srgb, var(--bg-elevated) 82%, transparent)
+        )
+        padding-box,
+      var(--edge) border-box;
+    box-shadow:
+      0 0 26px -6px color-mix(in srgb, var(--glow) 55%, transparent),
+      inset 0 0 28px -14px color-mix(in srgb, var(--glow) 60%, transparent),
+      var(--shadow-card);
+    transition:
+      box-shadow var(--duration) var(--ease-out),
+      background var(--duration) var(--ease-out);
+  }
+
+  &__title {
+    margin-top: var(--space-4);
+    font-family: var(--font-title);
+    font-size: var(--fs-xl);
+    font-weight: var(--fw-bold);
+    line-height: var(--lh-title);
+    text-transform: uppercase;
+  }
+
+  &__subtitle {
+    color: var(--text-muted);
+    font-size: var(--fs-sm);
+  }
+
+  // Petit carré décoratif posé sur un coin de la carte
+  &__pip {
+    position: absolute;
+    width: 14px;
+    height: 14px;
+    background: var(--glow);
+    box-shadow: 0 0 10px var(--glow);
+    border-radius: 2px;
+  }
+
+  // Teintes, d'après la maquette
+  &--warm {
+    --edge: linear-gradient(135deg, var(--accent-warm), color-mix(in srgb, var(--highlight) 60%, transparent) 55%, color-mix(in srgb, var(--accent-warm) 30%, transparent));
+    --glow: var(--accent-warm);
+    --glyph-a: var(--highlight);
+    --glyph-b: var(--accent-warm);
+  }
+
+  &--sunrise {
+    --edge: linear-gradient(120deg, var(--accent-warm), color-mix(in srgb, var(--accent-2) 60%, transparent) 50%, var(--accent));
+    --glow: var(--accent);
+    --glyph-a: var(--detail);
+    --glyph-b: var(--accent-2);
+  }
+
+  &--violet {
+    --edge: linear-gradient(135deg, var(--accent-2), color-mix(in srgb, var(--detail) 55%, transparent) 55%, color-mix(in srgb, var(--accent-2) 35%, transparent));
+    --glow: var(--accent-2);
+    --glyph-a: var(--detail);
+    --glyph-b: var(--accent-2);
+  }
+
+  &--cyan {
+    --edge: linear-gradient(135deg, var(--accent), color-mix(in srgb, var(--accent) 35%, transparent) 55%, var(--accent));
+    --glow: var(--accent);
+    --glyph-a: var(--accent);
+    --glyph-b: color-mix(in srgb, var(--accent) 55%, var(--accent-2));
+  }
+
+  // Inclinaison en perspective : les cartes pivotent sur leur bord intérieur,
+  // le bord extérieur avance vers nous, comme des panneaux disposés autour de la mascotte
+  --tilt-amount: 38deg;
+
+  // Sur écran moyen, moins d'angle : sinon les bords extérieurs sortent de l'écran
+  @include down($bp-xl) {
+    --tilt-amount: 26deg;
+    width: min(90%, 270px);
+  }
+
+  &--tl,
+  &--bl {
+    --tilt-y: var(--tilt-amount);
+    justify-self: end;
+    grid-column: 1;
+    transform-origin: 100% 50%;
+  }
+
+  &--tr,
+  &--br {
+    --tilt-y: calc(-1 * var(--tilt-amount));
+    justify-self: start;
+    grid-column: 3;
+    transform-origin: 0% 50%;
+  }
+
+  &--tl,
+  &--tr {
+    --tilt-x: -10deg;
+    grid-row: 1;
+    align-self: end;
+  }
+
+  &--bl,
+  &--br {
+    --tilt-x: 10deg;
+    grid-row: 2;
+    align-self: start;
+  }
+
+  &--tl &__pip {
+    top: -7px;
+    left: 14px;
+  }
+
+  &--tr &__pip {
+    top: 26px;
+    right: -7px;
+  }
+
+  &--bl &__pip {
+    display: none;
+  }
+
+  &--br &__pip {
+    right: 18px;
+    bottom: -7px;
+  }
+
+  // Survol : la carte se redresse et s'illumine
+  &:hover,
+  &:focus-visible {
+    --tilt-y: 0deg;
+    --tilt-x: 0deg;
+    --lift: 40px;
+
+    .hub-card__panel {
+      box-shadow:
+        0 0 40px -4px color-mix(in srgb, var(--glow) 70%, transparent),
+        inset 0 0 34px -12px color-mix(in srgb, var(--glow) 70%, transparent),
+        var(--shadow-card);
+    }
+
+    .hub-glyph {
+      transform: scale(1.08) rotate(-6deg);
+    }
+  }
+
+  &:focus-visible {
+    outline-offset: 6px;
+    border-radius: var(--radius-lg);
+  }
+
+  @include down($bp-lg) {
+    &__panel {
+      padding: var(--space-4) var(--space-4) var(--space-5);
+    }
+
+    &__title {
+      font-size: var(--fs-lg);
+    }
+  }
+
+  @include down($bp-md) {
+    --tilt-y: 0deg !important;
+    --tilt-x: 0deg !important;
+    width: 100%;
+    justify-self: stretch;
+    grid-row: auto !important;
+    grid-column: auto !important;
+
+    &__title {
+      margin-top: var(--space-3);
+    }
+
+    .hub-glyph {
+      width: 38px;
+      height: 38px;
+    }
+  }
+}
+
+.hub-glyph {
+  filter: drop-shadow(0 4px 10px color-mix(in srgb, var(--glyph-b) 45%, transparent));
+  transition: transform var(--duration) var(--ease-bounce);
+
+  &__stop-a {
+    stop-color: var(--glyph-a);
+  }
+
+  &__stop-b {
+    stop-color: var(--glyph-b);
+  }
+
+  &__shade {
+    fill: none;
+    stroke: color-mix(in srgb, var(--bg) 45%, transparent);
+    stroke-width: 2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+}
+
+/* ---------- Orbites ---------- */
+
+/*
+  Chaque anneau suit trois poses (0 %, 50 %, 100 %) définies par des variables :
+  inclinaison X, inclinaison Y et rotation Z dans son propre plan (qui fait
+  voyager les nœuds). Les nœuds appliquent la rotation inverse pour rester
+  ronds et face à l'écran. Animations linéaires et durées identiques :
+  l'inverse est exact à chaque image.
+*/
+
+.orbits {
+  position: absolute;
+  inset: 0;
+  perspective: 1100px;
+
+  &__scene {
+    position: absolute;
+    inset: 0;
+    transform-style: preserve-3d;
+  }
+
+  // Grand anneau fixe et lumineux, relié aux cartes
+  &__halo {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    overflow: visible;
+  }
+
+  &__halo-stop-a {
+    stop-color: var(--accent);
+  }
+
+  &__halo-stop-b {
+    stop-color: var(--accent-2);
+  }
+
+  &__halo-stop-c {
+    stop-color: var(--accent-warm);
+  }
+
+  &__halo-ring {
+    fill: none;
+    stroke: url(#halo-stroke);
+    stroke-width: 0.45;
+    filter: drop-shadow(0 0 1.4px var(--accent));
+
+    &--thin {
+      stroke: color-mix(in srgb, var(--accent) 35%, transparent);
+      stroke-width: 0.2;
+      filter: none;
+    }
+  }
+
+  &__dock {
+    --tone: var(--accent);
+
+    // Sur mobile, les cartes sont sous le hub : pas de liaisons latérales
+    @include down($bp-md) {
+      display: none;
+    }
+
+    line {
+      stroke: var(--tone);
+      stroke-width: 0.35;
+      opacity: 0.75;
+    }
+
+    circle {
+      fill: var(--tone);
+      filter: drop-shadow(0 0 1.6px var(--tone));
+    }
+
+    &--warm {
+      --tone: var(--accent-warm);
+    }
+
+    &--violet {
+      --tone: var(--accent-2);
+    }
+  }
+
+  &__spark {
+    &--violet {
+      fill: var(--accent-2);
+      filter: drop-shadow(0 0 1.5px var(--accent-2));
+    }
+
+    &--detail {
+      fill: var(--detail);
+      filter: drop-shadow(0 0 1.5px var(--detail));
+    }
+  }
+
+  &__ring {
+    --x0: 0deg;
+    --y0: 0deg;
+    --x1: 0deg;
+    --y1: 0deg;
+    --x2: 0deg;
+    --y2: 0deg;
+    --turn: 360deg;
+    --duration: 40s;
+
+    position: absolute;
+    border: 1.2px solid var(--border-strong);
+    border-radius: 50%;
+    transform-style: preserve-3d;
+    transform: rotateX(var(--x0)) rotateY(var(--y0));
+
+    // Anneau extérieur : presque à plat, comme l'anneau d'une planète
+    &--outer {
+      --x0: 72deg;
+      --y0: -12deg;
+      --x1: 60deg;
+      --y1: 14deg;
+      --x2: 72deg;
+      --y2: -12deg;
+      --duration: 46s;
+      inset: 10%;
+      border-color: color-mix(in srgb, var(--accent-warm) 55%, transparent);
+      box-shadow: 0 0 12px -2px color-mix(in srgb, var(--accent-warm) 45%, transparent);
+    }
+
+    // Anneau du milieu : plutôt vertical, il tourne dans l'autre sens
+    &--middle {
+      --x0: 14deg;
+      --y0: 64deg;
+      --x1: -16deg;
+      --y1: 52deg;
+      --x2: 14deg;
+      --y2: 64deg;
+      --turn: -360deg;
+      --duration: 34s;
+      inset: 19%;
+      border-style: dashed;
+      border-color: color-mix(in srgb, var(--accent) 45%, transparent);
+    }
+
+    // Anneau intérieur : en diagonale, il fait un tour complet sur Y
+    &--inner {
+      --x0: 38deg;
+      --y0: 0deg;
+      --x1: 22deg;
+      --y1: 180deg;
+      --x2: 38deg;
+      --y2: 360deg;
+      --duration: 26s;
+      inset: 28%;
+      border-color: color-mix(in srgb, var(--accent-2) 55%, transparent);
+    }
+  }
+
+  // Bras invisible : place le nœud sur le bord de l'anneau, à son angle
+  &__arm {
+    position: absolute;
+    inset: 0;
+    transform-style: preserve-3d;
+    transform: rotateZ(var(--angle));
+  }
+
+  &__node {
+    --tone: var(--accent);
+    // Reflet et bord du nœud : clair et profond en sombre, pastel en clair
+    --node-shine: var(--text);
+    --node-edge: color-mix(in srgb, var(--tone) 60%, var(--accent-deep));
+
+    position: absolute;
+    top: 50%;
+    left: 100%;
+    width: var(--node-size);
+    height: var(--node-size);
+    margin: calc(var(--node-size) / -2);
+    border-radius: 50%;
+    background: radial-gradient(circle at 35% 30%, var(--node-shine) 0%, var(--tone) 45%, var(--node-edge) 100%);
+    box-shadow: 0 0 10px 1px color-mix(in srgb, var(--tone) 70%, transparent);
+    transform: rotateZ(calc(-1 * var(--angle))) rotateY(calc(-1 * var(--y0))) rotateX(calc(-1 * var(--x0)));
+
+    &--warm {
+      --tone: var(--accent-warm);
+    }
+
+    &--accent {
+      --tone: var(--accent);
+    }
+
+    &--violet {
+      --tone: var(--accent-2);
+    }
+  }
+
+  @include motion {
+    &__ring {
+      animation: ring-tumble var(--duration) linear infinite;
+    }
+
+    &__node {
+      animation: node-face var(--duration) linear infinite;
+    }
+  }
+}
+
+:root[data-theme="light"] .orbits__node {
+  --node-shine: var(--surface-strong);
+  --node-edge: var(--tone);
+}
+
+@keyframes ring-tumble {
+  0% {
+    transform: rotateX(var(--x0)) rotateY(var(--y0)) rotateZ(0deg);
+  }
+  50% {
+    transform: rotateX(var(--x1)) rotateY(var(--y1)) rotateZ(calc(var(--turn) / 2));
+  }
+  100% {
+    transform: rotateX(var(--x2)) rotateY(var(--y2)) rotateZ(var(--turn));
+  }
+}
+
+// Inverse exacte de ring-tumble (ordre des rotations inversé) + annulation de l'angle du bras
+@keyframes node-face {
+  0% {
+    transform: rotateZ(calc(-1 * var(--angle))) rotateZ(0deg) rotateY(calc(-1 * var(--y0))) rotateX(calc(-1 * var(--x0)));
+  }
+  50% {
+    transform: rotateZ(calc(-1 * var(--angle))) rotateZ(calc(var(--turn) / -2)) rotateY(calc(-1 * var(--y1))) rotateX(calc(-1 * var(--x1)));
+  }
+  100% {
+    transform: rotateZ(calc(-1 * var(--angle))) rotateZ(calc(-1 * var(--turn))) rotateY(calc(-1 * var(--y2))) rotateX(calc(-1 * var(--x2)));
+  }
+}
+
+/* ==========================================================================
+   Bienvenue
+   ========================================================================== */
+
+.welcome {
+  isolation: isolate;
+
+  &__inner {
+    position: relative;
+    display: grid;
+    grid-template-columns: 1.3fr 0.7fr;
+    align-items: center;
+    gap: var(--space-7);
+  }
+
+  &__text {
+    display: grid;
+    justify-items: start;
+    gap: var(--space-5);
+  }
+
+  &__title {
+    font-size: var(--fs-3xl);
+    line-height: var(--lh-tight);
+  }
+
+  &__actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--space-5);
+    padding-top: var(--space-3);
+  }
+
+  // Annotation manuscrite : décor uniquement
+  &__note {
+    // Violet éclairci : le violet pur se lit mal sur le fond nuit
+    --note-color: color-mix(in srgb, var(--accent-2) 60%, var(--text));
+
+    position: relative;
+    color: var(--note-color);
+    font-size: var(--fs-lg);
+    font-style: italic;
+    font-weight: var(--fw-medium);
+    text-shadow: 0 0 14px color-mix(in srgb, var(--accent-2) 55%, transparent);
+    transform: rotate(-6deg);
+  }
+
+  &__mascot {
+    width: 100%;
+    max-width: 340px;
+    aspect-ratio: 0.95;
+    justify-self: center;
+  }
+
+  @include down($bp-md) {
+    &__inner {
+      grid-template-columns: 1fr;
+      gap: var(--space-5);
+    }
+
+    &__mascot {
+      order: -1;
+      max-width: 180px;
+    }
+  }
+}
+
+/* ==========================================================================
+   Projets à la une
+   ========================================================================== */
+
+.featured {
+  isolation: isolate;
+
+  &__head {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: var(--space-5);
+    margin-bottom: var(--space-6);
+  }
+
+  &__heading {
+    display: grid;
+    gap: var(--space-4);
+  }
+
+  &__mascot {
+    width: clamp(110px, 12vw, 160px);
+    aspect-ratio: 1;
+    flex-shrink: 0;
+  }
+
+  &__grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--space-5);
+
+    @include down($bp-lg) {
+      grid-template-columns: repeat(2, 1fr);
+    }
+
+    @include down($bp-md) {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  &__more {
+    display: flex;
+    justify-content: center;
+    margin-top: var(--space-7);
+  }
+}
+
+/* ==========================================================================
+   Contact rapide
+   ========================================================================== */
+
+.quick-contact {
+  isolation: isolate;
+
+  &__panel {
+    position: relative;
+    display: grid;
+    grid-template-columns: 1fr auto;
+    align-items: center;
+    gap: var(--space-6);
+    padding: clamp(var(--space-6), 5vw, var(--space-8));
+    background:
+      chamfer-corners(
+        22px,
+        1px,
+        var(--accent-warm),
+        color-mix(in srgb, var(--accent-warm) 50%, var(--accent-2)),
+        var(--accent-2),
+        color-mix(in srgb, var(--accent-warm) 50%, var(--accent-2))
+      ),
+      radial-gradient(80% 120% at 100% 100%, color-mix(in srgb, var(--accent-warm) 16%, transparent), transparent 60%),
+      linear-gradient(var(--surface-strong), var(--surface-strong)) padding-box,
+      linear-gradient(120deg, var(--accent-warm), var(--accent-2)) border-box;
+    border: 1px solid transparent;
+    @include chamfer(22px);
+  }
+
+  &__text {
+    display: grid;
+    justify-items: start;
+    gap: var(--space-4);
+  }
+
+  &__mascot {
+    width: clamp(130px, 16vw, 220px);
+    aspect-ratio: 0.9;
+  }
+
+  // En bas de la colonne de texte, à droite du bouton, inclinée vers la mascotte
+  &__rocket {
+    right: 32%;
+    bottom: 8%;
+    rotate: 28deg;
+
+    @include down($bp-xl) {
+      display: none;
+    }
+  }
+
+  // Le tiroir : c'est lui qui glisse hors du mur
+  &__drawer {
+    position: relative;
+    will-change: transform;
+  }
+
+  // Poignée à gauche du panneau, où se place la mascotte pendant qu'elle tire
+  // Elle tient le panneau par son arête : la poignée chevauche le bord gauche
+  &__grip {
+    position: absolute;
+    left: -36px;
+    bottom: 6%;
+    z-index: 1;
+    width: clamp(110px, 11vw, 150px);
+    aspect-ratio: 0.85;
+
+    @include down($bp-md) {
+      width: 96px;
+      bottom: 4%;
+    }
+  }
+
+  // Fente lumineuse dans le mur droit
+  &__slot {
+    position: absolute;
+    // Le bord du mur reste devant le tiroir
+    z-index: 2;
+    top: calc(var(--section-gap) - var(--space-4));
+    bottom: calc(var(--section-gap) - var(--space-4));
+    right: 0;
+    width: 10px;
+    border-radius: 6px 0 0 6px;
+    background: linear-gradient(180deg, var(--accent-warm), var(--accent-2));
+    box-shadow:
+      0 0 18px 2px color-mix(in srgb, var(--accent-warm) 55%, transparent),
+      -12px 0 40px color-mix(in srgb, var(--accent-2) 35%, transparent);
+    transition:
+      opacity var(--duration-slow) var(--ease-out),
+      transform var(--duration-slow) var(--ease-out);
+
+    &--done {
+      opacity: 0;
+      transform: scaleY(0.4);
+    }
+
+    @include motion {
+      &:not(&--done) {
+        animation: slot-pulse 1.8s ease-in-out infinite;
+      }
+    }
+  }
+
+  @include down($bp-md) {
+    &__panel {
+      grid-template-columns: 1fr;
+    }
+
+    &__mascot {
+      order: -1;
+      width: 120px;
+    }
+  }
+}
+
+@keyframes slot-pulse {
+  50% {
+    opacity: 0.55;
+  }
+}
+
+/* ==========================================================================
+   Thème clair : verre lumineux plutôt que verre teinté
+   ========================================================================== */
+
+:root[data-theme="light"] {
+  // Cartes du hub : fond presque blanc, halos et ombre teintés de la couleur de la carte
+  .hub-card__panel {
+    background:
+      radial-gradient(120% 100% at 0% 0%, color-mix(in srgb, var(--glow) 14%, transparent), transparent 65%) padding-box,
+      linear-gradient(
+          color-mix(in srgb, var(--surface-strong) 90%, transparent),
+          color-mix(in srgb, var(--surface-strong) 80%, transparent)
+        )
+        padding-box,
+      var(--edge) border-box;
+    box-shadow:
+      0 0 24px -10px color-mix(in srgb, var(--glow) 40%, transparent),
+      0 14px 30px -18px color-mix(in srgb, var(--glow) 45%, transparent);
+  }
+
+  .hub-card:hover .hub-card__panel,
+  .hub-card:focus-visible .hub-card__panel {
+    box-shadow:
+      0 0 36px -8px color-mix(in srgb, var(--glow) 55%, transparent),
+      0 18px 36px -18px color-mix(in srgb, var(--glow) 50%, transparent);
+  }
+
+  // Anneaux : couleurs éclaircies, les tons du thème clair sont foncés pour le texte
+  .orbits__halo-stop-a {
+    stop-color: color-mix(in srgb, var(--accent) 70%, var(--surface-strong));
+  }
+
+  .orbits__halo-stop-b {
+    stop-color: color-mix(in srgb, var(--accent-2) 65%, var(--surface-strong));
+  }
+
+  .orbits__halo-stop-c {
+    stop-color: color-mix(in srgb, var(--accent-warm) 70%, var(--surface-strong));
+  }
+
+  .orbits__halo-ring {
+    filter: drop-shadow(0 0 2px color-mix(in srgb, var(--accent) 50%, transparent));
+  }
+}

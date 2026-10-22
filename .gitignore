@@ -1,16 +1,10 @@
-# Notes pour Claude Code (outil de dev, pas du site)
-CLAUDE.md
-.claude/
+node_modules
+dist
+*.local
+.vite
+tsconfig.tsbuildinfo
 
-# Dépendances, journaux, Vercel
-node_modules/
-npm-debug.log*
-.vercel/
-
-# Éditeur et système
-.vscode/
-.idea/
-.DS_Store
-Thumbs.db
-desktop.ini
-*.swp
+# Secrets (clé Resend…) : jamais dans git
+.env
+.env.*
+!.env.example

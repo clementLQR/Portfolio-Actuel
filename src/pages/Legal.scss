@@ -1,0 +1,71 @@
+@use "../styles/mixins" as *;
+
+.legal {
+  position: relative;
+  isolation: isolate;
+  padding-bottom: var(--section-gap);
+
+  &__updated {
+    color: var(--text-muted);
+  }
+
+  &__sections {
+    display: grid;
+    gap: var(--space-7);
+    max-width: 72ch;
+  }
+
+  &__section {
+    display: grid;
+    gap: var(--space-3);
+    color: var(--text-muted);
+  }
+
+  &__title {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+    margin-bottom: var(--space-1);
+    color: var(--text);
+    font-size: var(--fs-xl);
+  }
+
+  // Numéro de section dans une case chanfreinée, comme sur la page Compétences
+  &__slot {
+    display: grid;
+    place-items: center;
+    width: 36px;
+    height: 36px;
+    flex-shrink: 0;
+    background: var(--accent-warm);
+    color: var(--text-on-accent);
+    clip-path: var(--chamfer-shape);
+  }
+
+  &__list {
+    display: grid;
+    gap: var(--space-2);
+
+    li {
+      position: relative;
+      padding-left: var(--space-5);
+
+      // Petit losange en guise de puce
+      &::before {
+        content: "";
+        position: absolute;
+        left: 2px;
+        top: 0.62em;
+        width: 7px;
+        height: 7px;
+        background: var(--accent);
+        transform: rotate(45deg);
+      }
+    }
+
+    strong {
+      color: var(--text);
+      font-weight: var(--fw-semibold);
+    }
+  }
+}

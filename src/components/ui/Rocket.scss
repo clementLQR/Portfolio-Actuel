@@ -1,0 +1,107 @@
+@use "../../styles/mixins" as *;
+
+.rocket {
+  // Coque claire : crème en sombre, blanc en clair (voir plus bas)
+  --rocket-hull: var(--text);
+
+  position: absolute;
+  overflow: visible;
+  pointer-events: none;
+  filter: drop-shadow(0 14px 18px color-mix(in srgb, var(--accent-deep) 55%, transparent));
+
+  &__hull-light {
+    stop-color: var(--rocket-hull);
+  }
+  &__hull-mid {
+    stop-color: color-mix(in srgb, var(--rocket-hull) 82%, var(--accent-2));
+  }
+  &__hull-dark {
+    stop-color: color-mix(in srgb, var(--rocket-hull) 55%, var(--accent-deep));
+  }
+
+  &__warm-a {
+    stop-color: var(--accent-warm);
+  }
+  &__warm-b {
+    stop-color: var(--detail);
+  }
+
+  &__glass-a {
+    stop-color: color-mix(in srgb, var(--accent) 45%, var(--rocket-hull));
+  }
+  &__glass-b {
+    stop-color: var(--accent);
+  }
+  &__glass-c {
+    stop-color: var(--accent-deep);
+  }
+
+  &__flame-a {
+    stop-color: var(--highlight);
+  }
+  &__flame-b {
+    stop-color: var(--accent-warm);
+  }
+  &__flame-c {
+    stop-color: var(--detail);
+  }
+
+  &__fin-shade {
+    filter: brightness(0.8);
+  }
+
+  &__nozzle {
+    fill: color-mix(in srgb, var(--rocket-hull) 40%, var(--accent-deep));
+  }
+
+  &__band {
+    fill: var(--accent-2);
+  }
+
+  &__ring {
+    fill: color-mix(in srgb, var(--rocket-hull) 60%, var(--accent-deep));
+  }
+
+  &__shine {
+    fill: var(--rocket-hull);
+    opacity: 0.85;
+  }
+
+  &__rim {
+    fill: none;
+    stroke: var(--rocket-hull);
+    stroke-width: 2.5;
+    stroke-linecap: round;
+    opacity: 0.7;
+  }
+
+  &__flame {
+    transform-box: fill-box;
+    transform-origin: 50% 0;
+  }
+
+  @include motion {
+    animation: rocket-float 4.5s ease-in-out infinite alternate;
+
+    .rocket__flame {
+      animation: rocket-flame 0.18s ease-in-out infinite alternate;
+    }
+  }
+}
+
+:root[data-theme="light"] .rocket {
+  --rocket-hull: var(--surface-strong);
+  filter: drop-shadow(0 12px 16px color-mix(in srgb, var(--accent-2) 30%, transparent));
+}
+
+@keyframes rocket-float {
+  to {
+    translate: 4px -10px;
+  }
+}
+
+@keyframes rocket-flame {
+  to {
+    transform: scaleY(0.82) scaleX(0.94);
+  }
+}

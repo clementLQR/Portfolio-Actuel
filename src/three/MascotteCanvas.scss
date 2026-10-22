@@ -1,0 +1,35 @@
+// Calque fixe de la mascotte : au-dessus du contenu, sous la navigation
+.mascot-layer {
+  position: fixed;
+  inset: 0;
+  z-index: var(--z-mascot);
+  pointer-events: none;
+
+  // React Three Fiber enveloppe le canvas dans une div en « pointer-events: auto » :
+  // sans ce sélecteur, elle couvre tout l'écran et bloque les clics sur la page
+  * {
+    pointer-events: none !important;
+  }
+}
+
+// Point d'accroche au sommet de la tête, déplacé à chaque image
+.mascot-symbols {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: calc(var(--z-mascot) + 2);
+  display: none;
+  width: 0;
+  height: 0;
+  pointer-events: none;
+}
+
+.mascot-hit {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: calc(var(--z-mascot) + 1);
+  display: none;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}

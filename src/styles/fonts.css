@@ -1,0 +1,35 @@
+/* Polices hébergées sur le site (sous-ensemble latin, suffisant pour le français) :
+   aucun appel à Google Fonts. Licence SIL Open Font License : public/fonts/OFL-*.txt */
+
+@font-face {
+  font-family: "Chakra Petch";
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url("/fonts/chakra-petch-500.woff2") format("woff2");
+}
+
+@font-face {
+  font-family: "Chakra Petch";
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url("/fonts/chakra-petch-600.woff2") format("woff2");
+}
+
+@font-face {
+  font-family: "Chakra Petch";
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url("/fonts/chakra-petch-700.woff2") format("woff2");
+}
+
+/* Police variable : un seul fichier pour les graisses 400 à 600 */
+@font-face {
+  font-family: "Montserrat";
+  font-style: normal;
+  font-weight: 400 600;
+  font-display: swap;
+  src: url("/fonts/montserrat-variable.woff2") format("woff2");
+}

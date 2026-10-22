@@ -1,0 +1,101 @@
+@use "sass:list";
+@use "sass:string";
+
+// Points de rupture et petits outils partagés
+
+$bp-sm: 480px;
+$bp-md: 768px;
+$bp-lg: 1024px;
+$bp-xl: 1200px;
+
+@mixin up($bp) {
+  @media (min-width: $bp) {
+    @content;
+  }
+}
+
+@mixin down($bp) {
+  @media (max-width: ($bp - 0.02px)) {
+    @content;
+  }
+}
+
+// Animations décoratives : uniquement si l'utilisateur n'a pas demandé moins de mouvement
+@mixin motion {
+  @media (prefers-reduced-motion: no-preference) {
+    @content;
+  }
+}
+
+// Une `border` + un `clip-path` chanfreiné perd ses coins : le clip coupe la bordure
+// avec eux. Ces calques redessinent les quatre diagonales, juste à l'intérieur de la
+// découpe. À placer EN PREMIER dans `background` (calques du dessus).
+// $s : taille du chanfrein, $w : épaisseur de la bordure, puis une couleur par coin
+// (haut gauche, haut droit, bas droit, bas gauche).
+@function chamfer-corners($s, $w, $tl, $tr: $tl, $br: $tl, $bl: $tl) {
+  $layers: ();
+  $corners: (
+    ("to bottom right", $tl, "left top"),
+    ("to bottom left", $tr, "right top"),
+    ("to top left", $br, "right bottom"),
+    ("to top right", $bl, "left bottom")
+  );
+  @each $corner in $corners {
+    $dir: list.nth($corner, 1);
+    $c: list.nth($corner, 2);
+    $pos: list.nth($corner, 3);
+    $layers: list.append(
+      $layers,
+      string.unquote(
+        "linear-gradient(#{$dir}, transparent 50%, #{$c} 50%, #{$c} calc(50% + #{$w}), transparent calc(50% + #{$w})) #{$pos} / #{$s} #{$s} no-repeat border-box"
+      ),
+      comma
+    );
+  }
+  @return $layers;
+}
+
+// Chanfrein d'une taille arbitraire (le token --chamfer-shape est figé à 10px)
+@mixin chamfer($s) {
+  clip-path: polygon(
+    #{$s} 0,
+    calc(100% - #{$s}) 0,
+    100% #{$s},
+    100% calc(100% - #{$s}),
+    calc(100% - #{$s}) 100%,
+    #{$s} 100%,
+    0 calc(100% - #{$s}),
+    0 #{$s}
+  );
+}
+
+// Cadre chanfreiné sans `border` : un octogone de bordure (::before) et un octogone
+// de fond légèrement plus petit (::after) posés sous le contenu. L'épaisseur reste
+// régulière sur les diagonales à toutes les résolutions, et un dégradé reste continu.
+// Couleurs via --frame-border et --frame-fill. L'élément lui-même n'est pas découpé :
+// l'outline de focus reste visible.
+@mixin chamfer-frame($s, $w: 1px) {
+  position: relative;
+  isolation: isolate;
+
+  &::before,
+  &::after {
+    content: "";
+    position: absolute;
+    z-index: -1;
+    pointer-events: none;
+  }
+
+  &::before {
+    inset: 0;
+    background: var(--frame-border);
+    @include chamfer($s);
+  }
+
+  // Décalé de $w : son chanfrein vaut $s - $w * (2 - √2) pour garder $w sur les diagonales
+  &::after {
+    inset: $w;
+    background: var(--frame-fill);
+    @include chamfer($s - $w * 0.586);
+  }
+}

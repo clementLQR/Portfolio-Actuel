@@ -1,0 +1,44 @@
+.logo {
+  // La mascotte reste blanche à visière noire, quel que soit le thème
+  --logo-shell: var(--text);
+  --logo-visor: var(--bg);
+  --logo-stroke: transparent;
+
+  flex-shrink: 0;
+
+  &__stop-warm {
+    stop-color: var(--accent-warm);
+  }
+
+  &__stop-detail {
+    stop-color: var(--detail);
+  }
+
+  &__stop-violet {
+    stop-color: var(--accent-2);
+  }
+
+  &__shell {
+    fill: var(--logo-shell);
+    stroke: var(--logo-stroke);
+    stroke-width: 1.5;
+  }
+
+  &__visor {
+    fill: var(--logo-visor);
+  }
+
+  &__eye-warm {
+    fill: var(--accent-warm);
+  }
+
+  &__eye {
+    fill: var(--logo-shell);
+  }
+}
+
+:root[data-theme="light"] .logo {
+  --logo-shell: var(--surface-strong);
+  --logo-visor: var(--text);
+  --logo-stroke: var(--border-strong);
+}
