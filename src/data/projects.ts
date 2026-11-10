@@ -439,6 +439,175 @@ export const PROJECTS: Project[] = [
     featured: true,
   },
   {
+    slug: "the-banshee",
+    title: "The Banshee",
+    kicker: "SAÉ 302 / Identité visuelle / 2025-2026",
+    category: "design",
+    summary:
+      "Une nouvelle image pour un groupe de rock progressif celtique de Blois : j'ai dessiné le logo, conçu l'affiche de concert et, en binôme, les pochettes d'album, mis en page le guide de style et filmé le clip.",
+    tags: ["Photoshop", "InDesign", "Print"],
+    links: [],
+    facts: [
+      { label: "Rôle", value: "Logos de The Banshee et de Com'Mi, affiche de concert, pochettes d'album (avec Ewen), mise en page du guide de style, tournage du clip" },
+      { label: "Durée", value: "Septembre 2025 à janvier 2026" },
+      { label: "Type", value: "SAÉ 302, BUT MMI 2e année, agence fictive Com'Mi (8 personnes)" },
+      { label: "Client", value: "The Banshee, avec le Chato'Do (Blois)" },
+      { label: "Statut", value: "Proposition d'identité livrée et soutenue devant le groupe" },
+    ],
+    stats: [
+      { value: "8", label: "membres dans l'agence" },
+      { value: "3", label: "visios avec le groupe" },
+      { value: "2", label: "formats de pochette" },
+      { value: "20 min", label: "de soutenance, dont 8 en anglais" },
+    ],
+    sections: [
+      {
+        title: "Le brief",
+        paragraphs: [
+          "The Banshee est un groupe de rock progressif celtique du Loir-et-Cher, lauréat du dispositif Crème Polaire 2025/2026 du Chato'Do, la salle de concert de Blois. Pour la SAÉ 302, notre agence fictive Com'Mi l'a accompagné dans la refonte de son image : identité visuelle, supports de communication et clip.",
+          "La demande du groupe : sortir de l'étiquette « celtique » pour une image plus affirmée, plus sombre, un peu psychédélique, et toucher un public plus jeune que son public actuel, plutôt âgé de 30 à 60 ans.",
+        ],
+      },
+      {
+        title: "La direction artistique",
+        paragraphs: [
+          "Une direction inspirée de la britpop et du shoegaze : grain argentique, flou, noir et blanc avec quelques touches de couleur sourde, autour des thèmes du rêve et du lien entre la vie et la mort. Deux moodboards ont été présentés au groupe, qui a validé un mélange des deux.",
+        ],
+        items: [
+          { title: "Typographies", text: "Bowlby One pour les titres, Chivo Medium pour le texte." },
+          {
+            title: "Palette",
+            text: "noir adouci et vert sombre, volontairement loin du vert celtique vif, avec le bleu et le rose en accents.",
+          },
+          {
+            title: "Logo",
+            text: "dessiné par moi : typographique et sans ornement, dans l'esprit des logos de groupes rock comme The Cure, à la place de l'ancien logo manuscrit au lierre vert.",
+          },
+        ],
+      },
+      {
+        title: "L'affiche de concert",
+        paragraphs: [
+          "Mon lot principal : une affiche A3 en noir et blanc, pensée comme un gabarit que le groupe réutilise d'un concert à l'autre. Inspirée des affiches de blockbusters, elle met en scène les quatre musiciens, détourés un par un d'après les photos live de Quentin Tavenier (Le numéro 25) et placés dans un cadre dont ils débordent par endroits.",
+        ],
+        items: [
+          {
+            title: "Un gabarit",
+            text: "une zone fixe (logo, visuel, partenaires, mentions) et une zone que le groupe modifie (date, lieu, prix, première partie). Une version Canva lui a été remise avec les éléments fixes verrouillés.",
+          },
+          {
+            title: "Production",
+            text: "photos détourées par Carlos, montage sur Photoshop, composition sur grille dans InDesign.",
+          },
+          { title: "Mentions légales", text: "imprimeur, auteur et numéro SACEM." },
+          {
+            title: "Retours du groupe",
+            text: "ajout de l'heure et du logo du Chato'Do, logos partenaires grisés pour ne pas voler l'attention.",
+          },
+        ],
+      },
+      {
+        title: "Les pochettes d'album",
+        paragraphs: [
+          "Réalisées en binôme avec Ewen, sur un concept donné par le groupe : une illustration sombre sur le cycle de la vie. Un arbre mort baigné par la lumière de l'aube, en flat design aux couleurs du guide de style, l'arbre plus détaillé que le reste. Le logo est placé dans le reflet de l'arbre et s'estompe dans l'eau.",
+          "En amont, un benchmark de pochettes de rock, de musique celtique et de rock celtique, classées sur une matrice à deux axes : épuré ou dense, figuratif ou abstrait.",
+        ],
+        items: [
+          { title: "Deux formats", text: "33 tours de 31,5 x 31,5 cm et CD de 12 x 12 cm." },
+          {
+            title: "Prêtes à imprimer",
+            text: "CMJN, 300 dpi, fond perdu de 5 mm, traits de coupe, export PDF impression depuis InDesign.",
+          },
+          {
+            title: "Texture",
+            text: "bruit monochrome à 5 % et flou directionnel, pour retrouver le grain du moodboard.",
+          },
+        ],
+      },
+      {
+        title: "Guide de style et clip",
+        items: [
+          {
+            title: "Guide de style",
+            text: "Matéo a rassemblé les informations (logo, palette, typographies) et je les ai mises en page : un document A4 portrait de 13 pages.",
+          },
+          {
+            title: "Clip « For a dream »",
+            text: "j'ai préparé le matériel et filmé le tournage au Chato'Do.",
+          },
+        ],
+      },
+      {
+        title: "Le reste de la campagne",
+        paragraphs: ["Les autres livrables, réalisés par le reste de l'équipe :"],
+        items: [
+          { title: "Clip", text: "lot audiovisuel porté par Cloé, storyboard par Paul et Matéo." },
+          { title: "Produits dérivés", text: "illustration d'une tête de Banshee, déclinée en sweat, tote bag et stickers, par Cloé." },
+          { title: "Mockups", text: "par Ewen." },
+          { title: "Site web du groupe", text: "maquette puis prototype HTML, CSS et JavaScript, par Azur." },
+          { title: "Presse", text: "EPK par Hugo, communiqué de presse et Linktree du groupe." },
+        ],
+      },
+      {
+        title: "Démarche",
+        items: [
+          {
+            title: "Découverte",
+            text: "rencontre au Chato'Do, puis trois visios avec le groupe, avec un questionnaire préparé avant chaque échange.",
+          },
+          {
+            title: "Organisation",
+            text: "livrables répartis par lots, suivi dans un document partagé et sur Trello, tableau d'avancement (à faire, à modifier, à valider, fait).",
+          },
+          { title: "Itérations", text: "retours du groupe à chaque visio, corrections intégrées au fil du projet." },
+          {
+            title: "Soutenance",
+            text: "20 minutes devant le groupe et les enseignants, dont 8 en anglais ; j'y ai présenté l'affiche.",
+          },
+        ],
+      },
+    ],
+    challenges: [
+      {
+        title: "Sortir du « celtique »",
+        problem: "L'ancienne image, lettres manuscrites et lierre vert, enfermait le groupe dans le folklore celtique.",
+        solution:
+          "Un logo typographique sans ornement, un vert assombri et une direction britpop et shoegaze, plus proche d'un public jeune.",
+      },
+      {
+        title: "Une affiche pour chaque concert",
+        problem: "Le groupe doit pouvoir annoncer chaque nouvelle date sans repasser par un graphiste.",
+        solution:
+          "Un gabarit avec une zone fixe et une zone modifiable, livré aussi en version Canva avec les éléments fixes verrouillés.",
+      },
+      {
+        title: "Du grain sur un dessin vectoriel",
+        problem: "Une illustration en flat design paraît trop lisse face au grain argentique du moodboard.",
+        solution: "Un bruit monochrome et un flou directionnel appliqués à la pochette.",
+      },
+    ],
+    stack: ["Photoshop", "InDesign", "Canva"],
+    visuals: [
+      {
+        src: "/images/projets/banshee.webp",
+        alt: "Logo de The Banshee en lettres blanches sur fond vert sombre",
+      },
+      {
+        src: "/images/projets/banshee-affiche.webp",
+        alt: "Affiche de concert : les quatre musiciens détourés débordent d'un cadre sous le logo, avec la date, le prix et le lieu en bas. Photos de Quentin Tavenier, Le numéro 25",
+      },
+      {
+        src: "/images/projets/banshee-pochette.webp",
+        alt: "Pochette d'album : un arbre mort sur une colline devant une lune rose, le logo et l'arbre se reflétant dans l'eau",
+      },
+      {
+        src: "/images/projets/banshee-sweat.webp",
+        alt: "Sweat à capuche gris, logo sur le cœur et, au dos, la tête de Banshee dessinée par Cloé",
+      },
+    ],
+    featured: false,
+  },
+  {
     slug: "baseprotect",
     title: "BaseProtect",
     kicker: "Projet de terminale / Jeu 2D / Python",
