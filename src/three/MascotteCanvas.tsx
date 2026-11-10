@@ -218,7 +218,8 @@ export default function MascotteCanvas() {
   const coarse = useMediaQuery(COARSE_POINTER_QUERY);
   const theme = useThemeStore((s) => s.theme);
   const [tabVisible, setTabVisible] = useState(() => !document.hidden);
-  const followPointer = !mobile && !coarse && !reducedMotion;
+  // Le regard reste actif en mouvement réduit : rotation lissée de la tête, sans déplacement
+  const followPointer = !mobile && !coarse;
 
   useAnchors();
   useLookAt(followPointer);

@@ -353,6 +353,11 @@ export function Mascotte({ reducedMotion, followPointer, theme }: MascotteProps)
     });
   }, [rig, reducedMotion]);
 
+  // Fondu du calque entier (mouvement réduit) : le canvas ne contient que la mascotte et son socle
+  useEffect(() => {
+    gsap.set(gl.domElement, { opacity: 1 });
+  }, [gl, reducedMotion]);
+
   useEffect(
     () => () => {
       travel.current.tween?.kill();
@@ -364,9 +369,14 @@ export function Mascotte({ reducedMotion, followPointer, theme }: MascotteProps)
     const tr = travel.current;
     tr.tween?.kill();
     tr.anchor = anchor;
-    if (!anchor) return;
+    const layer = gl.domElement;
+    if (!anchor) {
+      // Fondu interrompu : le calque ne doit pas rester à demi transparent
+      if (reducedMotion) gsap.set(layer, { opacity: 1 });
+      return;
+    }
 
-    if (!tr.placed || reducedMotion) {
+    if (!tr.placed) {
       // Première apparition : on se pose directement, avec un petit rebond
       tr.current = placementFor(anchor);
       tr.progress = 1;
@@ -381,6 +391,7 @@ export function Mascotte({ reducedMotion, followPointer, theme }: MascotteProps)
     const viewportH = viewportSize().height;
     const fromOffscreen = tr.current.foot < tr.current.h * 0.35 || tr.current.foot - tr.current.h > viewportH;
     if (fromOffscreen) {
+      gsap.set(layer, { opacity: 1 });
       tr.current = target;
       tr.from = { ...target };
       tr.progress = 1;
@@ -392,6 +403,22 @@ export function Mascotte({ reducedMotion, followPointer, theme }: MascotteProps)
 
     tr.from = { ...tr.current };
     tr.progress = 0;
+
+    // Mouvement réduit : pas de course ni de saut, elle s'efface puis réapparaît à sa place
+    if (reducedMotion) {
+      tr.mode = "jump";
+      tr.tween = gsap.to(layer, {
+        opacity: 0,
+        duration: 0.2,
+        ease: "power1.in",
+        onComplete: () => {
+          tr.from = placementFor(anchor);
+          tr.progress = 1;
+          tr.tween = gsap.to(layer, { opacity: 1, duration: 0.3, ease: "power1.out" });
+        },
+      });
+      return;
+    }
 
     // Trajet surtout horizontal : elle court ; sinon elle saute
     const dx = target.cx - tr.from.cx;
@@ -488,14 +515,9 @@ export function Mascotte({ reducedMotion, followPointer, theme }: MascotteProps)
     // En mouvement (trajet, apparition) : le rendu doit continuer même hors de l'écran
     mascotScreen.busy = tr.progress < 1 || Math.abs(p.visible - (anchor ? 1 : 0)) > 0.01;
 
-    /* ---------- 2. Pose neutre en mouvement réduit ---------- */
-    if (!animate) {
-      body.rotation.set(VIEW_TILT, 0, 0);
-      body.scale.setScalar(1);
-      if (!hasClips) Object.values(rig.bones).forEach((info) => info?.bone.quaternion.copy(info.rest));
-      rig.eyes.forEach((eye) => eye.scale.setY(state.sleeping ? 0.12 : 1));
-      return;
-    }
+    // Mouvement réduit : elle reste vivante (regard, clignements, respiration, poses d'humeur)
+    // mais sans gestes rapides ni secousses
+    const wiggle = animate ? 1 : 0;
 
     /* ---------- 3. Regard ---------- */
     const headX = cx;
@@ -545,8 +567,8 @@ export function Mascotte({ reducedMotion, followPointer, theme }: MascotteProps)
           ears += 0.22;
           break;
         case "heureuse":
-          armL = 1.15 + Math.sin(t * 11) * 0.25;
-          armR = 1.15 + Math.sin(t * 11 + Math.PI) * 0.25;
+          armL = 1.15 + Math.sin(t * 11) * 0.25 * wiggle;
+          armR = 1.15 + Math.sin(t * 11 + Math.PI) * 0.25 * wiggle;
           ears += 0.3;
           tailSpeed = 8;
           tailAmp = 0.5;
@@ -571,7 +593,7 @@ export function Mascotte({ reducedMotion, followPointer, theme }: MascotteProps)
       }
     }
     if (state.dizzy) {
-      roll = Math.sin(t * 7) * 0.3;
+      roll = animate ? Math.sin(t * 7) * 0.3 : 0.25;
       eyeScale = 0.5;
     }
     // Effort : penchée en arrière, bras tendus vers ce qu'elle tire (à sa droite), yeux plissés
@@ -579,9 +601,9 @@ export function Mascotte({ reducedMotion, followPointer, theme }: MascotteProps)
       yawTarget = 0.45;
       pitchTarget = 0.12;
       roll = -0.12;
-      lean = 0.3 + Math.sin(t * 28) * 0.025;
-      armR = 1.4 + Math.sin(t * 24) * 0.06;
-      armL = 1.05 + Math.sin(t * 24 + 1) * 0.06;
+      lean = 0.3 + Math.sin(t * 28) * 0.025 * wiggle;
+      armR = 1.4 + Math.sin(t * 24) * 0.06 * wiggle;
+      armL = 1.05 + Math.sin(t * 24 + 1) * 0.06 * wiggle;
       ears = -0.2;
       tailSpeed = 12;
       tailAmp = 0.45;
@@ -599,6 +621,12 @@ export function Mascotte({ reducedMotion, followPointer, theme }: MascotteProps)
       ears = 0.35;
       tailSpeed = 14;
       tailAmp = 0.5;
+    }
+
+    if (!animate) {
+      // Queue : balancement lent seulement
+      tailSpeed = Math.min(tailSpeed, 2.6);
+      tailAmp = Math.min(tailAmp, 0.3);
     }
 
     p.yaw = damp(p.yaw, yawTarget, 7, dt);
@@ -626,7 +654,7 @@ export function Mascotte({ reducedMotion, followPointer, theme }: MascotteProps)
     p.bodyYaw = damp(p.bodyYaw, running ? tr.dir * 1.05 : 0, 8, dt);
     body.rotation.order = "YXZ";
     body.rotation.set(VIEW_TILT + 0.2 * p.run, p.yaw * 0.3 + p.spin + p.bodyYaw, p.lean);
-    const squash = since < 0.5 ? Math.sin(since * 12) * Math.exp(-since * 6) * 0.08 : 0;
+    const squash = animate && since < 0.5 ? Math.sin(since * 12) * Math.exp(-since * 6) * 0.08 : 0;
     const breath = Math.sin(t * 2.2) * 0.012;
     body.scale.set(1 + squash, 1 - squash + breath, 1 + squash);
 
