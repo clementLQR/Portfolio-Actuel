@@ -398,7 +398,7 @@ export const PROJECTS: Project[] = [
         items: [
           { title: "Mascotte décorative", text: "canvas masqué aux lecteurs d'écran, aucune information ne passe uniquement par elle." },
           { title: "Clavier", text: "navigation complète et focus toujours visible." },
-          { title: "Mouvement réduit", text: "avec prefers-reduced-motion, plus de déplacements, de flottement ni d'orbites animées." },
+          { title: "Mouvement réduit", text: "un interrupteur dans le menu coupe les déplacements, le flottement et les orbites animées." },
           { title: "Chargement", text: "la 3D charge en arrière-plan, le site s'affiche sans l'attendre." },
         ],
       },

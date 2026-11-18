@@ -18,10 +18,25 @@
   }
 }
 
-@include motion {
-  html {
-    scroll-behavior: smooth;
+// html est la racine : le mixin motion (« :root … sélecteur ») ne peut pas le viser
+html:not([data-motion="reduced"]) {
+  scroll-behavior: smooth;
+}
+
+// tokens.css coupe les durées de transition sous « prefers-reduced-motion » : le site ne suit
+// plus ce réglage système, seulement l'interrupteur du menu (mêmes valeurs que tokens.css)
+@media (prefers-reduced-motion: reduce) {
+  :root:not([data-motion="reduced"]) {
+    --duration-fast: 150ms;
+    --duration: 250ms;
+    --duration-slow: 500ms;
   }
+}
+
+:root[data-motion="reduced"] {
+  --duration-fast: 0ms;
+  --duration: 0ms;
+  --duration-slow: 0ms;
 }
 
 body {

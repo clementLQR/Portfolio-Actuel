@@ -41,14 +41,17 @@
     <!-- Polices hébergées sur le site : les deux les plus visibles sont préchargées -->
     <link rel="preload" href="/fonts/montserrat-variable.woff2" as="font" type="font/woff2" crossorigin />
     <link rel="preload" href="/fonts/chakra-petch-700.woff2" as="font" type="font/woff2" crossorigin />
-    <!-- Thème appliqué avant le premier rendu : pas de flash -->
+    <!-- Thème et animations appliqués avant le premier rendu : pas de flash -->
     <script>
       (function () {
         var theme = "dark";
+        var motion = "full";
         try {
           if (localStorage.getItem("hub-theme") === "light") theme = "light";
+          if (localStorage.getItem("hub-motion") === "reduced") motion = "reduced";
         } catch (e) {}
         document.documentElement.setAttribute("data-theme", theme);
+        document.documentElement.setAttribute("data-motion", motion);
       })();
     </script>
   </head>

@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState, type MouseEvent } from "react";
 import { Link, NavLink, useLocation } from "react-router-dom";
 import { EXTERNAL_LINK, NAV_ITEMS, SOCIAL_LINKS } from "../../data/navigation";
+import { useMotionStore } from "../../store/useMotionStore";
 import { Icon } from "../ui/Icon";
 import { Logo } from "./Logo";
 import { ThemeToggle } from "./ThemeToggle";
@@ -11,6 +12,8 @@ export function Header() {
   const menuRef = useRef<HTMLDialogElement>(null);
   const [menuOpen, setMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const animationsOn = useMotionStore((s) => s.motion === "full");
+  const toggleMotion = useMotionStore((s) => s.toggleMotion);
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 12);
@@ -89,6 +92,16 @@ export function Header() {
               ))}
             </ol>
           </nav>
+          {/* Pour les visiteurs sensibles au mouvement : coupe déplacements, flottement et orbites */}
+          <button type="button" role="switch" aria-checked={animationsOn} className="menu__switch" onClick={toggleMotion}>
+            <span className="menu__switch-label">Animations</span>
+            <span className="menu__switch-state" aria-hidden="true">
+              {animationsOn ? "Activées" : "Réduites"}
+            </span>
+            <span className="menu__switch-track" aria-hidden="true">
+              <span className="menu__switch-thumb" />
+            </span>
+          </button>
           <div className="menu__socials">
             <a href={`mailto:${SOCIAL_LINKS.email}`} className="icon-btn" aria-label="Envoyer un e-mail">
               <Icon name="mail" size={20} />

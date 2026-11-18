@@ -156,7 +156,7 @@ export const LEGAL_PAGES: LegalPage[] = [
           },
           {
             title: "Mouvement réduit",
-            text: "si votre système le demande, les déplacements, flottements et orbites animées sont désactivés.",
+            text: "l'interrupteur « Animations » du menu désactive les déplacements, flottements et orbites animées ; votre choix est mémorisé.",
           },
           {
             title: "Thèmes",

@@ -1,7 +1,8 @@
 import { Suspense, useEffect, useMemo, useRef, useState, type RefObject } from "react";
 import { Canvas, useThree } from "@react-three/fiber";
 import { ACESFilmicToneMapping, SRGBColorSpace } from "three";
-import { COARSE_POINTER_QUERY, MOBILE_QUERY, useMediaQuery, usePrefersReducedMotion } from "../hooks/useMediaQuery";
+import { COARSE_POINTER_QUERY, MOBILE_QUERY, useMediaQuery } from "../hooks/useMediaQuery";
+import { useReducedMotion } from "../store/useMotionStore";
 import { useThemeStore, type Theme } from "../store/useThemeStore";
 import { EASTER_EGG_CLICKS, EASTER_EGG_GAP_MS, FAST_SCROLL_PX_PER_S, SLEEP_AFTER_MS } from "./constants";
 import { cssColor } from "./cssColor";
@@ -213,7 +214,7 @@ function useCuriosity(): void {
  * La mascotte se place sur les ancres HTML [data-mascot-anchor].
  */
 export default function MascotteCanvas() {
-  const reducedMotion = usePrefersReducedMotion();
+  const reducedMotion = useReducedMotion();
   const mobile = useMediaQuery(MOBILE_QUERY);
   const coarse = useMediaQuery(COARSE_POINTER_QUERY);
   const theme = useThemeStore((s) => s.theme);

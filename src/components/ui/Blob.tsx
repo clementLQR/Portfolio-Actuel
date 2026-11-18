@@ -1,5 +1,5 @@
 import { useId, type CSSProperties } from "react";
-import { usePrefersReducedMotion } from "../../hooks/useMediaQuery";
+import { useReducedMotion } from "../../store/useMotionStore";
 import "./Blob.scss";
 
 export type BlobVariant = "planet-warm" | "planet-blue" | "planet-violet" | "glow-warm" | "glow-violet" | "glow-blue";
@@ -53,7 +53,7 @@ function Mail({ half, still }: { half: "front" | "back"; still: boolean }) {
  */
 function Planet({ ring, mail }: { ring: boolean; mail: boolean }) {
   const id = useId().replace(/:/g, "");
-  const reducedMotion = usePrefersReducedMotion();
+  const reducedMotion = useReducedMotion();
   const url = (name: string) => `url(#${id}-${name})`;
   return (
     <svg className="planet" viewBox="0 0 200 200" focusable="false">

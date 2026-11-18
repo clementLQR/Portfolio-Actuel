@@ -10,7 +10,7 @@ import { Button } from "../components/ui/Button";
 import { ProjectCard } from "../components/ui/ProjectCard";
 import { Floater, Sparkle } from "../components/ui/Sparkle";
 import { PROJECTS } from "../data/projects";
-import { prefersReducedMotion } from "../hooks/useMediaQuery";
+import { isReducedMotion } from "../store/useMotionStore";
 import { useMascotteStore } from "../three/useMascotteStore";
 import "./Home.scss";
 
@@ -288,12 +288,12 @@ type DrawerPhase = "closed" | "pulling" | "open";
 function QuickContact() {
   const sectionRef = useRef<HTMLElement>(null);
   const drawerRef = useRef<HTMLDivElement>(null);
-  const [phase, setPhase] = useState<DrawerPhase>(() => (prefersReducedMotion() ? "open" : "closed"));
+  const [phase, setPhase] = useState<DrawerPhase>(() => (isReducedMotion() ? "open" : "closed"));
 
   useLayoutEffect(() => {
     const section = sectionRef.current;
     const drawer = drawerRef.current;
-    if (!section || !drawer || prefersReducedMotion()) return;
+    if (!section || !drawer || isReducedMotion()) return;
 
     let current: DrawerPhase = "closed";
     let timeline: gsap.core.Timeline | null = null;

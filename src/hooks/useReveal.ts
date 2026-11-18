@@ -1,7 +1,7 @@
 import { useLayoutEffect } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { prefersReducedMotion } from "./useMediaQuery";
+import { isReducedMotion } from "../store/useMotionStore";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -11,7 +11,7 @@ gsap.registerPlugin(ScrollTrigger);
  */
 export function useReveal(key: string): void {
   useLayoutEffect(() => {
-    if (prefersReducedMotion()) return;
+    if (isReducedMotion()) return;
     const items = gsap.utils.toArray<HTMLElement>("[data-reveal]");
     if (items.length === 0) return;
 

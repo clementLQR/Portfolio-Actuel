@@ -20,10 +20,18 @@ $bp-xl: 1200px;
   }
 }
 
-// Animations décoratives : uniquement si l'utilisateur n'a pas demandé moins de mouvement
+// Animations décoratives : sauf si le visiteur les a réduites (interrupteur du menu,
+// <html data-motion="reduced">). Le réglage système « mouvement réduit » n'est plus suivi.
 @mixin motion {
-  @media (prefers-reduced-motion: no-preference) {
-    @content;
+  // :where() n'ajoute aucune spécificité, comme l'ancienne requête média
+  @if & {
+    :where(:root:not([data-motion="reduced"])) & {
+      @content;
+    }
+  } @else {
+    :where(:root:not([data-motion="reduced"])) {
+      @content;
+    }
   }
 }
 

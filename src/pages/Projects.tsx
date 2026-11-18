@@ -10,7 +10,7 @@ import { Icon } from "../components/ui/Icon";
 import { Tag } from "../components/ui/Tag";
 import { CATEGORY_LABELS, PROJECTS, type Project, type ProjectCategory } from "../data/projects";
 import { findSkill, projectsForSkill } from "../data/skills";
-import { prefersReducedMotion } from "../hooks/useMediaQuery";
+import { isReducedMotion } from "../store/useMotionStore";
 import "./Projects.scss";
 
 gsap.registerPlugin(Flip);
@@ -47,7 +47,7 @@ export default function Projects() {
 
   // On mémorise la position des cartes avant le nouveau rendu
   const rememberLayout = () => {
-    if (gridRef.current && !prefersReducedMotion()) {
+    if (gridRef.current && !isReducedMotion()) {
       flipState.current = Flip.getState(gridRef.current.children);
     }
   };
