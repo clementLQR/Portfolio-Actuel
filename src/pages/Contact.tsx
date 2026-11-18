@@ -114,7 +114,7 @@ export default function Contact() {
             Me <span className="text-gradient">contacter</span>
           </h1>
           <p className="lead">
-            Je cherche un stage en développement web de 11 semaines, de mars à juin 2027. Une proposition ou une simple
+            Je cherche un stage en développement web de 10 à 14 semaines, de mars à juin 2027. Une proposition ou une simple
             question ? Écrivez-moi, je réponds sous 48 heures.
           </p>
         </div>

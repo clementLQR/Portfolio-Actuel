@@ -381,7 +381,7 @@ function QuickContact() {
               <h2 id="quick-contact-title">
                 Un projet, un stage, <span className="text-warm">une idée</span>&nbsp;?
               </h2>
-              <p className="lead">Je cherche un stage en développement web de 11 semaines, de mars à juin 2027.</p>
+              <p className="lead">Je cherche un stage en développement web de 10 à 14 semaines, de mars à juin 2027.</p>
               <Button to="/contact" variant="warm">
                 Lancer la discussion
               </Button>
