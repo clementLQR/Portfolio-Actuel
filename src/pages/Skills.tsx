@@ -1,9 +1,24 @@
+import type { FocusEvent, PointerEvent } from "react";
+import { Link } from "react-router-dom";
 import { Blob } from "../components/ui/Blob";
 import { OrganicWave, PixelSparkle } from "../components/ui/Decor";
 import { Icon } from "../components/ui/Icon";
 import { Floater } from "../components/ui/Sparkle";
-import { SKILL_CATEGORIES } from "../data/skills";
+import { SKILL_CATEGORIES, projectsForSkill, skillSlug } from "../data/skills";
 import "./Skills.scss";
+
+/**
+ * Info-bulle au-dessus de la tuile, ou en dessous quand elle passerait sous le header
+ * (tuiles du haut de l'écran une fois la page descendue).
+ */
+function placeTip(event: PointerEvent<HTMLElement> | FocusEvent<HTMLElement>) {
+  const tile = event.currentTarget;
+  const tip = tile.querySelector<HTMLElement>(".skill__tip");
+  if (!tip) return;
+  const header = parseFloat(getComputedStyle(document.documentElement).getPropertyValue("--header-h")) || 0;
+  const spaceAbove = tile.getBoundingClientRect().top - header;
+  tile.dataset.tip = spaceAbove < tip.offsetHeight + 24 ? "below" : "above";
+}
 
 export default function Skills() {
   return (
@@ -24,7 +39,7 @@ export default function Skills() {
           </h1>
           <p className="lead">
             Mon inventaire : les outils que j'utilise au quotidien, rangés par catégorie. Survolez une tuile pour en savoir
-            plus.
+            plus, cliquez dessus pour voir les projets où je l'utilise.
           </p>
         </div>
         <div className="page-head__mascot" data-mascot-anchor="competences" data-mascot-mood="reflechie" data-mascot-gaze="down-left" />
@@ -46,16 +61,45 @@ export default function Skills() {
             </header>
             <ul className="skills__grid">
               {category.skills.map((skill) => {
-                const tipId = `tip-${category.id}-${skill.name.replace(/\W+/g, "-").toLowerCase()}`;
-                return (
-                  <li key={skill.name} className={`skill skill--${skill.tone}`} tabIndex={0} aria-describedby={tipId}>
+                const slug = skillSlug(skill);
+                const tipId = `tip-${category.id}-${slug}`;
+                const projectCount = projectsForSkill(skill).length;
+                const content = (
+                  <>
                     <span className="skill__icon">
                       <Icon name={skill.icon} size={30} />
                     </span>
                     <span className="skill__name">{skill.name}</span>
-                    <span id={tipId} role="tooltip" className="skill__tip">
+                    {/* Masquée de l'arbre d'accessibilité : lue comme description, pas dans le nom du lien */}
+                    <span id={tipId} role="tooltip" className="skill__tip" aria-hidden="true">
                       {skill.description}
+                      {projectCount > 0 && (
+                        <span className="skill__more">
+                          Voir {projectCount > 1 ? `les ${projectCount} projets` : "le projet"} →
+                        </span>
+                      )}
                     </span>
+                  </>
+                );
+                const className = `skill skill--${skill.tone}`;
+                return (
+                  <li key={skill.name} className="skills__cell">
+                    {/* Compétence utilisée dans au moins un projet : la tuile mène à ces projets */}
+                    {projectCount > 0 ? (
+                      <Link
+                        to={`/projets?competence=${slug}`}
+                        className={`${className} skill--link`}
+                        aria-describedby={tipId}
+                        onPointerEnter={placeTip}
+                        onFocus={placeTip}
+                      >
+                        {content}
+                      </Link>
+                    ) : (
+                      <div className={className} tabIndex={0} aria-describedby={tipId} onPointerEnter={placeTip} onFocus={placeTip}>
+                        {content}
+                      </div>
+                    )}
                   </li>
                 );
               })}

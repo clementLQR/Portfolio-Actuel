@@ -82,7 +82,7 @@ export const PROJECTS: Project[] = [
     tags: ["Laravel", "Leaflet", "PWA"],
     links: [
       { label: "Voir le site", href: "https://iut-quest.fr/" },
-      { label: "Code", href: "https://github.com/Louischoubard/PEKIN-EXPRESS" },
+      { label: "Code", href: "https://github.com/clementLQR/IUT-QUEST" },
     ],
     facts: [
       { label: "Rôle", value: "Développeur full-stack (front, tests, back)" },
@@ -424,7 +424,7 @@ export const PROJECTS: Project[] = [
           "Une caméra orthographique où une unité vaut un pixel, des ancres choisies selon leur visibilité et des trajets interpolés avec GSAP, en saut ou en course selon la distance.",
       },
     ],
-    stack: ["React", "TypeScript", "Vite", "Three.js", "React Three Fiber", "zustand", "GSAP", "SCSS"],
+    stack: ["React", "TypeScript", "Vite", "Three.js", "React Three Fiber", "Blender", "zustand", "GSAP", "SCSS"],
     visuals: [
       { src: "/images/projets/portfolio.png", alt: "Logo du portfolio : la tête de la mascotte en blanc sur fond violet" },
       {
@@ -586,7 +586,7 @@ export const PROJECTS: Project[] = [
         solution: "Un bruit monochrome et un flou directionnel appliqués à la pochette.",
       },
     ],
-    stack: ["Photoshop", "InDesign", "Canva"],
+    stack: ["Photoshop", "Illustrator", "InDesign", "Canva"],
     visuals: [
       {
         src: "/images/projets/banshee.webp",

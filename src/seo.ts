@@ -2,6 +2,7 @@
 // Partagé par le navigateur (mise à jour au changement de page) et par le build
 // (une page HTML par route avec les bonnes balises, et le sitemap).
 import { LEGAL_PAGES } from "./data/legal";
+import { NAV_ITEMS } from "./data/navigation";
 import { PROJECTS } from "./data/projects";
 
 export const SITE_URL = "https://clementlequeurre.com";
@@ -111,6 +112,27 @@ export function applyMeta(html: string, meta: PageMeta): string {
     out = out.replace("</title>", '</title>\n    <meta name="robots" content="noindex" />');
   }
   return out;
+}
+
+/**
+ * Contenu HTML statique de #root (utilisé au build) : titre, description et plan du site
+ * en vrais liens <a href>, lisibles par les robots sans exécuter le JavaScript.
+ * Masqué à l'écran pour éviter un flash avant l'affichage, puis remplacé par React au montage.
+ */
+export function applyStaticContent(html: string, meta: PageMeta): string {
+  const links = [
+    ...NAV_ITEMS.map((item) => ({ href: item.to, label: item.label })),
+    ...PROJECTS.map((p) => ({ href: `/projets/${p.slug}`, label: `Projet : ${p.title}` })),
+    ...LEGAL_PAGES.map((legal) => ({ href: legal.path, label: legal.label })),
+  ];
+  const list = links.map((link) => `<li><a href="${link.href}">${escapeAttr(link.label)}</a></li>`).join("");
+  const content =
+    `<div class="visually-hidden">` +
+    `<h1>${escapeAttr(meta.title)}</h1>` +
+    `<p>${escapeAttr(meta.description)}</p>` +
+    `<nav aria-label="Plan du site"><ul>${list}</ul></nav>` +
+    `</div>`;
+  return html.replace('<div id="root"></div>', `<div id="root">${content}</div>`);
 }
 
 /** sitemap.xml de toutes les pages indexables */

@@ -10,8 +10,8 @@ export interface NavItem {
 
 export const NAV_ITEMS: NavItem[] = [
   { to: "/", label: "Accueil", icon: "home", end: true },
-  { to: "/projets", label: "Projets", icon: "folder" },
   { to: "/a-propos", label: "À propos", icon: "user" },
+  { to: "/projets", label: "Projets", icon: "folder" },
   { to: "/competences", label: "Compétences", icon: "bolt" },
   { to: "/contact", label: "Contact", icon: "mail" },
 ];

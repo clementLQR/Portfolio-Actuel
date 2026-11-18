@@ -1,0 +1,51 @@
+# Réglages pour un hébergement Apache (OVH, o2switch, Hostinger…).
+# Vercel ignore ce fichier : là-bas, c'est vercel.json qui fait le même travail.
+
+Options -MultiViews -Indexes
+# /projets existe à la fois en dossier (projets/) et en page (projets.html) :
+# pas de redirection automatique vers /projets/
+DirectorySlash Off
+DirectoryIndex index.html
+
+ErrorDocument 404 /404.html
+
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+
+  # HTTPS et domaine sans www
+  RewriteCond %{HTTPS} off [OR]
+  RewriteCond %{HTTP_HOST} ^www\. [NC]
+  RewriteRule ^ https://clementlequeurre.com%{REQUEST_URI} [L,R=301]
+
+  # Barre finale retirée : /projets/ devient /projets
+  RewriteCond %{REQUEST_FILENAME} !-f
+  RewriteRule ^(.+)/$ /$1 [L,R=301]
+
+  # Adresses propres : /projets sert projets.html, /projets/iut-quest sert projets/iut-quest.html
+  RewriteCond %{REQUEST_FILENAME} !-f
+  RewriteCond %{DOCUMENT_ROOT}/$1.html -f
+  RewriteRule ^(.+)$ /$1.html [L]
+</IfModule>
+
+# Compression des fichiers texte (et du modèle 3D)
+<IfModule mod_deflate.c>
+  AddOutputFilterByType DEFLATE text/html text/css text/plain text/xml application/javascript application/json application/xml image/svg+xml model/gltf-binary
+</IfModule>
+
+# Cache : fichiers versionnés d'assets/ gardés un an, modèle une semaine, pages toujours revalidées
+<IfModule mod_headers.c>
+  <FilesMatch "\.html$">
+    Header set Cache-Control "no-cache"
+  </FilesMatch>
+  <If "%{REQUEST_URI} =~ m#^/assets/#">
+    Header set Cache-Control "public, max-age=31536000, immutable"
+  </If>
+  <If "%{REQUEST_URI} =~ m#^/models/#">
+    Header set Cache-Control "public, max-age=604800, stale-while-revalidate=86400"
+  </If>
+</IfModule>
+
+<IfModule mod_mime.c>
+  AddType model/gltf-binary .glb
+  AddType font/woff2 .woff2
+</IfModule>

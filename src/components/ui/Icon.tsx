@@ -125,6 +125,20 @@ const ICONS = {
       <path d="M3 16.5l9 5 9-5" />
     </>
   ),
+  // Tailwind CSS : deux vagues décalées, à la manière du logo
+  tailwind: (
+    <>
+      <path d="M3 11c1.4-3 3.4-4.5 6-4.5 3.6 0 4 3 6.4 3 1.7 0 3.2-1 5.6-3.5" />
+      <path d="M3 17.5c1.4-3 3.4-4.5 6-4.5 3.6 0 4 3 6.4 3 1.7 0 3.2-1 5.6-3.5" />
+    </>
+  ),
+  // Docker : conteneurs empilés sur la coque de la baleine
+  docker: (
+    <>
+      <path d="M5 8.5h3v3H5zM8 8.5h3v3H8zM11 8.5h3v3h-3zM8 5.5h3v3H8zM11 5.5h3v3h-3z" />
+      <path d="M2.5 11.5h16c.6-1.6 1.8-2.4 3-2.2-.2 1.3-.9 2.3-2 2.7C18.3 16.5 14.6 19 9.5 19c-3.8 0-6.3-2.4-7-7.5z" />
+    </>
+  ),
   server: (
     <>
       <rect x="3" y="4" width="18" height="7" rx="2" />

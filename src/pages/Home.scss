@@ -290,6 +290,13 @@
     justify-self: stretch;
     grid-row: auto !important;
     grid-column: auto !important;
+    // Les quatre cartes de la grille 2 × 2 ont la même hauteur, sans décalage
+    align-self: stretch;
+
+    &__panel {
+      height: 100%;
+      align-content: start;
+    }
 
     &__title {
       margin-top: var(--space-3);

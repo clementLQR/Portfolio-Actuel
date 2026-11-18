@@ -1,4 +1,5 @@
 import type { IconName } from "../components/ui/Icon";
+import { PROJECTS, type Project } from "./projects";
 
 export type SkillTone = "warm" | "accent" | "violet" | "highlight" | "detail";
 
@@ -7,6 +8,11 @@ export interface Skill {
   icon: IconName;
   tone: SkillTone;
   description: string;
+  /**
+   * Débuts des entrées de `stack` des projets qui relèvent de cette compétence
+   * (« PHP » couvre « PHP 8 »). Sert à lister les projets liés sur la page Projets.
+   */
+  stack?: string[];
 }
 
 export interface SkillCategory {
@@ -22,11 +28,12 @@ export const SKILL_CATEGORIES: SkillCategory[] = [
     title: "Front-end",
     intro: "Le terrain de jeu principal : des interfaces rapides, accessibles et agréables.",
     skills: [
-      { name: "HTML / CSS", icon: "code", tone: "warm", description: "Intégration sémantique, responsive et accessible." },
-      { name: "JavaScript", icon: "braces", tone: "highlight", description: "Le cœur de mes interfaces, du DOM aux API du navigateur." },
-      { name: "TypeScript", icon: "ts", tone: "accent", description: "Typage strict pour des projets qui grandissent sereinement." },
-      { name: "React", icon: "atom", tone: "accent", description: "Composants, hooks et gestion d'état, de l'app au site vitrine." },
-      { name: "SCSS", icon: "layers", tone: "detail", description: "Architecture CSS, tokens de design et thèmes." },
+      { name: "HTML / CSS", icon: "code", tone: "warm", description: "Intégration sémantique, responsive et accessible.", stack: ["HTML / CSS", "SCSS"] },
+      { name: "JavaScript", icon: "braces", tone: "highlight", description: "Le cœur de mes interfaces, du DOM aux API du navigateur.", stack: ["JavaScript"] },
+      { name: "TypeScript", icon: "ts", tone: "accent", description: "Typage strict pour des projets qui grandissent sereinement.", stack: ["TypeScript"] },
+      { name: "React", icon: "atom", tone: "accent", description: "Composants, hooks et gestion d'état, de l'app au site vitrine.", stack: ["React"] },
+      { name: "SCSS", icon: "layers", tone: "detail", description: "Architecture CSS, tokens de design et thèmes.", stack: ["SCSS"] },
+      { name: "Tailwind CSS", icon: "tailwind", tone: "accent", description: "Classes utilitaires pour intégrer une maquette rapidement, sans quitter le HTML.", stack: ["Tailwind"] },
     ],
   },
   {
@@ -34,12 +41,13 @@ export const SKILL_CATEGORIES: SkillCategory[] = [
     title: "Back-end",
     intro: "Assez de back-end pour livrer un produit complet, de la base de données à l'API.",
     skills: [
-      { name: "Node.js (bases)", icon: "hexagon", tone: "accent", description: "Premiers serveurs et scripts d'outillage en JavaScript." },
-      { name: "Python (bases)", icon: "python", tone: "highlight", description: "Mon premier langage : algorithmique, scripts et un jeu avec Pygame." },
-      { name: "PHP / Laravel", icon: "server", tone: "violet", description: "Applications complètes : authentification, rôles, paiements." },
-      { name: "Symfony", icon: "terminal", tone: "highlight", description: "Projets structurés autour de Doctrine et des bundles." },
-      { name: "WordPress", icon: "wordpress", tone: "accent", description: "Sites vitrines à mettre en ligne vite, faciles à gérer pour le client." },
-      { name: "MySQL", icon: "database", tone: "warm", description: "Modélisation de données et requêtes optimisées." },
+      { name: "Node.js (bases)", icon: "hexagon", tone: "accent", description: "Premiers serveurs et scripts d'outillage en JavaScript.", stack: ["Node.js"] },
+      { name: "Python (bases)", icon: "python", tone: "highlight", description: "Mon premier langage : algorithmique, scripts et un jeu avec Pygame.", stack: ["Python"] },
+      { name: "PHP / Laravel", icon: "server", tone: "violet", description: "Applications complètes : authentification, rôles, paiements.", stack: ["PHP", "Laravel"] },
+      { name: "Symfony", icon: "terminal", tone: "highlight", description: "Projets structurés autour de Doctrine et des bundles.", stack: ["Symfony"] },
+      { name: "WordPress", icon: "wordpress", tone: "accent", description: "Sites vitrines à mettre en ligne vite, faciles à gérer pour le client.", stack: ["WordPress"] },
+      { name: "Docker", icon: "docker", tone: "accent", description: "Conteneurs pour lancer un projet dans le même environnement sur chaque poste.", stack: ["Docker"] },
+      { name: "MySQL", icon: "database", tone: "warm", description: "Modélisation de données et requêtes optimisées.", stack: ["MySQL"] },
     ],
   },
   {
@@ -47,12 +55,12 @@ export const SKILL_CATEGORIES: SkillCategory[] = [
     title: "Design",
     intro: "Je conçois avant de coder : parcours, maquettes et systèmes de composants.",
     skills: [
-      { name: "Figma", icon: "pen", tone: "detail", description: "Maquettes, prototypes et design systems avec variantes." },
+      { name: "Figma", icon: "pen", tone: "detail", description: "Maquettes, prototypes et design systems avec variantes.", stack: ["Figma"] },
       { name: "UI/UX Design", icon: "layout", tone: "violet", description: "Recherche utilisateur, parcours et tests d'usage." },
       { name: "Création d'interfaces", icon: "cursor", tone: "warm", description: "Du croquis à l'écran final, avec ses micro-interactions." },
-      { name: "Photoshop", icon: "photoshop", tone: "accent", description: "Retouche, montages et visuels pour le web." },
-      { name: "Illustrator", icon: "illustrator", tone: "highlight", description: "Logos, icônes et illustrations vectorielles." },
-      { name: "InDesign", icon: "indesign", tone: "detail", description: "Mise en page de documents, affiches et supports imprimés." },
+      { name: "Photoshop", icon: "photoshop", tone: "accent", description: "Retouche, montages et visuels pour le web.", stack: ["Photoshop"] },
+      { name: "Illustrator", icon: "illustrator", tone: "highlight", description: "Logos, icônes et illustrations vectorielles.", stack: ["Illustrator"] },
+      { name: "InDesign", icon: "indesign", tone: "detail", description: "Mise en page de documents, affiches et supports imprimés.", stack: ["InDesign"] },
     ],
   },
   {
@@ -60,9 +68,9 @@ export const SKILL_CATEGORIES: SkillCategory[] = [
     title: "Créatif / 3D",
     intro: "Là où la technique prend vie : 3D temps réel, modélisation et animation.",
     skills: [
-      { name: "Three.js", icon: "cube", tone: "accent", description: "Scènes 3D temps réel, shaders et intégration React." },
-      { name: "Blender", icon: "blender", tone: "violet", description: "Modélisation, squelette et export glTF, comme la mascotte de ce site." },
-      { name: "Animation web", icon: "sparkle", tone: "highlight", description: "GSAP, transitions et animations au scroll mesurées." },
+      { name: "Three.js", icon: "cube", tone: "accent", description: "Scènes 3D temps réel, shaders et intégration React.", stack: ["Three.js"] },
+      { name: "Blender", icon: "blender", tone: "violet", description: "Modélisation, squelette et export glTF, comme la mascotte de ce site.", stack: ["Blender"] },
+      { name: "Animation web", icon: "sparkle", tone: "highlight", description: "GSAP, transitions et animations au scroll mesurées.", stack: ["GSAP"] },
     ],
   },
 ];
@@ -132,3 +140,30 @@ export const LEVELS: Level[] = [
     state: "locked",
   },
 ];
+
+/* ---------- Compétences et projets ---------- */
+
+/** Identifiant d'URL d'une compétence : « PHP / Laravel » devient « php-laravel » */
+export function skillSlug(skill: Skill): string {
+  return skill.name
+    .normalize("NFD")
+    .replace(/\p{Diacritic}/gu, "")
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-|-$/g, "");
+}
+
+const ALL_SKILLS = SKILL_CATEGORIES.flatMap((category) => category.skills);
+
+export function findSkill(slug: string | null | undefined): Skill | undefined {
+  return slug ? ALL_SKILLS.find((skill) => skillSlug(skill) === slug) : undefined;
+}
+
+/** Projets dont la stack contient la compétence */
+export function projectsForSkill(skill: Skill): Project[] {
+  const keys = (skill.stack ?? []).map((key) => key.toLowerCase());
+  if (keys.length === 0) return [];
+  return PROJECTS.filter((project) =>
+    project.stack.some((entry) => keys.some((key) => entry.toLowerCase().startsWith(key))),
+  );
+}

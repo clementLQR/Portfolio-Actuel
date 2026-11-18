@@ -1,6 +1,6 @@
 import { defineConfig, loadEnv, type Plugin } from "vite";
 import react from "@vitejs/plugin-react";
-import { NOT_FOUND, PAGES, applyMeta, buildSitemap } from "./src/seo";
+import { NOT_FOUND, PAGES, applyMeta, applyStaticContent, buildSitemap, type PageMeta } from "./src/seo";
 
 type ContactHandler = { POST: (request: Request) => Promise<Response> };
 type NodeEnv = Record<string, string | undefined>;
@@ -44,7 +44,8 @@ function localApi(): Plugin {
 
 /**
  * Au build : une page HTML par route, avec son titre, sa description et ses balises de partage
- * (lisibles sans JavaScript par les moteurs et les réseaux sociaux), une vraie page 404 et le sitemap.
+ * (lisibles sans JavaScript par les moteurs et les réseaux sociaux), un plan du site en HTML
+ * dans #root, une vraie page 404 et le sitemap.
  * Vercel sert /projets depuis projets.html grâce à « cleanUrls ».
  */
 function seoPages(): Plugin {
@@ -56,12 +57,13 @@ function seoPages(): Plugin {
       const index = bundle["index.html"];
       if (!index || index.type !== "asset") return;
       const html = String(index.source);
+      const render = (meta: PageMeta) => applyStaticContent(applyMeta(html, meta), meta);
       for (const meta of PAGES) {
         const fileName = meta.path === "/" ? "index.html" : `${meta.path.slice(1)}.html`;
-        if (fileName === "index.html") index.source = applyMeta(html, meta);
-        else this.emitFile({ type: "asset", fileName, source: applyMeta(html, meta) });
+        if (fileName === "index.html") index.source = render(meta);
+        else this.emitFile({ type: "asset", fileName, source: render(meta) });
       }
-      this.emitFile({ type: "asset", fileName: "404.html", source: applyMeta(html, NOT_FOUND) });
+      this.emitFile({ type: "asset", fileName: "404.html", source: render(NOT_FOUND) });
       this.emitFile({ type: "asset", fileName: "sitemap.xml", source: buildSitemap(new Date().toISOString().slice(0, 10)) });
     },
   };

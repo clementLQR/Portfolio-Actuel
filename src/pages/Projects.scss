@@ -5,6 +5,50 @@
   isolation: isolate;
   padding-bottom: var(--section-gap);
 
+  // Filtre par compétence (arrivée depuis la page Compétences)
+  &__skill {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--space-2) var(--space-4);
+    margin-bottom: var(--space-4);
+    color: var(--text-muted);
+
+    strong {
+      color: var(--accent);
+      font-weight: var(--fw-semibold);
+    }
+  }
+
+  &__skill-clear {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2);
+    min-height: 40px;
+    padding: 0 var(--space-3);
+    color: var(--text);
+    font-family: var(--font-title);
+    font-size: var(--fs-xs);
+    font-weight: var(--fw-medium);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    --frame-border: var(--border-strong);
+    --frame-fill: var(--surface-strong);
+
+    transition: color var(--duration-fast) var(--ease-out);
+    @include chamfer-frame(6px);
+
+    &:hover {
+      --frame-border: var(--accent);
+
+      color: var(--accent);
+    }
+
+    &:focus-visible {
+      outline-offset: 2px;
+    }
+  }
+
   &__filters {
     display: flex;
     flex-wrap: wrap;
