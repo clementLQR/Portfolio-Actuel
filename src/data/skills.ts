@@ -135,7 +135,7 @@ export const LEVELS: Level[] = [
   {
     year: "Bientôt",
     title: "Niveau suivant",
-    text: "Un stage en développement web de 10 à 14 semaines, de mars à juin 2027 : la prochaine étape reste à écrire. Et si on la construisait ensemble ?",
+    text: "Un stage en développement web de 11 à 13 semaines, de mars à juin 2027 : la prochaine étape reste à écrire. Et si on la construisait ensemble ?",
     icon: "lock",
     state: "locked",
   },
