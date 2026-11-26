@@ -122,6 +122,7 @@ export default function App() {
       <div className="page-shell">
         {/* La clé relance la transition de page à chaque navigation */}
         <main id="contenu" ref={mainRef} key={location.pathname} className="page" tabIndex={-1}>
+          {/* Pendant le chargement, .page garde au moins la hauteur de l'écran (base.scss) */}
           <Suspense fallback={null}>
             <Routes location={location}>
               <Route path="/" element={<Home />} />

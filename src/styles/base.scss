@@ -207,6 +207,13 @@ ol {
   position: relative;
   z-index: var(--z-content);
   flex: 1;
+  // Au moins la hauteur de l'écran (grande hauteur sur mobile, barre d'adresse masquée) :
+  // le footer reste sous l'écran pendant que le code d'une page arrive, ou sous une page
+  // courte (404). Sinon il apparaît dans la vue puis redescend d'un coup (décalage CLS).
+  // + 2rem : les nœuds de la ligne d'orbite du footer et leur lueur dépassent d'une
+  // vingtaine de pixels au-dessus, ce que Chrome compte aussi.
+  min-height: calc(100vh + 2rem);
+  min-height: calc(100lvh + 2rem);
   padding-top: var(--header-h);
   outline: none;
   overflow-x: clip;
